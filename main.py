@@ -21,7 +21,6 @@ def load_handlers(dispatcher: Dispatcher):
             module.init(dispatcher)
 
 
-
 def graceful_exit(*_, **__):
     """Provide a graceful exit from a webhook server."""
     if updater is not None:
