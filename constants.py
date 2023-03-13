@@ -2,6 +2,7 @@ DOWNLOAD_MEDIA: str = "download media"
 UPLOAD_MEDIA: str = "upload media"
 LOGIN: str = "login"
 INSIGHT: str = "Insights"
+CHOOSING, TYPING_REPLY, TYPING_CHOICE = range(3)
 reply_keyboard: list = [
     [DOWNLOAD_MEDIA],
     [INSIGHT],
