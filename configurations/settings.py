@@ -1,5 +1,11 @@
-TOKEN = "bot:Token"
-NAME = "seed_bot"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+TOKEN = os.environ['TOKEN']
+NAME = os.environ['NAME']
 WEBHOOK = False
 # The following configuration is only needed if you setted WEBHOOK to True #
 WEBHOOK_OPTIONS = {
