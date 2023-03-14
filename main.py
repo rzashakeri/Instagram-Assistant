@@ -1,7 +1,7 @@
 from telegram.ext import Application
 from configurations import settings
 from utils import logger
-from bot.conversation import conversation
+from core.handlers import conversation
 
 if __name__ == "__main__":
     logger.init_logger(f"logs/{settings.NAME}.log")
