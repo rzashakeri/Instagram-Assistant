@@ -1,31 +1,23 @@
 
 from logging import getLogger
 
-from telegram import Update
 from telegram.ext import (
-    CallbackContext,
     CommandHandler,
-    ConversationHandler, MessageHandler, filters,
+    ConversationHandler, MessageHandler, filters
 )
 
 from bot.start import start
-from core.constants import CHOOSING, TYPING_CHOICE, TYPING_REPLY
+from core.constants import CHOOSING
 
 # Init logger
 logger = getLogger(__name__)
 
 
-def conversation():
+def base_conversation_handler():
     """Process a /start command."""
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
-        states={
-            CHOOSING: [
-
-            ],
-            TYPING_CHOICE: [],
-            TYPING_REPLY: [],
-        },
+        states={},
         fallbacks=[],
     )
     return conversation_handler
