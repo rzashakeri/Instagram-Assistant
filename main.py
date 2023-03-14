@@ -4,7 +4,6 @@ import signal
 import sys
 from importlib import import_module
 from telegram.ext import Dispatcher, Updater
-
 from configurations import settings
 from utils import logger
 

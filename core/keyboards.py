@@ -1,6 +1,6 @@
 from telegram import ReplyKeyboardMarkup
 
-from constants import DOWNLOAD_MEDIA, UPLOAD_MEDIA, INSIGHT, LOGIN
+from core.constants import DOWNLOAD_MEDIA, UPLOAD_MEDIA, INSIGHT, LOGIN
 
 main_reply_keyboard: list = [
     [DOWNLOAD_MEDIA],
