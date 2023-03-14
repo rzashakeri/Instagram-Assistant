@@ -16,7 +16,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
     welcome_message: str = (
-        "Hi, Welcome To Instagram in Telegram Bot, "
+        f"Hi {update.effective_user.first_name}, Welcome To Instagram in Telegram Bot, "
         "With this robot you can do whatever you do "
         "on Instagram using the telegram with additional features."
     )
