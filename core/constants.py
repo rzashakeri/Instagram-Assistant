@@ -2,4 +2,5 @@ DOWNLOAD_MEDIA: str = "Download Media"
 UPLOAD_MEDIA: str = "Upload Media"
 LOGIN: str = "Login"
 INSIGHT: str = "Insights"
-CHOOSING, TYPING_REPLY, TYPING_CHOICE = range(3)
+BACK: str = "Back"
+CHOOSING_ACTION, DOWNLOAD, UPLOAD, LOGIN_TO_INSTAGRAM, INSIGHT_OF_POST, BACK_ACTION = range(6)
