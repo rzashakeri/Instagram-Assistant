@@ -6,6 +6,8 @@ load_dotenv()
 
 TOKEN = os.environ['TOKEN']
 NAME = os.environ['NAME']
+INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
+INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
 WEBHOOK = False
 # The following configuration is only needed if you setted WEBHOOK to True #
 WEBHOOK_OPTIONS = {
