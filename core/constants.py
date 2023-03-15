@@ -1,6 +1,14 @@
-DOWNLOAD_MEDIA: str = "Download Media"
-UPLOAD_MEDIA: str = "Upload Media"
+DOWNLOAD: str = "Download Media"
+UPLOAD: str = "Upload Media"
 LOGIN: str = "Login"
 INSIGHT: str = "Insights"
 BACK: str = "Back"
-CHOOSING_ACTION, DOWNLOAD, UPLOAD, LOGIN_TO_INSTAGRAM, INSIGHT_OF_POST, BACK_ACTION = range(6)
+(
+    HOME,
+    DOWNLOAD_MEDIA,
+    UPLOAD_MEDIA,
+    LOGIN_TO_INSTAGRAM,
+    INSIGHT_OF_POST,
+    BACK_ACTION,
+    BACK_TO_HOME,
+) = range(7)
