@@ -5,8 +5,8 @@ from logging import getLogger
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from core.keyboards import main_keyboard
-from core.constants import CHOOSING
+from core.constants import HOME
+from core.keyboards import base_keyboard
 
 # Init logger
 logger = getLogger(__name__)
@@ -21,6 +21,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         "on Instagram using the telegram with additional features."
     )
     await update.message.reply_text(
-        welcome_message, reply_markup=main_keyboard
+        welcome_message, reply_markup=base_keyboard
     )
-    return CHOOSING
+    return HOME
