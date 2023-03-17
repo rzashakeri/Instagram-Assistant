@@ -40,7 +40,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     username, password = message.split('\n')
     client = Client()
     client.login(username, password)
-    client.dump_settings(f'{current_directory}/tmp/{username}.json')
+    client.dump_settings(f'{current_directory}/login/{username}.json')
     await update.effective_user.send_message('login success')
 
     return HOME
