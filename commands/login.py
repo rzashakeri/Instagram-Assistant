@@ -30,7 +30,7 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    current_directory = os.path.dirname(os.path.realpath(__file__))
+    current_directory = os.getcwdb()
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(
