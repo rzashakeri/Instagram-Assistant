@@ -30,8 +30,8 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    current_directory = os.getcwdb()
     message = update.message.text
+    current_directory = os.getcwd()
     if message == BACK:
         await update.message.reply_text(
             "what do you want ?", reply_markup=base_keyboard
@@ -40,7 +40,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     username, password = message.split('\n')
     client = Client()
     client.login(username, password)
-    client.dump_settings(f'{current_directory}/login/{username}.json')
+    client.dump_settings(f'{current_directory}/tmp/{username}.json')
     await update.effective_user.send_message('login success')
 
     return HOME
