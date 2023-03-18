@@ -1,46 +1,46 @@
 # encoding: utf-8
 import os
-import requests
 from logging import getLogger
 
 from instagrapi import Client
 from telegram import Update
-from telegram.ext import ContextTypes
 
-from core.constants import HOME, BACK_TO_HOME, BACK, LOGIN, LOGIN_TO_INSTAGRAM
+from core.constants import (
+    HOME,
+    BACK,
+    LOGIN_TO_INSTAGRAM,
+    MESSAGE_FOR_GET_LOGIN_DATA,
+    WHAT_DO_YOU_WANT,
+    LOGIN,
+    YOU_WERE_ALREADY_LOGGED_IN,
+    LOGGED_IN_SUCCESSFULLY,
+)
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
 logger = getLogger(__name__)
 
 
-async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_login_data(update: Update) -> str:
     """Select an action: Adding parent/child or show data."""
 
-    message_for_get_login_data: str = (
-        "Please send me login information in the following format and format: \n"
-        "\n"
-        "username\n"
-        "password"
-    )
+    message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
     await update.message.reply_text(
         message_for_get_login_data, reply_markup=back_keyboard
     )
     return LOGIN_TO_INSTAGRAM
 
 
-async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def login(update: Update) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message == BACK:
-        await update.message.reply_text(
-            "what do you want ?", reply_markup=base_keyboard
-        )
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME
     user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
-    login_directory = f"{current_directory}/login"
+    login_directory = f"{current_directory}/{LOGIN.lower()}"
     user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
     login_directory_is_exist = os.path.isdir(login_directory)
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
@@ -52,12 +52,12 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         client.login(username, password)
         client.get_timeline_feed()
         await update.effective_user.send_message(
-            "You Were Already Logged In", reply_markup=base_keyboard
+            YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
         )
         return HOME
     client.login(username, password)
     client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     await update.effective_user.send_message(
-        "Logged In Successfully", reply_markup=base_keyboard
+        LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
     )
     return HOME
