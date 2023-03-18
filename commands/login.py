@@ -15,7 +15,7 @@ from core.constants import (
     YOU_WERE_ALREADY_LOGGED_IN,
     LOGGED_IN_SUCCESSFULLY,
 )
-from core.keyboards import base_keyboard, back_keyboard
+from core.keyboards import base_keyboard, back_keyboard, back_action
 
 # Init logger
 logger = getLogger(__name__)
@@ -34,9 +34,7 @@ async def get_login_data(update: Update) -> str:
 async def login(update: Update) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    if message == BACK:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
-        return HOME
+    await back_action(message, update)
     user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
