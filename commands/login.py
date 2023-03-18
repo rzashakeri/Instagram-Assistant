@@ -34,7 +34,9 @@ async def get_login_data(update: Update) -> str:
 async def login(update: Update) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    await back_action(message, update)
+    if message == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME
     user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
