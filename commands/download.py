@@ -5,7 +5,7 @@ from logging import getLogger
 from telegram import Update
 from telegram.ext import ContextTypes
 import validators
-from core.constants import HOME, BACK
+from core.constants import HOME, BACK, DOWNLOAD_MEDIA
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
@@ -19,7 +19,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await update.message.reply_text(
         welcome_message, reply_markup=back_keyboard
     )
-    return HOME
+    return DOWNLOAD_MEDIA
 
 
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
