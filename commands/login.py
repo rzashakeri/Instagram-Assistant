@@ -52,7 +52,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "You Were Already Logged In", reply_markup=base_keyboard
         )
         return HOME
-    except FileNotFoundError:
+    except OSError:
         client.login(username, password)
         client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
         await update.effective_user.send_message(
