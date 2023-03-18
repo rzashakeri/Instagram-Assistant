@@ -37,10 +37,6 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME
-    proxy = requests.get(
-        "http://pubproxy.com/api/proxy?limit=1&format=txt&http=true&country=US&type=socks5"
-    ).text
-    socks5_proxy = f"socks5://{proxy}"
     user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
@@ -51,7 +47,6 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     client = Client()
-    client.set_proxy(socks5_proxy)
     if user_instagram_session_is_exist:
         client.load_settings(user_instagram_session)
         client.login(username, password)
