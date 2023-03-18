@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 import validators
 from core.constants import HOME, BACK
-from core.keyboards import base_keyboard
+from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
 logger = getLogger(__name__)
@@ -17,7 +17,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
     welcome_message: str = "OK, send me the link you want to download from Instagram"
     await update.message.reply_text(
-        welcome_message, reply_markup=base_keyboard
+        welcome_message, reply_markup=back_keyboard
     )
     return HOME
 
