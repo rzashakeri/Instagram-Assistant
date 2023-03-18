@@ -44,17 +44,18 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     client = Client()
-    instagram_session = client.load_settings(f"{login_directory}/{username}_{user_id}.json")
-    if instagram_session is not None:
+    try:
+        client.load_settings(f"{login_directory}/{username}_{user_id}.json")
         client.login(username, password)
         client.get_timeline_feed()
         await update.effective_user.send_message(
             "You Were Already Logged In", reply_markup=base_keyboard
         )
         return HOME
-    client.login(username, password)
-    client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
-    await update.effective_user.send_message(
-        "Logged In Successfully", reply_markup=base_keyboard
-    )
-    return HOME
+    except FileNotFoundError:
+        client.login(username, password)
+        client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        await update.effective_user.send_message(
+            "Logged In Successfully", reply_markup=base_keyboard
+        )
+        return HOME
