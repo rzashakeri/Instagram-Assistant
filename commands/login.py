@@ -44,6 +44,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     client = Client()
+    client.set_proxy("socks5://127.0.0.1:30235")
     user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if user_instagram_session_is_exist:
