@@ -3,6 +3,15 @@ UPLOAD: str = "Upload Media"
 LOGIN: str = "Login"
 INSIGHT: str = "Insights"
 BACK: str = "Back"
+MESSAGE_FOR_GET_LOGIN_DATA: str = (
+        "Please send me login information in the following format and format: \n"
+        "\n"
+        "username\n"
+        "password"
+)
+WHAT_DO_YOU_WANT: str = "what do you want ?"
+YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
+LOGGED_IN_SUCCESSFULLY: str = "Logged In Successfully"
 (
     HOME,
     DOWNLOAD_MEDIA,
