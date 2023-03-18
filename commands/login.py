@@ -4,6 +4,7 @@ from logging import getLogger
 
 from instagrapi import Client
 from telegram import Update
+from telegram.ext import ContextTypes
 
 from core.constants import (
     HOME,
@@ -21,7 +22,7 @@ from core.keyboards import base_keyboard, back_keyboard
 logger = getLogger(__name__)
 
 
-async def get_login_data(update: Update) -> str:
+async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
     message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
@@ -31,7 +32,7 @@ async def get_login_data(update: Update) -> str:
     return LOGIN_TO_INSTAGRAM
 
 
-async def login(update: Update) -> str:
+async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message == BACK:
