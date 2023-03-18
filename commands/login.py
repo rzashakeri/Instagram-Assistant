@@ -1,5 +1,6 @@
 # encoding: utf-8
 import os
+import requests
 from logging import getLogger
 
 from instagrapi import Client
@@ -31,22 +32,26 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    user_id = update.effective_user.id
     if message == BACK:
         await update.message.reply_text(
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME
+    proxy = requests.get(
+        "http://pubproxy.com/api/proxy?limit=1&format=txt&http=true&country=US&type=socks5"
+    ).text
+    socks5_proxy = f"socks5://{proxy}"
+    user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/login"
+    user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
     login_directory_is_exist = os.path.isdir(login_directory)
+    user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     client = Client()
-    client.set_proxy("socks5://127.0.0.1:30235")
-    user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
-    user_instagram_session_is_exist = os.path.exists(user_instagram_session)
+    client.set_proxy(socks5_proxy)
     if user_instagram_session_is_exist:
         client.load_settings(user_instagram_session)
         client.login(username, password)
