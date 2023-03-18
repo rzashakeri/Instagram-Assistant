@@ -31,19 +31,20 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
+    user_id = update.effective_user.id
     if message == BACK:
         await update.message.reply_text(
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME
+    username, password = message.split("\n")
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/login"
     login_directory_is_exist = os.path.isdir(login_directory)
     if not login_directory_is_exist:
         os.makedirs(login_directory)
-    username, password = message.split("\n")
     client = Client()
-    instagram_session = client.load_settings(f"{login_directory}/{username}.json")
+    instagram_session = client.load_settings(f"{login_directory}/{username}_{user_id}.json")
     if instagram_session is not None:
         client.login(username, password)
         client.get_timeline_feed()
@@ -52,7 +53,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME
     client.login(username, password)
-    client.dump_settings(f"{login_directory}/{username}.json")
+    client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     await update.effective_user.send_message(
         "Logged In Successfully", reply_markup=base_keyboard
     )
