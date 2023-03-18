@@ -15,7 +15,7 @@ from core.constants import (
     YOU_WERE_ALREADY_LOGGED_IN,
     LOGGED_IN_SUCCESSFULLY,
 )
-from core.keyboards import base_keyboard, back_keyboard, back_action
+from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
 logger = getLogger(__name__)
