@@ -13,7 +13,7 @@ back_reply_keyboard = [[BACK]]
 back_keyboard = ReplyKeyboardMarkup(back_reply_keyboard, resize_keyboard=True)
 
 
-async def back_action(message, update):
+def back_action(message, update):
     if message == BACK:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME
