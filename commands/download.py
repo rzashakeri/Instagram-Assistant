@@ -85,7 +85,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
             username = re.findall(regex, message)[0]
             user_data = client.user_info_by_username(username).dict()
-            user_profile_picture_url = user_data["profile_pic_url"]
+            user_profile_picture_url = user_data["profile_pic_url_hd"]
             request = requests.get(user_profile_picture_url)
             profile_picture_extension = guess(request.content).EXTENSION
             profile_picture_file_name = f"{username}_profile_picture.{profile_picture_extension}"
