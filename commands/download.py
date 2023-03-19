@@ -15,7 +15,7 @@ from core.constants import (
     YOU_WERE_ALREADY_LOGGED_IN,
     LOGIN,
     LOGGED_IN_SUCCESSFULLY,
-    PHOTO,
+    PHOTO, VIDEO, IS_FEED, IS_IGTV, IS_CLIPS, DOWNLOAD_COMPLETED,
 )
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -26,7 +26,7 @@ logger = getLogger(__name__)
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
-    welcome_message: str = "OK, send me the link you want to download from Instagram"
+    welcome_message: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
     await update.message.reply_text(welcome_message, reply_markup=back_keyboard)
     return DOWNLOAD_MEDIA
 
@@ -76,6 +76,39 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 await update.effective_user.send_photo(photo=file)
             os.remove(file_path)
             await update.message.reply_text(
-                    "Download Complete", reply_markup=base_keyboard
+                    DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
+            return HOME
+        if media_type == VIDEO and product_type == IS_FEED:
+            file_path = client.video_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            with open(file_path, 'rb') as file:
+                await update.effective_user.send_video(video=file)
+            os.remove(file_path)
+            await update.message.reply_text(
+                    DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
+            return HOME
+        if media_type == VIDEO and product_type == IS_IGTV:
+            file_path = client.igtv_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            with open(file_path, 'rb') as file:
+                await update.effective_user.send_video(video=file)
+            os.remove(file_path)
+            await update.message.reply_text(
+                    DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
+            return HOME
+        if media_type == VIDEO and product_type == IS_CLIPS:
+            file_path = client.clip_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            with open(file_path, 'rb') as file:
+                await update.effective_user.send_video(video=file)
+            os.remove(file_path)
+            await update.message.reply_text(
+                    DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
