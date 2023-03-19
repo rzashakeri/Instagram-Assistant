@@ -46,7 +46,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     user_instagram_session = (
         f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
     )
-    login_directory_is_exist = os.path.isdir(login_directory)
+    login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     message_is_link = validators.email(message)
