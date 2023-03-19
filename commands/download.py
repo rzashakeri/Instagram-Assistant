@@ -1,27 +1,23 @@
 # encoding: utf-8
 import os
 import re
-import shutil
-
-import requests
 from logging import getLogger
 
+import requests
+import validators
+from file_validator.utils import guess_the_type
 from filetype import guess
 from instagrapi import Client
 from instagrapi.exceptions import MediaNotFound, UnknownError, UserNotFound
 from telegram import Update
 from telegram.ext import ContextTypes
-from file_validator.utils import guess_the_type
-import validators
 
 from configurations import settings
 from core.constants import (
     HOME,
     BACK,
     DOWNLOAD_MEDIA,
-    YOU_WERE_ALREADY_LOGGED_IN,
     LOGIN,
-    LOGGED_IN_SUCCESSFULLY,
     PHOTO,
     VIDEO,
     IS_FEED,
@@ -31,7 +27,7 @@ from core.constants import (
     ALBUM,
     IGTV,
     REEL,
-    IS_VIDEO,
+    IS_VIDEO, LINK_IS_INVALID, STARTING_DOWNLOAD, UPLOAD_IN_TELEGRAM,
 )
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -56,13 +52,17 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME
+    await update.message.reply_text(
+        STARTING_DOWNLOAD, reply_markup=base_keyboard
+    )
     current_directory = os.getcwd()
     download_directory = f"{current_directory}/download"
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session = f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    user_instagram_session_name = f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(user_instagram_session)
+    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
     message_is_url = validators.url(message)
     client = Client()
     if not login_directory_is_exist:
@@ -71,7 +71,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         os.makedirs(download_directory)
     if message_is_url:
         if user_instagram_session_is_exist:
-            client.load_settings(user_instagram_session)
+            client.load_settings(user_instagram_session_path)
             client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
             client.get_timeline_feed()
         client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
@@ -88,16 +88,24 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 user_data = client.user_info_by_username(username).dict()
             except UserNotFound:
                 await update.message.reply_text(
-                    "Link is Invalid, check your Link and Try Again", reply_markup=base_keyboard
+                    LINK_IS_INVALID,
+                    reply_markup=base_keyboard,
                 )
                 return HOME
             user_profile_picture_url = user_data["profile_pic_url_hd"]
             request = requests.get(user_profile_picture_url)
             profile_picture_extension = guess(request.content).EXTENSION
-            profile_picture_file_name = f"{username}_profile_picture.{profile_picture_extension}"
-            profile_picture_file_path = f"{download_directory}/{profile_picture_file_name}"
+            profile_picture_file_name = (
+                f"{username}_profile_picture.{profile_picture_extension}"
+            )
+            profile_picture_file_path = (
+                f"{download_directory}/{profile_picture_file_name}"
+            )
             with open(profile_picture_file_path, "wb") as file:
                 file.write(request.content)
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             await update.effective_user.send_photo(photo=profile_picture_file_path)
             os.remove(profile_picture_file_path)
             del request
@@ -111,6 +119,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             file_path = client.photo_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
                 await update.effective_user.send_photo(photo=file)
             os.remove(file_path)
@@ -118,10 +129,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == VIDEO and product_type == IS_FEED:
+        elif media_type == VIDEO and product_type == IS_FEED:
             file_path = client.video_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
                 await update.effective_user.send_video(video=file)
             os.remove(file_path)
@@ -129,10 +143,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == IGTV and product_type == IS_IGTV:
+        elif media_type == IGTV and product_type == IS_IGTV:
             file_path = client.igtv_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
                 await update.effective_user.send_video(video=file)
             os.remove(file_path)
@@ -140,10 +157,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == REEL and product_type == IS_CLIPS:
+        elif media_type == REEL and product_type == IS_CLIPS:
             file_path = client.clip_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
                 await update.effective_user.send_video(video=file)
             os.remove(file_path)
@@ -151,9 +171,12 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == ALBUM:
+        elif media_type == ALBUM:
             files_path = client.album_download(
                 media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
             )
             for file_path in files_path:
                 with open(file_path, "rb") as file:
@@ -167,3 +190,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
+        else:
+            await update.message.reply_text(
+                LINK_IS_INVALID, reply_markup=base_keyboard
+            )
