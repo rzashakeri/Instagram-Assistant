@@ -49,13 +49,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
-    message_is_link = validators.email(message)
+    message_is_url = validators.url(message)
     client = Client()
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    if message_is_link:
+    if message_is_url:
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session)
             client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
