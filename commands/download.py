@@ -5,6 +5,7 @@ from logging import getLogger
 from instagrapi import Client
 from telegram import Update
 from telegram.ext import ContextTypes
+from file_validator.utils import guess_the_type
 import validators
 
 from configurations import settings
@@ -15,7 +16,7 @@ from core.constants import (
     YOU_WERE_ALREADY_LOGGED_IN,
     LOGIN,
     LOGGED_IN_SUCCESSFULLY,
-    PHOTO, VIDEO, IS_FEED, IS_IGTV, IS_CLIPS, DOWNLOAD_COMPLETED,
+    PHOTO, VIDEO, IS_FEED, IS_IGTV, IS_CLIPS, DOWNLOAD_COMPLETED, ALBUM, IGTV, REEL, IS_VIDEO,
 )
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -90,7 +91,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == VIDEO and product_type == IS_IGTV:
+        if media_type == IGTV and product_type == IS_IGTV:
             file_path = client.igtv_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
@@ -101,13 +102,29 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
             return HOME
-        if media_type == VIDEO and product_type == IS_CLIPS:
+        if media_type == REEL and product_type == IS_CLIPS:
             file_path = client.clip_download(
                 media_pk=media_pk_from_url, folder=download_directory
             )
             with open(file_path, 'rb') as file:
                 await update.effective_user.send_video(video=file)
             os.remove(file_path)
+            await update.message.reply_text(
+                    DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
+            return HOME
+        if media_type == ALBUM:
+            files_path = client.album_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            for file_path in files_path:
+                with open(file_path, 'rb') as file:
+                    file_type = guess_the_type(file_path=file_path)
+                    if file_type == IS_VIDEO:
+                        await update.effective_user.send_video(video=file)
+                    else:
+                        await update.effective_user.send_photo(photo=file)
+                    os.remove(file_path)
             await update.message.reply_text(
                     DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
