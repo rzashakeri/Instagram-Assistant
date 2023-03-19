@@ -12,13 +12,19 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
 LOGGED_IN_SUCCESSFULLY: str = "Logged In Successfully"
-
+DOWNLOAD_COMPLETED: str = "Download Complete"
 # Media Type
 PHOTO: int = 1
 VIDEO: int = 2
 IGTV: int = 2
 REEL: int = 2
 ALBUM: int = 8
+
+
+# Product Type
+IS_FEED: str = "feed"
+IS_IGTV: str = "igtv"
+IS_CLIPS: str = "clips"
 (
     HOME,
     DOWNLOAD_MEDIA,
