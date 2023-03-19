@@ -1,11 +1,14 @@
 # encoding: utf-8
 import os
+import re
 from logging import getLogger
 
 from instagrapi import Client
+from instagrapi.exceptions import MediaNotFound
 from telegram import Update
 from telegram.ext import ContextTypes
 from file_validator.utils import guess_the_type
+from urllib import request
 import validators
 
 from configurations import settings
@@ -65,7 +68,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         client.dump_settings(
             f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
         )
-        media_pk_from_url = client.media_pk_from_url(message)
+        try:
+            media_pk_from_url = client.media_pk_from_url(message)
+        except MediaNotFound:
+            await update.message.reply_text(
+                "Media Not Found, Please Check Your Url And Try Again", reply_markup=base_keyboard
+            )
+            return HOME
         media_info = client.media_info(media_pk_from_url).dict()
         media_type = media_info["media_type"]
         product_type = media_info["product_type"]
