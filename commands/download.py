@@ -74,3 +74,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             )
             with open(file_path, 'rb') as file:
                 await update.effective_user.send_photo(photo=file)
+            os.remove(file_path)
+            await update.message.reply_text(
+                    "Download Complete", reply_markup=base_keyboard
+            )
+            return HOME
