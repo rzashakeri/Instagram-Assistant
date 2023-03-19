@@ -8,7 +8,7 @@ from logging import getLogger
 
 from filetype import guess
 from instagrapi import Client
-from instagrapi.exceptions import MediaNotFound, UnknownError
+from instagrapi.exceptions import MediaNotFound, UnknownError, UserNotFound
 from telegram import Update
 from telegram.ext import ContextTypes
 from file_validator.utils import guess_the_type
@@ -84,7 +84,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except (MediaNotFound, UnknownError):
             regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
             username = re.findall(regex, message)[0]
-            user_data = client.user_info_by_username(username).dict()
+            try:
+                user_data = client.user_info_by_username(username).dict()
+            except UserNotFound:
+                await update.message.reply_text(
+                    "Link is Invalid, check your Link and Try Again", reply_markup=base_keyboard
+                )
+                return HOME
             user_profile_picture_url = user_data["profile_pic_url_hd"]
             request = requests.get(user_profile_picture_url)
             profile_picture_extension = guess(request.content).EXTENSION
