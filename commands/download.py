@@ -54,7 +54,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     if not download_directory_is_exist:
-        os.makedirs(login_directory)
+        os.makedirs(download_directory)
     if message_is_link:
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session)
