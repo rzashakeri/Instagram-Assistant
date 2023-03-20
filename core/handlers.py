@@ -11,7 +11,7 @@ from commands.start import start
 
 # Init logger
 
-from constants import LOGIN, DOWNLOAD
+from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY
 from constants.states import HOME_STATE, LOGIN_STATE, DOWNLOAD_STATE
 
 logger = getLogger(__name__)
@@ -23,8 +23,8 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start)],
         states={
             HOME_STATE: [
-                MessageHandler(filters.Regex(f"^{LOGIN}$"), get_login_data),
-                MessageHandler(filters.Regex(f"^{DOWNLOAD}$"), get_media_link)
+                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), get_login_data),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"), get_media_link)
             ],
             LOGIN_STATE: [
                 MessageHandler(filters.TEXT, login)
