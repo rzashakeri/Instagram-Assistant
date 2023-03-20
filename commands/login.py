@@ -6,16 +6,9 @@ from instagrapi import Client
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from core.constants import (
-    HOME,
-    BACK,
-    LOGIN_TO_INSTAGRAM,
-    MESSAGE_FOR_GET_LOGIN_DATA,
-    WHAT_DO_YOU_WANT,
-    LOGIN,
-    YOU_WERE_ALREADY_LOGGED_IN,
-    LOGGED_IN_SUCCESSFULLY,
-)
+from constants import BACK, LOGIN
+from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY
+from constants.states import LOGIN_STATE, HOME_STATE
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
@@ -29,7 +22,7 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await update.message.reply_text(
         message_for_get_login_data, reply_markup=back_keyboard
     )
-    return LOGIN
+    return LOGIN_STATE
 
 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -37,7 +30,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
-        return HOME
+        return HOME_STATE
     user_id = update.effective_user.id
     username, password = message.split("\n")
     current_directory = os.getcwd()
@@ -55,10 +48,10 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         await update.effective_user.send_message(
             YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
         )
-        return HOME
+        return HOME_STATE
     client.login(username, password)
     client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     await update.effective_user.send_message(
         LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
     )
-    return HOME
+    return HOME_STATE

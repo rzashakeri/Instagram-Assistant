@@ -10,7 +10,9 @@ from commands.login import get_login_data, login
 from commands.start import start
 
 # Init logger
-from core.constants import HOME, LOGIN, LOGIN_TO_INSTAGRAM, DOWNLOAD, DOWNLOAD_MEDIA
+
+from constants import LOGIN, DOWNLOAD
+from constants.states import HOME_STATE, LOGIN_STATE, DOWNLOAD_STATE
 
 logger = getLogger(__name__)
 
@@ -20,14 +22,14 @@ def base_conversation_handler():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
         states={
-            HOME: [
-                MessageHandler(filters.Regex(f"^{LOGIN_TO_INSTAGRAM}$"), get_login_data),
-                MessageHandler(filters.Regex(f"^{DOWNLOAD_MEDIA}$"), get_media_link)
+            HOME_STATE: [
+                MessageHandler(filters.Regex(f"^{LOGIN}$"), get_login_data),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD}$"), get_media_link)
             ],
-            LOGIN: [
+            LOGIN_STATE: [
                 MessageHandler(filters.TEXT, login)
             ],
-            DOWNLOAD: [
+            DOWNLOAD_STATE: [
                 MessageHandler(filters.TEXT, download)
             ]
         },

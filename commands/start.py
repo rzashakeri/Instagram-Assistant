@@ -5,7 +5,8 @@ from logging import getLogger
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from core.constants import HOME, WELCOME_MESSAGE
+from constants.messages import WELCOME_MESSAGE
+from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 
 # Init logger
@@ -19,4 +20,4 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         WELCOME_MESSAGE.format(first_name=update.effective_user.first_name),
         reply_markup=base_keyboard,
     )
-    return HOME
+    return HOME_STATE
