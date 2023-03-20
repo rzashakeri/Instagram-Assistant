@@ -13,22 +13,12 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from configurations import settings
-from core.constants import (
-    HOME,
-    BACK,
-    DOWNLOAD_MEDIA,
-    LOGIN,
-    PHOTO,
-    VIDEO,
-    IS_FEED,
-    IS_IGTV,
-    IS_CLIPS,
-    DOWNLOAD_COMPLETED,
-    ALBUM,
-    IGTV,
-    REEL,
-    IS_VIDEO, LINK_IS_INVALID, STARTING_DOWNLOAD, UPLOAD_IN_TELEGRAM, DOWNLOAD,
-)
+from constants import BACK, LOGIN
+from constants.media_types import PHOTO, VIDEO, IGTV, REEL, ALBUM
+from constants.messages import STARTING_DOWNLOAD, LINK_IS_INVALID, UPLOAD_IN_TELEGRAM, DOWNLOAD_COMPLETED, IS_VIDEO
+from constants.product_types import IS_FEED, IS_IGTV, IS_CLIPS
+from constants.states import DOWNLOAD_STATE, HOME_STATE
+
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
@@ -40,7 +30,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
     welcome_message: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
     await update.message.reply_text(welcome_message, reply_markup=back_keyboard)
-    return DOWNLOAD
+    return DOWNLOAD_STATE
 
 
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -51,7 +41,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         await update.message.reply_text(
             "what do you want ?", reply_markup=base_keyboard
         )
-        return HOME
+        return HOME_STATE
     await update.message.reply_text(
         STARTING_DOWNLOAD, reply_markup=base_keyboard
     )
@@ -91,7 +81,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     LINK_IS_INVALID,
                     reply_markup=base_keyboard,
                 )
-                return HOME
+                return HOME_STATE
             user_profile_picture_url = user_data["profile_pic_url_hd"]
             request = requests.get(user_profile_picture_url)
             profile_picture_extension = guess(request.content).EXTENSION
@@ -112,7 +102,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         media_type = media_info["media_type"]
         product_type = media_info["product_type"]
         if media_type == PHOTO:
@@ -128,7 +118,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         elif media_type == VIDEO and product_type == IS_FEED:
             file_path = client.video_download(
                 media_pk=media_pk_from_url, folder=download_directory
@@ -142,7 +132,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         elif media_type == IGTV and product_type == IS_IGTV:
             file_path = client.igtv_download(
                 media_pk=media_pk_from_url, folder=download_directory
@@ -156,7 +146,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         elif media_type == REEL and product_type == IS_CLIPS:
             file_path = client.clip_download(
                 media_pk=media_pk_from_url, folder=download_directory
@@ -170,7 +160,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         elif media_type == ALBUM:
             files_path = client.album_download(
                 media_pk=media_pk_from_url, folder=download_directory
@@ -189,9 +179,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
         else:
             await update.message.reply_text(
                 LINK_IS_INVALID, reply_markup=base_keyboard
             )
-            return HOME
+            return HOME_STATE
