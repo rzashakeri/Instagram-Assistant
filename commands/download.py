@@ -27,7 +27,7 @@ from core.constants import (
     ALBUM,
     IGTV,
     REEL,
-    IS_VIDEO, LINK_IS_INVALID, STARTING_DOWNLOAD, UPLOAD_IN_TELEGRAM,
+    IS_VIDEO, LINK_IS_INVALID, STARTING_DOWNLOAD, UPLOAD_IN_TELEGRAM, DOWNLOAD,
 )
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -40,7 +40,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
     welcome_message: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
     await update.message.reply_text(welcome_message, reply_markup=back_keyboard)
-    return DOWNLOAD_MEDIA
+    return DOWNLOAD
 
 
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -194,3 +194,4 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(
                 LINK_IS_INVALID, reply_markup=base_keyboard
             )
+            return HOME

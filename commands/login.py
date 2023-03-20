@@ -29,7 +29,7 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     await update.message.reply_text(
         message_for_get_login_data, reply_markup=back_keyboard
     )
-    return LOGIN_TO_INSTAGRAM
+    return LOGIN
 
 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:

@@ -21,13 +21,13 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start)],
         states={
             HOME: [
-                MessageHandler(filters.Regex(f"^{LOGIN}$"), get_login_data),
-                MessageHandler(filters.Regex(f"^{DOWNLOAD}$"), get_media_link)
+                MessageHandler(filters.Regex(f"^{LOGIN_TO_INSTAGRAM}$"), get_login_data),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD_MEDIA}$"), get_media_link)
             ],
-            LOGIN_TO_INSTAGRAM: [
+            LOGIN: [
                 MessageHandler(filters.TEXT, login)
             ],
-            DOWNLOAD_MEDIA: [
+            DOWNLOAD: [
                 MessageHandler(filters.TEXT, download)
             ]
         },
