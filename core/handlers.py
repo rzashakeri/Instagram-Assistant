@@ -52,7 +52,7 @@ def base_conversation_handler():
             ],
             GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
                 MessageHandler(
-                    filters.VIDEO | filters.PHOTO | filters.TEXT, filters.Document,
+                    filters.VIDEO | filters.PHOTO | filters.TEXT,
                     get_file_for_upload_in_instagram,
                 )
             ],
