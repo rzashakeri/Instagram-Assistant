@@ -14,6 +14,7 @@ from core.keyboards import base_keyboard, back_keyboard
 FILE = None
 CAPTION = None
 
+
 async def get_login_data_for_upload_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
@@ -58,6 +59,10 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
 
 async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
+    message = update.message.text
+    if message == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME_STATE
     global FILE
     FILE = await context.bot.get_file(update.message.document)
     await update.effective_user.send_message(
@@ -68,6 +73,10 @@ async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes
 
 async def get_caption_of_post_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
+    message = update.message.text
+    if message == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME_STATE
     global CAPTION
     CAPTION = message = update.message.text
     await update.effective_user.send_message(
