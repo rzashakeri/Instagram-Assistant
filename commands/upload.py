@@ -75,7 +75,7 @@ async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes
     global file
     file = message.document.get_file()
     await update.effective_user.send_message(
-        file, reply_markup=back_keyboard
+        file.file_path, reply_markup=back_keyboard
     )
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
