@@ -59,7 +59,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME_STATE
-    await update.message.reply_text(STARTING_DOWNLOAD, reply_markup=base_keyboard)
     current_directory = os.getcwd()
     download_directory = f"{current_directory}/download"
     login_directory = f"{current_directory}/{LOGIN.lower()}"
@@ -104,6 +103,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         client.dump_settings(
             f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
         )
+        await update.message.reply_text(STARTING_DOWNLOAD, reply_markup=base_keyboard)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
             media_info = client.media_info(media_pk_from_url).dict()
