@@ -73,9 +73,9 @@ async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     global file
-    file = message.document.file_id
+    file_url = context.bot.get_file(update.message.document.file_id).get_file_url()
     await update.effective_user.send_message(
-        file, reply_markup=back_keyboard
+        file_url, reply_markup=back_keyboard
     )
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
