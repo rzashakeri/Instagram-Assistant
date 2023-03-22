@@ -18,7 +18,10 @@ caption = None
 
 async def get_login_data_for_upload_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-
+    message = update.message.text
+    if message == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME_STATE
     message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
     await update.message.reply_text(
         message_for_get_login_data, reply_markup=back_keyboard
