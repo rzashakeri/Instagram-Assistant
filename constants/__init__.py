@@ -1,4 +1,4 @@
 # general constants
 LOGIN: str = "login"
-BACK: str = "back"
+BACK: str = "Back"
 DOWNLOAD: str = "Download Media"
