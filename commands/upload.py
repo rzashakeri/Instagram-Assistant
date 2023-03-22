@@ -62,7 +62,7 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
                 await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again", reply_markup=back_keyboard
+                    "Please wait a few minutes before you try again", reply_markup=base_keyboard
                 )
                 return HOME_STATE
     client.login(username, password)
