@@ -3,6 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
+from instagrapi.exceptions import LoginRequired
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -44,18 +45,26 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
     if user_instagram_session_is_exist:
         client.load_settings(user_instagram_session)
         client.login(username, password)
-        client.get_timeline_feed()
-        await update.effective_user.send_message(
-            SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
-        )
-        return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
+        try:
+            client.get_timeline_feed()
+            await update.effective_user.send_message(
+                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+            )
+            return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
+        except LoginRequired:
+            os.remove(user_instagram_session)
+            client.login(username, password)
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+            await update.effective_user.send_message(
+                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+            )
+            return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
     client.login(username, password)
     client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     await update.effective_user.send_message(
         SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
     )
     return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
-
 
 async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
