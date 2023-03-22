@@ -8,16 +8,33 @@ import validators
 from file_validator.utils import guess_the_type
 from filetype import guess
 from instagrapi import Client
-from instagrapi.exceptions import MediaNotFound, UnknownError, UserNotFound
+from instagrapi.exceptions import (
+    MediaNotFound,
+    UnknownError,
+    UserNotFound,
+    LoginRequired,
+    ClientError,
+)
 from telegram import Update
 from telegram.ext import ContextTypes
 
 from configurations import settings
 from constants import BACK, LOGIN
 from constants.media_types import PHOTO, VIDEO, IGTV, REEL, ALBUM
-from constants.messages import STARTING_DOWNLOAD, LINK_IS_INVALID, UPLOAD_IN_TELEGRAM, DOWNLOAD_COMPLETED, IS_VIDEO
+from constants.messages import (
+    STARTING_DOWNLOAD,
+    LINK_IS_INVALID,
+    UPLOAD_IN_TELEGRAM,
+    DOWNLOAD_COMPLETED,
+    IS_VIDEO,
+    SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+)
 from constants.product_types import IS_FEED, IS_IGTV, IS_CLIPS
-from constants.states import DOWNLOAD_STATE, HOME_STATE
+from constants.states import (
+    DOWNLOAD_STATE,
+    HOME_STATE,
+    GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE,
+)
 
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -42,13 +59,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME_STATE
-    await update.message.reply_text(
-        STARTING_DOWNLOAD, reply_markup=base_keyboard
-    )
+    await update.message.reply_text(STARTING_DOWNLOAD, reply_markup=base_keyboard)
     current_directory = os.getcwd()
     download_directory = f"{current_directory}/download"
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session_name = f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    user_instagram_session_name = (
+        f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    )
     user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
@@ -63,7 +80,26 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session_path)
             client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-            client.get_timeline_feed()
+            try:
+                client.get_timeline_feed()
+            except LoginRequired:
+                os.remove(user_instagram_session_name)
+                client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
+                client.dump_settings(
+                    f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+                )
+                await update.effective_user.send_message(
+                    SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+                    reply_markup=back_keyboard,
+                )
+                return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
+            except ClientError as error:
+                if "Please wait a few minutes before you try again" in error.message:
+                    await update.effective_user.send_message(
+                        "Please wait a few minutes before you try again",
+                        reply_markup=base_keyboard,
+                    )
+                    return HOME_STATE
         client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
         client.dump_settings(
             f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
@@ -181,7 +217,5 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             )
             return HOME_STATE
         else:
-            await update.message.reply_text(
-                LINK_IS_INVALID, reply_markup=base_keyboard
-            )
+            await update.message.reply_text(LINK_IS_INVALID, reply_markup=base_keyboard)
             return HOME_STATE
