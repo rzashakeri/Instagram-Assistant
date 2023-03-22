@@ -11,8 +11,8 @@ from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT, YOU
 from constants.states import LOGIN_STATE, HOME_STATE, UPLOAD_STATE, LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE, GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE, GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 from core.keyboards import base_keyboard, back_keyboard
 
-FILE = None
-CAPTION = None
+file = None
+caption = None
 
 
 async def get_login_data_for_upload_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -59,14 +59,15 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
 
 async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    message = update.message.text
-    if message == BACK:
+    message = update.message
+    if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global FILE
-    FILE = await context.bot.get_file(update.message.document)
+    global file
+    file = message.document.get_file()
+    file_path = file.file_path
     await update.effective_user.send_message(
-        SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+        file_path, reply_markup=back_keyboard
     )
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
@@ -77,8 +78,8 @@ async def get_caption_of_post_for_upload_in_instagram(update: Update, context: C
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global CAPTION
-    CAPTION = message = update.message.text
+    global caption
+    caption = update.message.text
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
     )
