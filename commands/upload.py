@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired
+from instagrapi.exceptions import LoginRequired, ClientError
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -59,6 +59,12 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
                 SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
             )
             return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
+        except ClientError as error:
+            if "Please wait a few minutes before you try again" in error.message:
+                await update.effective_user.send_message(
+                    "Please wait a few minutes before you try again", reply_markup=back_keyboard
+                )
+                return HOME_STATE
     client.login(username, password)
     client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     await update.effective_user.send_message(
