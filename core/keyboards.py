@@ -1,6 +1,6 @@
 from telegram import ReplyKeyboardMarkup
 
-from constants.keyboards import DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, LOGIN_KEY, BACK_KEY, DOWNLOAD_PROFILE_KEY, DOWNLOAD_PHOTO_KEY, DOWNLOAD_VIDEO_KEY, DOWNLOAD_REELS_KEY, DOWNLOAD_ALBUM_KEY, DOWNLOAD_IGTV_KEY
+from constants.keyboards import DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, LOGIN_KEY, BACK_KEY
 
 base_reply_keyboard: list = [
     [DOWNLOAD_KEY, UPLOAD_KEY],
