@@ -3,6 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
+from instagrapi.exceptions import LoginRequired, ClientError
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -44,7 +45,18 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if user_instagram_session_is_exist:
         client.load_settings(user_instagram_session)
         client.login(username, password)
-        client.get_timeline_feed()
+        try:
+            client.get_timeline_feed()
+        except LoginRequired:
+            os.remove(user_instagram_session)
+            client.login(username, password)
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        except ClientError as error:
+            if "Please wait a few minutes before you try again" in error.message:
+                await update.effective_user.send_message(
+                    "Please wait a few minutes before you try again", reply_markup=base_keyboard
+                )
+                return HOME_STATE
         await update.effective_user.send_message(
             YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
         )
