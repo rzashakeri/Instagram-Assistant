@@ -78,7 +78,7 @@ async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     global file
-    file_url = context.bot.get_file(update.message.document.file_id).get_file_url()
+    file_url = await context.bot.get_file(update.message.document.file_id).get_file_url()
     await update.effective_user.send_message(
         file_url, reply_markup=back_keyboard
     )
