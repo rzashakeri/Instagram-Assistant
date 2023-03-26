@@ -12,6 +12,7 @@ from constants.messages import (
     WHAT_DO_YOU_WANT,
     SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
     SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
 )
 from constants.states import (
     HOME_STATE,
@@ -19,7 +20,7 @@ from constants.states import (
     GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE,
     GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE,
 )
-from core.keyboards import base_keyboard, back_keyboard
+from core.keyboards import base_keyboard, back_keyboard, media_type_keyboard
 
 MEDIA = None
 CAPTION = None
@@ -37,9 +38,7 @@ async def get_login_information(
     return LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE
 
 
-async def login(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -90,20 +89,20 @@ async def login(
     return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
 
-async def get_media_type(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+async def get_media_type(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
+    await update.message.reply_text(
+        WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+        reply_markup=media_type_keyboard,
+    )
 
 
-async def get_media(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+async def get_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -119,9 +118,7 @@ async def get_media(
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
 
-async def get_caption(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+async def get_caption(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -137,9 +134,7 @@ async def get_caption(
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
 
-async def upload(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+async def upload(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
