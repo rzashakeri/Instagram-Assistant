@@ -18,7 +18,7 @@ WELCOME_MESSAGE: str = (
     "on Instagram using the telegram with additional features."
 )
 SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
-    f"{LOGGED_IN_SUCCESSFULLY}, Send me the media you want to upload on Instagram"
+    "Send me the media you want to upload on Instagram"
 )
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the caption of post you want to upload on Instagram"
