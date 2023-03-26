@@ -27,15 +27,12 @@ from constants.messages import (
     UPLOAD_IN_TELEGRAM,
     DOWNLOAD_COMPLETED,
     IS_VIDEO,
-    SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
 )
 from constants.product_types import IS_FEED, IS_IGTV, IS_CLIPS
 from constants.states import (
     DOWNLOAD_STATE,
     HOME_STATE,
-    GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE,
 )
-
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
@@ -87,11 +84,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 client.dump_settings(
                     f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
                 )
-                await update.effective_user.send_message(
-                    SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-                    reply_markup=back_keyboard,
-                )
-                return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
             except ClientError as error:
                 if "Please wait a few minutes before you try again" in error.message:
                     await update.effective_user.send_message(
