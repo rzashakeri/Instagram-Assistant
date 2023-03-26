@@ -12,12 +12,7 @@ from commands.login import get_login_data, login
 from commands.start import start
 
 # Init logger
-from commands.upload import (
-    get_login_data_for_upload_media,
-    login_to_instagram_for_upload_media,
-    get_file_for_upload_in_instagram,
-)
-
+from commands import upload
 from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY
 from constants.states import (
     HOME_STATE,
@@ -41,14 +36,14 @@ def base_conversation_handler():
                 MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), get_login_data),
                 MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"), get_media_link),
                 MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), get_login_data_for_upload_media
+                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download)],
             # upload operation
             LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE: [
-                MessageHandler(filters.TEXT, login_to_instagram_for_upload_media)
+                MessageHandler(filters.TEXT, upload.login)
             ],
             GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
                 MessageHandler(
@@ -57,11 +52,11 @@ def base_conversation_handler():
                     | filters.TEXT
                     | filters.Document.IMAGE
                     | filters.Document.VIDEO,
-                    get_file_for_upload_in_instagram,
+                    upload.get_file,
                 )
             ],
             GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
-                MessageHandler(filters.TEXT, get_file_for_upload_in_instagram)
+                MessageHandler(filters.TEXT, upload.get_caption)
             ],
         },
         fallbacks=[],
