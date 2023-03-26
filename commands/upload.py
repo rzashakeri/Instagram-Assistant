@@ -165,7 +165,7 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
         os.makedirs(download_directory)
     media = await update.message.document.get_file()
     global FILE_PATH_ON_SERVER
-    FILE_PATH_ON_SERVER = await media.download_to_drive()
+    FILE_PATH_ON_SERVER = await media.download_to_drive(custom_path=download_directory)
     await update.effective_user.send_message(
         FILE_PATH_ON_SERVER,
         reply_markup=back_keyboard,
