@@ -21,13 +21,26 @@ from constants.messages import (
     WHAT_DO_YOU_WANT,
     SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
     WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM, CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM, YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
+    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+    MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
+    CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
+    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
 )
 from constants.states import (
     HOME_STATE,
-    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE, SET_MEDIA_TYPE_AND_GET_MEDIA, SET_MEDIA_AND_GET_CAPTION, SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT, VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
+    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
+    SET_MEDIA_TYPE_AND_GET_MEDIA,
+    SET_MEDIA_AND_GET_CAPTION,
+    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
+    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
 )
-from core.keyboards import base_keyboard, back_keyboard, media_type_keyboard, yes_or_no_keyboard
+from core.keyboards import (
+    base_keyboard,
+    back_keyboard,
+    media_type_keyboard,
+    yes_or_no_keyboard,
+)
 
 # Init logger
 logger = getLogger(__name__)
@@ -50,7 +63,9 @@ async def get_login_information(
     return LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 
 
-async def login_attempt_and_get_media_type(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def login_attempt_and_get_media_type(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -101,7 +116,9 @@ async def login_attempt_and_get_media_type(update: Update, context: ContextTypes
     return SET_MEDIA_TYPE_AND_GET_MEDIA
 
 
-async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def set_media_type_and_get_media(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -151,7 +168,9 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
         )
 
 
-async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def set_media_and_get_caption(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -162,11 +181,13 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
     media = await update.message.document.get_file()
     global FILE_PATH_ON_SERVER
     current_directory = os.getcwd()
-    download_directory = f"{current_directory}//download//"
+    download_directory = f"{current_directory}/download"
     download_directory_is_exist = os.path.exists(download_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    FILE_PATH_ON_SERVER = await media.download_to_drive(custom_path=download_directory)
+    FILE_PATH_ON_SERVER = await media.download_to_drive(
+        custom_path=f"{download_directory}/{file_name}"
+    )
 
     await update.effective_user.send_message(
         FILE_PATH_ON_SERVER,
@@ -179,7 +200,9 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
     return SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 
 
-async def set_caption_and_asking_to_confirm_the_content(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def set_caption_and_asking_to_confirm_the_content(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -191,15 +214,11 @@ async def set_caption_and_asking_to_confirm_the_content(update: Update, context:
     await update.effective_user.send_message(
         MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
     )
-    await update.effective_user.send_document(
-        document=FILE_PATH_ON_SERVER
-    )
+    await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
     await update.effective_user.send_message(
         CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
     )
-    await update.effective_user.send_message(
-        CAPTION
-    )
+    await update.effective_user.send_message(CAPTION)
     await update.effective_user.send_message(
         ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
         reply_markup=yes_or_no_keyboard,
@@ -207,7 +226,9 @@ async def set_caption_and_asking_to_confirm_the_content(update: Update, context:
     return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
 
-async def verify_content_and_upload_on_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def verify_content_and_upload_on_instagram(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -216,13 +237,15 @@ async def verify_content_and_upload_on_instagram(update: Update, context: Contex
         return HOME_STATE
     elif message == YES:
         if MEDIA_TYPE == PHOTO:
-            media_object = CLIENT.photo_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
-            media_url = f"https://instagram.com/p/{media_object.code}"
-            await update.effective_user.send_message(
-                PROCESSING
+            media_object = CLIENT.photo_upload(
+                path=FILE_PATH_ON_SERVER, caption=CAPTION
             )
+            media_url = f"https://instagram.com/p/{media_object.code}"
+            await update.effective_user.send_message(PROCESSING)
             await update.effective_user.send_message(
-                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(media_url=media_url)
+                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                    media_url=media_url
+                )
             )
             return HOME_STATE
         elif MEDIA_TYPE == VIDEO:
