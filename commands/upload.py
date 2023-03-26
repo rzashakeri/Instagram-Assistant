@@ -100,11 +100,11 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
+    global MEDIA_TYPE
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     elif message.text == UPLOAD_PHOTO_KEY:
-        global MEDIA_TYPE
         MEDIA_TYPE = PHOTO
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
@@ -112,7 +112,6 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
         )
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_VIDEO_KEY:
-        global MEDIA_TYPE
         MEDIA_TYPE = VIDEO
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
@@ -120,7 +119,6 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
         )
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_ALBUM_KEY:
-        global MEDIA_TYPE
         MEDIA_TYPE = ALBUM
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
@@ -128,7 +126,6 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
         )
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_REELS_KEY:
-        global MEDIA_TYPE
         MEDIA_TYPE = REEL
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
@@ -136,7 +133,6 @@ async def set_media_type_and_get_media(update: Update, context: ContextTypes.DEF
         )
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_IGTV_KEY:
-        global MEDIA_TYPE
         MEDIA_TYPE = IGTV
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
