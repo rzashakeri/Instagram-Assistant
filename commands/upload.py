@@ -1,6 +1,5 @@
 # encoding: utf-8
 import os
-from logging import getLogger
 
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
@@ -8,15 +7,28 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from constants import BACK, LOGIN
-from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY, SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
-from constants.states import LOGIN_STATE, HOME_STATE, UPLOAD_STATE, LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE, GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE, GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
+from constants.messages import (
+    MESSAGE_FOR_GET_LOGIN_DATA,
+    WHAT_DO_YOU_WANT,
+    SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+)
+from constants.states import (
+    HOME_STATE,
+    LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE,
+    GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE,
+    GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE,
+)
 from core.keyboards import base_keyboard, back_keyboard
 
-file = None
-caption = None
+FILE = None
+CAPTION = None
 
 
-async def get_login_data_for_upload_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_login_information(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
     await update.message.reply_text(
@@ -25,7 +37,10 @@ async def get_login_data_for_upload_media(update: Update, context: ContextTypes.
     return LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE
 
 
-async def login_to_instagram_for_upload_media(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def login(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message == BACK:
@@ -47,7 +62,8 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
         try:
             client.get_timeline_feed()
             await update.effective_user.send_message(
-                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+                reply_markup=back_keyboard,
             )
             return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
         except LoginRequired:
@@ -55,13 +71,15 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
             client.login(username, password)
             client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
             await update.effective_user.send_message(
-                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+                SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+                reply_markup=back_keyboard,
             )
             return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
                 await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again", reply_markup=base_keyboard
+                    "Please wait a few minutes before you try again",
+                    reply_markup=base_keyboard,
                 )
                 return HOME_STATE
     client.login(username, password)
@@ -71,29 +89,56 @@ async def login_to_instagram_for_upload_media(update: Update, context: ContextTy
     )
     return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
-async def get_file_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+
+async def get_file(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global file
-    file = await update.message.document.get_file()
+    global FILE
+    FILE = await update.message.document.get_file()
     await update.effective_user.send_message(
-        file.file_path, reply_markup=back_keyboard
+        SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+        reply_markup=back_keyboard,
     )
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
 
-async def get_caption_of_post_for_upload_in_instagram(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_caption(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global caption
-    caption = update.message.text
+    global CAPTION
+    CAPTION = update.message.text
     await update.effective_user.send_message(
-        SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, reply_markup=back_keyboard
+        SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+        reply_markup=back_keyboard,
     )
     return GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE
+
+
+async def upload(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
+    """Select an action: Adding parent/child or show data."""
+    message = update.message.text
+    if message == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME_STATE
+    global FILE
+    current_directory = os.getcwd()
+    media_directory = f"{current_directory}/media"
+    media_directory_is_exist = os.path.isdir(media_directory)
+    if not media_directory_is_exist:
+        os.makedirs(media_directory)
+    file_path = FILE.download_to_drive(custom_path=media_directory)
