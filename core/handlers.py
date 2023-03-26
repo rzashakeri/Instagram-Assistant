@@ -21,8 +21,7 @@ from constants.states import (
     DOWNLOAD_STATE,
     UPLOAD_STATE,
     LOGIN_TO_INSTAGRAM_FOR_UPLOAD_MEDIA_STATE,
-    GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE,
-    GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE, GET_MEDIA_TYPE_STATE, SET_MEDIA_TYPE_STATE,
+    GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE, GET_MEDIA_TYPE_STATE, SET_MEDIA_TYPE_STATE, GET_MEDIA_FOR_UPLOAD_IN_INSTAGRAM_STATE,
 )
 
 logger = getLogger(__name__)
@@ -52,7 +51,7 @@ def base_conversation_handler():
             SET_MEDIA_TYPE_STATE: [
                 MessageHandler(filters.TEXT, set_media_type)
             ],
-            GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
+            GET_MEDIA_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
                 MessageHandler(
                     filters.PHOTO
                     | filters.VIDEO
