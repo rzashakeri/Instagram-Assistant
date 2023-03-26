@@ -186,10 +186,7 @@ async def set_media_and_get_caption(
     if not download_directory_is_exist:
         os.makedirs(download_directory)
     FILE_PATH_ON_SERVER = await media.download_to_drive()
-    await update.effective_user.send_message(
-        str(FILE_PATH_ON_SERVER),
-        reply_markup=back_keyboard,
-    )
+    await update.effective_user.send_document(document=str(FILE_PATH_ON_SERVER))
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=back_keyboard,
