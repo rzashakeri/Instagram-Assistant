@@ -21,7 +21,7 @@ from constants.states import (
 )
 from core.keyboards import base_keyboard, back_keyboard
 
-FILE = None
+MEDIA = None
 CAPTION = None
 
 
@@ -90,7 +90,7 @@ async def login(
     return GET_FILE_FOR_UPLOAD_IN_INSTAGRAM_STATE
 
 
-async def get_file(
+async def get_media_type(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> str:
     # pylint: disable=unused-argument
@@ -99,8 +99,19 @@ async def get_file(
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global FILE
-    FILE = await update.message.document.get_file()
+
+
+async def get_media(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
+    # pylint: disable=unused-argument
+    """Select an action: Adding parent/child or show data."""
+    message = update.message
+    if message.text == BACK:
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        return HOME_STATE
+    global MEDIA
+    MEDIA = await update.message.document.get_file()
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=back_keyboard,
@@ -135,10 +146,10 @@ async def upload(
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    global FILE
+    global MEDIA
     current_directory = os.getcwd()
     media_directory = f"{current_directory}/media"
     media_directory_is_exist = os.path.isdir(media_directory)
     if not media_directory_is_exist:
         os.makedirs(media_directory)
-    file_path = FILE.download_to_drive(custom_path=media_directory)
+    file_path = MEDIA.download_to_drive(custom_path=media_directory)
