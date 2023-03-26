@@ -158,9 +158,10 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
     download_directory_is_exist = os.path.exists(download_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    media = await update.message.document.get_file()
+    media = await update.message.effective_attachment[-1].get_file()
     global FILE_PATH_ON_SERVER
-    FILE_PATH_ON_SERVER = str(media.download_to_drive(custom_path=download_directory))
+    file_path_object = media.download_to_drive(custom_path=download_directory)
+    FILE_PATH_ON_SERVER = file_path_object._str
     await update.effective_user.send_message(
         FILE_PATH_ON_SERVER,
     )
