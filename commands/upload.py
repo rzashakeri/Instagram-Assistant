@@ -158,14 +158,16 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
+    file_name = update.message.document.file_name
+    media = await update.message.document.get_file()
+    global FILE_PATH_ON_SERVER
     current_directory = os.getcwd()
-    download_directory = f"{current_directory}/download"
+    download_directory = f"{current_directory}/download/{file_name}"
     download_directory_is_exist = os.path.exists(download_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    media = await update.message.document.get_file()
-    global FILE_PATH_ON_SERVER
     FILE_PATH_ON_SERVER = await media.download_to_drive(custom_path=download_directory)
+
     await update.effective_user.send_message(
         FILE_PATH_ON_SERVER,
         reply_markup=back_keyboard,
