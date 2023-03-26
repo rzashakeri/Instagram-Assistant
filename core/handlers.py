@@ -52,7 +52,7 @@ def base_conversation_handler():
                     | filters.TEXT
                     | filters.Document.IMAGE
                     | filters.Document.VIDEO,
-                    upload.get_file,
+                    upload.get_media,
                 )
             ],
             GET_CAPTION_OF_POST_FOR_UPLOAD_IN_INSTAGRAM_STATE: [
