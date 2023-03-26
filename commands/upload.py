@@ -185,7 +185,7 @@ async def set_media_and_get_caption(
     if not download_directory_is_exist:
         os.makedirs(download_directory)
     telegram_file = context.bot.getFile(update.message.document.file_id)
-    file_path = telegram_file.download(f"{download_directory}/{update.message.document.file_name}")
+    file_path = await telegram_file.download(f"{download_directory}/{update.message.document.file_name}")
     await update.effective_user.send_message(
         file_path,
         reply_markup=back_keyboard,
