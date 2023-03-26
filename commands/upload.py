@@ -162,7 +162,7 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
     media = await update.message.document.get_file()
     global FILE_PATH_ON_SERVER
     current_directory = os.getcwd()
-    download_directory = f"{current_directory}/download/"
+    download_directory = f"{current_directory}//download//"
     download_directory_is_exist = os.path.exists(download_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
