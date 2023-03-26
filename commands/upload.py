@@ -1,5 +1,6 @@
 # encoding: utf-8
 import os
+from logging import getLogger
 
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
@@ -27,6 +28,10 @@ from constants.states import (
     LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE, SET_MEDIA_TYPE_AND_GET_MEDIA, SET_MEDIA_AND_GET_CAPTION, SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT, VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
 )
 from core.keyboards import base_keyboard, back_keyboard, media_type_keyboard, yes_or_no_keyboard
+
+# Init logger
+logger = getLogger(__name__)
+
 
 CLIENT = Client()
 CAPTION = None
@@ -160,8 +165,7 @@ async def set_media_and_get_caption(update: Update, context: ContextTypes.DEFAUL
         os.makedirs(download_directory)
     media = await update.message.document.get_file()
     global FILE_PATH_ON_SERVER
-    file_path_object = media.download_to_drive(custom_path=download_directory)
-    print(file_path_object)
+    file_path_object = media.download_to_drive()
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=back_keyboard,
