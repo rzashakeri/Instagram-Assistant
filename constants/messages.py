@@ -23,3 +23,6 @@ SEND_ME_THE_FILE_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the caption of post you want to upload on Instagram"
 )
+WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
+    "What type of content do you want to upload on Instagram"
+)
