@@ -1,6 +1,7 @@
 # encoding: utf-8
 import os
 from logging import getLogger
+from pathlib import Path
 
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
@@ -186,7 +187,7 @@ async def set_media_and_get_caption(
     if not download_directory_is_exist:
         os.makedirs(download_directory)
     FILE_PATH_ON_SERVER = await media.download_to_drive(
-        custom_path=f"{download_directory}/{file_name}"
+        custom_path=Path(f"{download_directory}/{file_name}")
     )
 
     await update.effective_user.send_message(
