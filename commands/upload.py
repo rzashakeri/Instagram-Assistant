@@ -187,7 +187,7 @@ async def set_media_and_get_caption(
         os.makedirs(download_directory)
     FILE_PATH_ON_SERVER = await media.download_to_drive()
     await update.effective_user.send_message(
-        FILE_PATH_ON_SERVER,
+        str(FILE_PATH_ON_SERVER),
         reply_markup=back_keyboard,
     )
     await update.effective_user.send_message(
