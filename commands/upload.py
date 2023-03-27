@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired, ClientError
+from instagrapi.exceptions import LoginRequired, ClientError, PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -25,7 +25,7 @@ from constants.messages import (
     ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
     MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
     CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
-    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
+    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM, SOMETHING_WENT_WRONG,
 )
 from constants.states import (
     HOME_STATE,
@@ -225,10 +225,10 @@ async def verify_content_and_upload_on_instagram(
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    if message == BACK:
+    if message != YES:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    if message == YES:
+    try:
         if MEDIA_TYPE == PHOTO:
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.photo_upload(
@@ -254,14 +254,6 @@ async def verify_content_and_upload_on_instagram(
             )
             return HOME_STATE
         if MEDIA_TYPE == IGTV:
-            await update.effective_user.send_message(PROCESSING)
-            media_object = CLIENT.igtv_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
-            media_url = f"https://instagram.com/reel/{media_object.code}"
-            await update.effective_user.send_message(
-                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
-                    media_url=media_url
-                ), reply_markup=base_keyboard
-            )
             return HOME_STATE
         if MEDIA_TYPE == REEL:
             await update.effective_user.send_message(PROCESSING)
@@ -275,5 +267,7 @@ async def verify_content_and_upload_on_instagram(
             return HOME_STATE
         if MEDIA_TYPE == ALBUM:
             return HOME_STATE
-    else:
-        return HOME_STATE
+    except (PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload):
+        await update.effective_user.send_message(
+            SOMETHING_WENT_WRONG, reply_markup=base_keyboard
+        )
