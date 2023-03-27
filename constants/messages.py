@@ -34,7 +34,8 @@ CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
     "Caption that is going to be uploaded to Instagram"
 )
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
-    "Your content is successfully uploaded to Instagram and you can access it with the following link:\n"
+    "Your content is successfully uploaded to Instagram and you can "
+    "access it with the following link:\n"
     "{media_url}"
 )
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
@@ -42,4 +43,10 @@ SOMETHING_WENT_WRONG: str = "something went wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
 OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = (
     "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
+)
+SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
+    "Send the post link you want to get the statistics"
+)
+PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
+    "Please wait a few minutes before you try again"
 )
