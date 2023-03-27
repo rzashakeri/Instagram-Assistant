@@ -96,7 +96,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         client.dump_settings(
             f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
         )
-        await update.message.reply_text(STARTING_DOWNLOAD, reply_markup=base_keyboard)
+        await update.message.reply_text(STARTING_DOWNLOAD)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
             media_info = client.media_info(media_pk_from_url).dict()
