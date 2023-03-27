@@ -27,6 +27,7 @@ from constants.messages import (
     UPLOAD_IN_TELEGRAM,
     DOWNLOAD_COMPLETED,
     IS_VIDEO,
+    OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
 )
 from constants.product_types import IS_FEED, IS_IGTV, IS_CLIPS
 from constants.states import (
@@ -41,15 +42,16 @@ logger = getLogger(__name__)
 
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-
-    welcome_message: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
-    await update.message.reply_text(welcome_message, reply_markup=back_keyboard)
+    # pylint: disable=unused-argument
+    await update.message.reply_text(
+        OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD, reply_markup=back_keyboard
+    )
     return DOWNLOAD_STATE
 
 
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-
+    # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(
@@ -82,9 +84,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 if user_instagram_session_is_exist:
                     os.remove(user_instagram_session_path)
                 client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-                client.dump_settings(
-                    f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
-                )
+                client.dump_settings(user_instagram_session_path)
             except ClientError as error:
                 if "Please wait a few minutes before you try again" in error.message:
                     await update.effective_user.send_message(
