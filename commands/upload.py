@@ -1,7 +1,6 @@
 # encoding: utf-8
 import os
 from logging import getLogger
-from pathlib import Path
 
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
@@ -164,8 +163,8 @@ async def set_media_type_and_get_media(
         return SET_MEDIA_AND_GET_CAPTION
     else:
         await update.effective_user.send_message(
-            "media type is not valid",
-            reply_markup=back_keyboard,
+            "media type is not valid, please try again",
+            reply_markup=base_keyboard,
         )
 
 
@@ -229,33 +228,52 @@ async def verify_content_and_upload_on_instagram(
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    elif message == YES:
+    if message == YES:
         if MEDIA_TYPE == PHOTO:
+            await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.photo_upload(
                 path=FILE_PATH_ON_SERVER, caption=CAPTION
             )
             media_url = f"https://instagram.com/p/{media_object.code}"
-            await update.effective_user.send_message(PROCESSING)
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
-                )
+                ), reply_markup=base_keyboard
             )
             return HOME_STATE
-        elif MEDIA_TYPE == VIDEO:
-
+        if MEDIA_TYPE == VIDEO:
+            await update.effective_user.send_message(PROCESSING)
+            media_object = CLIENT.video_upload(
+                path=FILE_PATH_ON_SERVER, caption=CAPTION
+            )
+            media_url = f"https://instagram.com/reel/{media_object.code}"
+            await update.effective_user.send_message(
+                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                    media_url=media_url
+                ), reply_markup=base_keyboard
+            )
             return HOME_STATE
-        elif MEDIA_TYPE == IGTV:
-
+        if MEDIA_TYPE == IGTV:
+            await update.effective_user.send_message(PROCESSING)
+            media_object = CLIENT.igtv_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
+            media_url = f"https://instagram.com/reel/{media_object.code}"
+            await update.effective_user.send_message(
+                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                    media_url=media_url
+                ), reply_markup=base_keyboard
+            )
             return HOME_STATE
-        elif MEDIA_TYPE == REEL:
-
+        if MEDIA_TYPE == REEL:
+            await update.effective_user.send_message(PROCESSING)
+            media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
+            media_url = f"https://instagram.com/reel/{media_object.code}"
+            await update.effective_user.send_message(
+                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                    media_url=media_url
+                ), reply_markup=base_keyboard
+            )
             return HOME_STATE
-        elif MEDIA_TYPE == ALBUM:
-
+        if MEDIA_TYPE == ALBUM:
             return HOME_STATE
-        else:
-            return HOME_STATE
-
     else:
         return HOME_STATE
