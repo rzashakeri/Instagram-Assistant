@@ -79,7 +79,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             try:
                 client.get_timeline_feed()
             except LoginRequired:
-                os.remove(user_instagram_session_name)
+                if user_instagram_session_is_exist:
+                    os.remove(user_instagram_session_name)
                 client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
                 client.dump_settings(
                     f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
