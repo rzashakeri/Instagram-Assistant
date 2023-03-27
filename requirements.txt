@@ -4,3 +4,4 @@ python_telegram_bot==20.1
 Pillow==8.1.1
 validators==0.20.0
 file-validator==0.3.4
+moviepy==1.0.3
