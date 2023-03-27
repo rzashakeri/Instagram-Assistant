@@ -39,3 +39,4 @@ YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
 )
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "something went wrong"
+FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
