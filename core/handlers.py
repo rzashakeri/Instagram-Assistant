@@ -11,8 +11,9 @@ from telegram.ext import (
 from commands import start
 from commands import login
 from commands import upload
+from commands import insight
 from commands import download
-from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY
+from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY
 from constants.states import (
     HOME_STATE,
     LOGIN_STATE,
@@ -21,7 +22,7 @@ from constants.states import (
     SET_MEDIA_TYPE_AND_GET_MEDIA,
     SET_MEDIA_AND_GET_CAPTION,
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
+    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM, INSIGHT_STATE,
 )
 
 logger = getLogger(__name__)
@@ -40,9 +41,11 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
+                MessageHandler(filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link)
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
+            INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
