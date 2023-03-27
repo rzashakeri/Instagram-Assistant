@@ -1,13 +1,21 @@
 # encoding: utf-8
 import os
+import constants
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired, ClientError, PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload
+from instagrapi.exceptions import (
+    LoginRequired,
+    ClientError,
+    PhotoNotUpload,
+    IGTVNotUpload,
+    ClipNotUpload,
+    VideoNotUpload,
+)
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from constants import BACK, LOGIN, YES, PROCESSING
+from constants import BACK, LOGIN, YES, PROCESSING, DOCUMENT
 from constants.keyboards import (
     UPLOAD_REELS_KEY,
     UPLOAD_PHOTO_KEY,
@@ -25,7 +33,9 @@ from constants.messages import (
     ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
     MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
     CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
-    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM, SOMETHING_WENT_WRONG,
+    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
+    SOMETHING_WENT_WRONG,
+    FILE_IS_NOT_VALID,
 )
 from constants.states import (
     HOME_STATE,
@@ -49,8 +59,8 @@ logger = getLogger(__name__)
 CLIENT = Client()
 CAPTION = None
 MEDIA_TYPE = None
+USER_UPLOADED_FILE_TYPE = None
 FILE_PATH_ON_SERVER = None
-
 
 async def get_login_information(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -173,12 +183,26 @@ async def set_media_and_get_caption(
 ) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
+    global USER_UPLOADED_FILE_TYPE
+    global FILE_PATH_ON_SERVER
     message = update.message
     if message.text == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
-    media = await update.message.document.get_file()
-    global FILE_PATH_ON_SERVER
+    elif update.message.document:
+        media = await update.message.document.get_file()
+        USER_UPLOADED_FILE_TYPE = constants.DOCUMENT
+    elif update.message.video:
+        media = await update.message.video.get_file()
+        USER_UPLOADED_FILE_TYPE = constants.VIDEO
+    elif update.message.photo:
+        file_id = update.message.photo[-1].file_id
+        media = await context.bot.get_file(file_id)
+        USER_UPLOADED_FILE_TYPE = constants.PHOTO
+    else:
+        await update.message.reply_text(FILE_IS_NOT_VALID, reply_markup=base_keyboard)
+        return HOME_STATE
+
     current_directory = os.getcwd()
     download_directory = f"{current_directory}/download"
     download_directory_is_exist = os.path.exists(download_directory)
@@ -207,7 +231,14 @@ async def set_caption_and_asking_to_confirm_the_content(
     await update.effective_user.send_message(
         MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
     )
-    await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
+    if USER_UPLOADED_FILE_TYPE == constants.PHOTO:
+        await update.effective_user.send_photo(photo=FILE_PATH_ON_SERVER)
+
+    elif USER_UPLOADED_FILE_TYPE == constants.VIDEO:
+        await update.effective_user.send_video(video=FILE_PATH_ON_SERVER)
+
+    elif USER_UPLOADED_FILE_TYPE == constants.DOCUMENT:
+        await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
     await update.effective_user.send_message(
         CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
     )
@@ -240,7 +271,8 @@ async def verify_content_and_upload_on_instagram(
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
-                ), reply_markup=base_keyboard
+                ),
+                reply_markup=base_keyboard,
             )
             return HOME_STATE
         if MEDIA_TYPE == VIDEO:
@@ -253,7 +285,8 @@ async def verify_content_and_upload_on_instagram(
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
-                ), reply_markup=base_keyboard
+                ),
+                reply_markup=base_keyboard,
             )
             return HOME_STATE
         if MEDIA_TYPE == IGTV:
@@ -266,7 +299,8 @@ async def verify_content_and_upload_on_instagram(
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
-                ), reply_markup=base_keyboard
+                ),
+                reply_markup=base_keyboard,
             )
             return HOME_STATE
         if MEDIA_TYPE == ALBUM:
