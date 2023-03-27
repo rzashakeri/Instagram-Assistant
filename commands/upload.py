@@ -226,6 +226,7 @@ async def verify_content_and_upload_on_instagram(
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message != YES:
+        os.remove(FILE_PATH_ON_SERVER)
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     try:
@@ -235,6 +236,7 @@ async def verify_content_and_upload_on_instagram(
                 path=FILE_PATH_ON_SERVER, caption=CAPTION
             )
             media_url = f"https://instagram.com/p/{media_object.code}"
+            os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
@@ -247,6 +249,7 @@ async def verify_content_and_upload_on_instagram(
                 path=FILE_PATH_ON_SERVER, caption=CAPTION
             )
             media_url = f"https://instagram.com/reel/{media_object.code}"
+            os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
@@ -259,6 +262,7 @@ async def verify_content_and_upload_on_instagram(
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
             media_url = f"https://instagram.com/reel/{media_object.code}"
+            os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url
