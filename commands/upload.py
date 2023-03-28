@@ -37,7 +37,7 @@ from constants.messages import (
     YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
     SOMETHING_WENT_WRONG,
     FILE_IS_NOT_VALID,
-    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO,
+    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
 )
 from constants.states import (
     HOME_STATE,
@@ -317,5 +317,5 @@ async def verify_content_and_upload_on_instagram(
             return HOME_STATE
     except (PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload):
         await update.effective_user.send_message(
-            SOMETHING_WENT_WRONG, reply_markup=base_keyboard
+            f"{SOMETHING_WENT_WRONG}, {PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN}", reply_markup=base_keyboard
         )

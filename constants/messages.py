@@ -39,7 +39,7 @@ YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
     "{media_url}"
 )
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
-SOMETHING_WENT_WRONG: str = "something went wrong"
+SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
 OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = (
     "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
