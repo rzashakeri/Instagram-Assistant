@@ -99,6 +99,14 @@ async def login_attempt_and_get_media_type(
         CLIENT.login(username, password)
         try:
             CLIENT.get_timeline_feed()
+            instagram_api_response = CLIENT.last_json
+            challenge_type = instagram_api_response["challenge_type_enum_str"]
+            if challenge_type == "HACKED_LOCK":
+                await update.effective_user.send_message(
+                    "challenge required, Please try again later",
+                    reply_markup=media_type_keyboard,
+                )
+                return HOME_STATE
             await update.effective_user.send_message(
                 WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
                 reply_markup=media_type_keyboard,
@@ -122,7 +130,7 @@ async def login_attempt_and_get_media_type(
                 return HOME_STATE
     CLIENT.login(username, password)
     CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
-    instagram_api_response = CLIENT.last_response.text
+    instagram_api_response = CLIENT.last_json
     instagram_api_message = instagram_api_response["message"]
     await update.effective_user.send_message(
         instagram_api_message,
