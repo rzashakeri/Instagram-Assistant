@@ -37,7 +37,8 @@ from constants.messages import (
     YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
     SOMETHING_WENT_WRONG,
     FILE_IS_NOT_VALID,
-    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
 )
 from constants.states import (
     HOME_STATE,
@@ -113,14 +114,22 @@ async def login_attempt_and_get_media_type(
             )
             return SET_MEDIA_TYPE_AND_GET_MEDIA
         except ClientError as error:
-            if "Please wait a few minutes before you try again" in error.message:
+            if PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN in error.message:
                 await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again",
+                    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
     CLIENT.login(username, password)
     CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+    instagram_api_response = CLIENT.last_response.text
+    instagram_api_message = instagram_api_response["message"]
+    if "challenge_required" in instagram_api_message:
+        await update.effective_user.send_message(
+            "challenge required, Please Try Again",
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
@@ -317,5 +326,6 @@ async def verify_content_and_upload_on_instagram(
             return HOME_STATE
     except (PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload):
         await update.effective_user.send_message(
-            f"{SOMETHING_WENT_WRONG}, {PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN}", reply_markup=base_keyboard
+            f"{SOMETHING_WENT_WRONG}, {PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN}",
+            reply_markup=base_keyboard,
         )
