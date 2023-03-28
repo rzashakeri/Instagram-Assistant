@@ -11,6 +11,7 @@ from instagrapi.exceptions import (
     IGTVNotUpload,
     ClipNotUpload,
     VideoNotUpload,
+    UnknownError,
 )
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -36,6 +37,7 @@ from constants.messages import (
     YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
     SOMETHING_WENT_WRONG,
     FILE_IS_NOT_VALID,
+    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO,
 )
 from constants.states import (
     HOME_STATE,
@@ -55,12 +57,12 @@ from core.keyboards import (
 # Init logger
 logger = getLogger(__name__)
 
-
 CLIENT = Client()
 CAPTION = None
 MEDIA_TYPE = None
 USER_UPLOADED_FILE_TYPE = None
 FILE_PATH_ON_SERVER = None
+
 
 async def get_login_information(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -263,18 +265,26 @@ async def verify_content_and_upload_on_instagram(
     try:
         if MEDIA_TYPE == PHOTO:
             await update.effective_user.send_message(PROCESSING)
-            media_object = CLIENT.photo_upload(
-                path=FILE_PATH_ON_SERVER, caption=CAPTION
-            )
-            media_url = f"https://instagram.com/p/{media_object.code}"
-            os.remove(FILE_PATH_ON_SERVER)
-            await update.effective_user.send_message(
-                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
-                    media_url=media_url
-                ),
-                reply_markup=base_keyboard,
-            )
-            return HOME_STATE
+            try:
+                media_object = CLIENT.photo_upload(
+                    path=FILE_PATH_ON_SERVER, caption=CAPTION
+                )
+                media_url = f"https://instagram.com/p/{media_object.code}"
+                os.remove(FILE_PATH_ON_SERVER)
+                await update.effective_user.send_message(
+                    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                        media_url=media_url
+                    ),
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
+            except UnknownError as error:
+                if error.message in UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO:
+                    await update.effective_user.send_message(
+                        f"{UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO}, Please try again",
+                        reply_markup=base_keyboard,
+                    )
+                    return HOME_STATE
         if MEDIA_TYPE == VIDEO:
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.video_upload(
