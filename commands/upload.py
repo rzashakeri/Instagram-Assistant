@@ -124,12 +124,10 @@ async def login_attempt_and_get_media_type(
     CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
     instagram_api_response = CLIENT.last_response.text
     instagram_api_message = instagram_api_response["message"]
-    if "challenge_required" in instagram_api_message:
-        await update.effective_user.send_message(
-            "challenge required, Please Try Again",
-            reply_markup=base_keyboard,
-        )
-        return HOME_STATE
+    await update.effective_user.send_message(
+        instagram_api_message,
+        reply_markup=base_keyboard,
+    )
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
