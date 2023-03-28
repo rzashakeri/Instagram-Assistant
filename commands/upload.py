@@ -127,7 +127,7 @@ async def login_attempt_and_get_media_type(
     if challenge_type == "HACKED_LOCK":
         await update.effective_user.send_message(
             "challenge required, Please try again later",
-            reply_markup=media_type_keyboard,
+            reply_markup=base_keyboard,
         )
         return HOME_STATE
     await update.effective_user.send_message(
