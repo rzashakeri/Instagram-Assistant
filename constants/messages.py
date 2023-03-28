@@ -50,3 +50,6 @@ SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
 PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
     "Please wait a few minutes before you try again"
 )
+UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
+    "Uploaded image isn't in an allowed aspect ratio"
+)
