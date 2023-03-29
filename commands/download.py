@@ -212,3 +212,5 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         else:
             await update.message.reply_text(LINK_IS_INVALID, reply_markup=base_keyboard)
             return HOME_STATE
+    else:
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=base_keyboard)
