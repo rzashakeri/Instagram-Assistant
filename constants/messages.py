@@ -53,3 +53,9 @@ PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
 UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
     "Uploaded image isn't in an allowed aspect ratio"
 )
+INSIGHT_OF_MEDIA: str = (
+    "Post statistics:\n"
+    "Like Count: {like_count}\n"
+    "Comment Count: {comment_count}\n"
+    "Save Count: {save_count}"
+)
