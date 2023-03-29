@@ -142,7 +142,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
             )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_photo(photo=file)
+                await update.effective_user.send_photo(photo=file, write_timeout=20)
             os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
@@ -156,7 +156,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
             )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
@@ -170,7 +170,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
             )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
@@ -184,7 +184,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
             )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
@@ -201,9 +201,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 with open(file_path, "rb") as file:
                     file_type = guess_the_type(file_path=file_path)
                     if file_type == IS_VIDEO:
-                        await update.effective_user.send_video(video=file)
+                        await update.effective_user.send_video(video=file, write_timeout=20)
                     else:
-                        await update.effective_user.send_photo(photo=file)
+                        await update.effective_user.send_photo(photo=file, write_timeout=20)
                     os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
