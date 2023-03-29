@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired, ClientError
+from instagrapi.exceptions import LoginRequired, ClientError, TwoFactorRequired
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -61,9 +61,15 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
         )
         return HOME_STATE
-    client.login(username, password)
-    client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
-    await update.effective_user.send_message(
-        LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
-    )
-    return HOME_STATE
+    try:
+        client.login(username, password)
+        client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        await update.effective_user.send_message(
+            LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
+        )
+        return HOME_STATE
+    except TwoFactorRequired:
+        await update.effective_user.send_message(
+            "Two-factor authentication required", reply_markup=base_keyboard
+        )
+        return HOME_STATE
