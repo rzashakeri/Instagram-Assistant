@@ -10,7 +10,11 @@ from telegram.ext import ContextTypes
 
 from configurations import settings
 from constants import LOGIN, BACK
-from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
+from constants.messages import (
+    SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+    INSIGHT_OF_MEDIA,
+)
 from constants.states import HOME_STATE, INSIGHT_STATE
 from core.keyboards import base_keyboard
 
@@ -77,8 +81,15 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         media_pk_from_url = client.media_pk_from_url(message)
         insight_of_media = client.insights_media(media_pk_from_url)
+        comment_count = insight_of_media.get("comment_count")
+        like_count = insight_of_media.get("like_count")
+        save_count = insight_of_media.get("save_count")
         await update.effective_user.send_message(
-            insight_of_media,
+            INSIGHT_OF_MEDIA.format(
+                comment_count=comment_count,
+                like_count=like_count,
+                save_count=save_count,
+            ),
             reply_markup=base_keyboard,
         )
         return HOME_STATE
