@@ -212,5 +212,29 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         else:
             await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
             return HOME_STATE
+    elif message.startswith("@"):
+        username = message.split("@")[1]
+        user_data = client.user_info_by_username(username).dict()
+        user_profile_picture_url = user_data["profile_pic_url_hd"]
+        request = requests.get(user_profile_picture_url)
+        profile_picture_extension = guess(request.content).EXTENSION
+        profile_picture_file_name = (
+            f"{username}_profile_picture.{profile_picture_extension}"
+        )
+        profile_picture_file_path = (
+            f"{download_directory}/{profile_picture_file_name}"
+        )
+        with open(profile_picture_file_path, "wb") as file:
+            file.write(request.content)
+        await update.message.reply_text(
+            UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+        )
+        await update.effective_user.send_photo(photo=profile_picture_file_path)
+        os.remove(profile_picture_file_path)
+        del request
+        await update.message.reply_text(
+            DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+        )
+        return HOME_STATE
     else:
         await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
