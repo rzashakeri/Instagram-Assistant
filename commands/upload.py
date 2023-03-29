@@ -122,7 +122,6 @@ async def login_attempt_and_get_media_type(
                 return HOME_STATE
     CLIENT.login(username, password)
     CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
-    CLIENT.challenge_resolve(CLIENT.last_json)
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
