@@ -2,7 +2,8 @@
 import os
 from random import random
 from time import sleep
-
+from functools import wraps
+from telegram.constants import ChatAction
 import telegram
 
 from logging import getLogger
@@ -21,11 +22,24 @@ from constants.messages import (
     INSIGHT_OF_MEDIA,
 )
 from constants.states import HOME_STATE, INSIGHT_STATE
-from core.handlers import send_typing_action
 from core.keyboards import base_keyboard
 
 # Init logger
 logger = getLogger(__name__)
+
+
+def send_typing_action(func):
+    """Sends typing action while processing func command."""
+
+    @wraps(func)
+    def command_func(update, context, *args, **kwargs):
+        context.bot.send_chat_action(
+            chat_id=update.effective_message.chat_id, action=ChatAction.TYPING
+        )
+        return func(update, context, *args, **kwargs)
+
+    return command_func
+
 
 
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
