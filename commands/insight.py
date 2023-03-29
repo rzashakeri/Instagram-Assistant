@@ -14,10 +14,10 @@ from constants import LOGIN, BACK
 from constants.messages import (
     SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
     PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
-    INSIGHT_OF_MEDIA,
+    INSIGHT_OF_MEDIA, LINK_IS_INVALID,
 )
 from constants.states import HOME_STATE, INSIGHT_STATE
-from core.keyboards import base_keyboard
+from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
 logger = getLogger(__name__)
@@ -94,3 +94,5 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+    else:
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
