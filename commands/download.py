@@ -74,28 +74,28 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         os.makedirs(login_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    if message_is_url:
-        if user_instagram_session_is_exist:
-            client.load_settings(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-            try:
-                client.get_timeline_feed()
-            except LoginRequired:
-                if user_instagram_session_is_exist:
-                    os.remove(user_instagram_session_path)
-                client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-                client.dump_settings(user_instagram_session_path)
-            except ClientError as error:
-                if "Please wait a few minutes before you try again" in error.message:
-                    await update.effective_user.send_message(
-                        "Please wait a few minutes before you try again",
-                        reply_markup=base_keyboard,
-                    )
-                    return HOME_STATE
+    if user_instagram_session_is_exist:
+        client.load_settings(user_instagram_session_path)
         client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-        client.dump_settings(
-            f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
-        )
+        try:
+            client.get_timeline_feed()
+        except LoginRequired:
+            if user_instagram_session_is_exist:
+                os.remove(user_instagram_session_path)
+            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
+            client.dump_settings(user_instagram_session_path)
+        except ClientError as error:
+            if "Please wait a few minutes before you try again" in error.message:
+                await update.effective_user.send_message(
+                    "Please wait a few minutes before you try again",
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
+    client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
+    client.dump_settings(
+        f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    )
+    if message_is_url:
         await update.message.reply_text(STARTING_DOWNLOAD)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
