@@ -1,4 +1,6 @@
 from logging import getLogger
+from functools import wraps
+from telegram.constants import ChatAction
 
 from telegram.ext import (
     CommandHandler,
@@ -22,7 +24,8 @@ from constants.states import (
     SET_MEDIA_TYPE_AND_GET_MEDIA,
     SET_MEDIA_AND_GET_CAPTION,
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM, INSIGHT_STATE,
+    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
+    INSIGHT_STATE,
 )
 
 logger = getLogger(__name__)
@@ -41,7 +44,9 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
-                MessageHandler(filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link)
+                MessageHandler(
+                    filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
+                ),
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
@@ -78,3 +83,16 @@ def base_conversation_handler():
         fallbacks=[],
     )
     return conversation_handler
+
+
+def send_typing_action(func):
+    """Sends typing action while processing func command."""
+
+    @wraps(func)
+    def command_func(update, context, *args, **kwargs):
+        context.bot.send_chat_action(
+            chat_id=update.effective_message.chat_id, action=ChatAction.TYPING
+        )
+        return func(update, context, *args, **kwargs)
+
+    return command_func
