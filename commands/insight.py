@@ -21,6 +21,7 @@ from constants.messages import (
     INSIGHT_OF_MEDIA,
 )
 from constants.states import HOME_STATE, INSIGHT_STATE
+from core.handlers import send_typing_action
 from core.keyboards import base_keyboard
 
 # Init logger
@@ -37,6 +38,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return INSIGHT_STATE
 
 
+@send_typing_action
 async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -89,8 +91,6 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
-        context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
-        sleep(random() * 2 + 3.)
         await update.effective_user.send_message(
             INSIGHT_OF_MEDIA.format(
                 comment_count=comment_count,
