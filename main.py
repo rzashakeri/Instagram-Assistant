@@ -8,7 +8,8 @@ if __name__ == "__main__":
     application = (
         Application.builder()
         .token(settings.TOKEN)
-        .read_timeout(7)
+        .read_timeout(30)
+        .write_timeout(30)
         .get_updates_read_timeout(42)
         .build()
     )
