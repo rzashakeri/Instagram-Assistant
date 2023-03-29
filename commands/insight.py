@@ -1,10 +1,5 @@
 # encoding: utf-8
 import os
-from random import random
-from time import sleep
-from functools import wraps
-from telegram.constants import ChatAction
-import telegram
 
 from logging import getLogger
 
@@ -28,20 +23,6 @@ from core.keyboards import base_keyboard
 logger = getLogger(__name__)
 
 
-def send_typing_action(func):
-    """Sends typing action while processing func command."""
-
-    @wraps(func)
-    def command_func(update, context, *args, **kwargs):
-        context.bot.send_chat_action(
-            chat_id=update.effective_message.chat_id, action=ChatAction.TYPING
-        )
-        return func(update, context, *args, **kwargs)
-
-    return command_func
-
-
-
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -52,7 +33,6 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return INSIGHT_STATE
 
 
-@send_typing_action
 async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
