@@ -6,6 +6,7 @@ import validators
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
@@ -35,6 +36,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
+    context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(
