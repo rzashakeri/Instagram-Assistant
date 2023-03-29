@@ -1,12 +1,16 @@
 # encoding: utf-8
 import os
+from random import random
+from time import sleep
+
+import telegram
+
 from logging import getLogger
 
 import validators
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
 from telegram import Update
-from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
@@ -36,7 +40,6 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
-    context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(
@@ -86,6 +89,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
+        context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=telegram.constants.ChatAction.TYPING)
+        sleep(random() * 2 + 3.)
         await update.effective_user.send_message(
             INSIGHT_OF_MEDIA.format(
                 comment_count=comment_count,
