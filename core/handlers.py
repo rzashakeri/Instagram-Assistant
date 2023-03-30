@@ -13,6 +13,7 @@ from commands import login
 from commands import upload
 from commands import insight
 from commands import download
+from commands.admin import admin
 from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY
 from constants.states import (
     HOME_STATE,
@@ -45,6 +46,7 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
+                CommandHandler("admin", admin)
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
