@@ -59,3 +59,4 @@ INSIGHT_OF_MEDIA: str = (
     "Comment Count: {comment_count}\n"
     "Save Count: {save_count}"
 )
+WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
