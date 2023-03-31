@@ -101,7 +101,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
     )
     if message_is_url:
-        await update.message.reply_text(STARTING_DOWNLOAD)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
             media_info = client.media_info(media_pk_from_url).dict()
@@ -218,7 +217,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
             return HOME_STATE
     elif message.startswith("@"):
-        await update.message.reply_text(STARTING_DOWNLOAD)
         username = message.split("@")[1]
         user_data = client.user_info_by_username(username).dict()
         user_profile_picture_url = user_data["profile_pic_url_hd"]
