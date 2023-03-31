@@ -144,6 +144,7 @@ async def login_attempt_and_get_media_type(
     )
     return SET_MEDIA_TYPE_AND_GET_MEDIA
 
+
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -196,6 +197,7 @@ async def set_media_type_and_get_media(
             reply_markup=base_keyboard,
         )
 
+
 @send_action(ChatAction.TYPING)
 async def set_media_and_get_caption(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -235,6 +237,7 @@ async def set_media_and_get_caption(
     )
     return SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 
+
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -267,6 +270,7 @@ async def set_caption_and_asking_to_confirm_the_content(
         reply_markup=yes_or_no_keyboard,
     )
     return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
+
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(

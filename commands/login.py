@@ -5,6 +5,7 @@ from logging import getLogger
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError, TwoFactorRequired
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from constants import BACK, LOGIN
@@ -13,9 +14,12 @@ from constants.states import LOGIN_STATE, HOME_STATE
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
+from utils.decorators import send_action
+
 logger = getLogger(__name__)
 
 
+@send_action(ChatAction.TYPING)
 async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
@@ -26,6 +30,7 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return LOGIN_STATE
 
 
+@send_action(ChatAction.TYPING)
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
