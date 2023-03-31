@@ -25,13 +25,14 @@ from utils.decorators import send_action
 
 logger = getLogger(__name__)
 
+
 @send_action(ChatAction.TYPING)
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await update.message.reply_text(
         SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
-        reply_markup=base_keyboard,
+        reply_markup=back_keyboard,
     )
     return INSIGHT_STATE
 
