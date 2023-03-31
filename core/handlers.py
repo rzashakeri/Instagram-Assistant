@@ -46,7 +46,7 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
-                CommandHandler("admin", admin)
+                MessageHandler(filters.Regex("/admin"), admin)
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
