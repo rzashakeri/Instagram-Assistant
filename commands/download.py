@@ -55,7 +55,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return DOWNLOAD_STATE
 
 
-
+@send_action(ChatAction.UPLOAD_DOCUMENT)
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -219,7 +219,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
             return HOME_STATE
     elif message.startswith("@"):
-        send_action(ChatAction.UPLOAD_PHOTO)
         username = message.split("@")[1]
         user_data = client.user_info_by_username(username).dict()
         user_profile_picture_url = user_data["profile_pic_url_hd"]

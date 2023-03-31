@@ -1,5 +1,9 @@
 # encoding: utf-8
 import os
+import time
+
+from telegram.constants import ChatAction
+
 import constants
 from logging import getLogger
 
@@ -56,6 +60,8 @@ from core.keyboards import (
 )
 
 # Init logger
+from utils.decorators import send_action
+
 logger = getLogger(__name__)
 
 CLIENT = Client()
@@ -65,11 +71,13 @@ USER_UPLOADED_FILE_TYPE = None
 FILE_PATH_ON_SERVER = None
 
 
+@send_action(ChatAction.TYPING)
 async def get_login_information(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
+    time.sleep(5)
     await update.message.reply_text(
         MESSAGE_FOR_GET_LOGIN_DATA, reply_markup=back_keyboard
     )
