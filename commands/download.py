@@ -53,6 +53,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return DOWNLOAD_STATE
 
 
+@send_action(ChatAction.UPLOAD_DOCUMENT)
 async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -101,7 +102,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     )
     if message_is_url:
         await update.message.reply_text(STARTING_DOWNLOAD)
-        send_action(ChatAction.UPLOAD_PHOTO)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
             media_info = client.media_info(media_pk_from_url).dict()
