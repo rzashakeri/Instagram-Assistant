@@ -84,11 +84,13 @@ async def get_login_information(
     return LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 
 
+@send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
+    time.sleep(3)
     message = update.message.text
     if message == BACK:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
