@@ -1,5 +1,5 @@
 # encoding: utf-8
-
+import time
 from logging import getLogger
 
 from telegram import Update
@@ -20,6 +20,7 @@ logger = getLogger(__name__)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
+    time.sleep(5)
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=update.effective_user.first_name),
         reply_markup=base_keyboard,
