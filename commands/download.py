@@ -101,6 +101,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     )
     if message_is_url:
         await update.message.reply_text(STARTING_DOWNLOAD)
+        send_action(ChatAction.UPLOAD_PHOTO)
         try:
             media_pk_from_url = client.media_pk_from_url(message)
             media_info = client.media_info(media_pk_from_url).dict()
@@ -218,7 +219,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             return HOME_STATE
     elif message.startswith("@"):
         await update.message.reply_text(STARTING_DOWNLOAD)
-        send_action(ChatAction.UPLOAD_PHOTO)
         username = message.split("@")[1]
         user_data = client.user_info_by_username(username).dict()
         user_profile_picture_url = user_data["profile_pic_url_hd"]
