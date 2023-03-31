@@ -17,9 +17,8 @@ logger = getLogger(__name__)
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
-    if update.effective_user.id == TELEGRAM_USER_ID:
-        await update.message.reply_text(
+    await update.message.reply_text(
             WELCOME_TO_ADMIN,
             reply_markup=base_keyboard,
-        )
-        return HOME_STATE
+    )
+    return HOME_STATE
