@@ -16,6 +16,7 @@ from instagrapi.exceptions import (
     ClientError,
 )
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
@@ -36,10 +37,13 @@ from constants.states import (
 )
 from core.keyboards import base_keyboard, back_keyboard
 
+from utils.decorators import send_action
+
 # Init logger
 logger = getLogger(__name__)
 
 
+@send_action(ChatAction.TYPING)
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -214,6 +218,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             return HOME_STATE
     elif message.startswith("@"):
         await update.message.reply_text(STARTING_DOWNLOAD)
+        send_action(ChatAction.UPLOAD_PHOTO)
         username = message.split("@")[1]
         user_data = client.user_info_by_username(username).dict()
         user_profile_picture_url = user_data["profile_pic_url_hd"]
