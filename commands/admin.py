@@ -5,12 +5,11 @@ from logging import getLogger
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from configurations.settings import TELEGRAM_USER_ID
 from constants.messages import WELCOME_TO_ADMIN
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 
-from utils import restricted
+from utils.decorators import restricted
 
 # Init logger
 logger = getLogger(__name__)
