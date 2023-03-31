@@ -7,6 +7,7 @@ import validators
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientError
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
@@ -20,9 +21,11 @@ from constants.states import HOME_STATE, INSIGHT_STATE
 from core.keyboards import base_keyboard, back_keyboard
 
 # Init logger
+from utils.decorators import send_action
+
 logger = getLogger(__name__)
 
-
+@send_action(ChatAction.TYPING)
 async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
@@ -33,6 +36,7 @@ async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return INSIGHT_STATE
 
 
+@send_action(ChatAction.TYPING)
 async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
