@@ -14,7 +14,7 @@ from commands import upload
 from commands import insight
 from commands import download
 from commands.admin import admin
-from constants.keyboards import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY
+from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY
 from constants.states import (
     HOME_STATE,
     LOGIN_STATE,
@@ -24,7 +24,7 @@ from constants.states import (
     SET_MEDIA_AND_GET_CAPTION,
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
-    INSIGHT_STATE,
+    INSIGHT_STATE, ADMIN_STATE,
 )
 
 logger = getLogger(__name__)
@@ -77,8 +77,13 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.TEXT, upload.verify_content_and_upload_on_instagram
                 )
-            ]
+            ],
             # end the upload operation section <==
+            # start admin section ==>
+            ADMIN_STATE: [
+
+            ]
+            # end of admin section <==
         },
         fallbacks=[],
     )
