@@ -7,7 +7,7 @@ from telegram.ext import ContextTypes
 
 from constants.messages import WELCOME_TO_ADMIN
 from constants.states import ADMIN_STATE
-from core.keyboards import base_keyboard
+from core.keyboards import base_keyboard, admin_keyboard
 
 from utils.decorators import restricted
 
@@ -21,6 +21,6 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     await update.message.reply_text(
         WELCOME_TO_ADMIN,
-        reply_markup=base_keyboard,
+        reply_markup=admin_keyboard,
     )
     return ADMIN_STATE
