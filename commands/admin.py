@@ -6,7 +6,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from constants.messages import WELCOME_TO_ADMIN
-from constants.states import HOME_STATE
+from constants.states import ADMIN_STATE
 from core.keyboards import base_keyboard
 
 from utils.decorators import restricted
@@ -23,4 +23,4 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         WELCOME_TO_ADMIN,
         reply_markup=base_keyboard,
     )
-    return HOME_STATE
+    return ADMIN_STATE
