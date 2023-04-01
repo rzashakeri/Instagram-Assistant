@@ -14,3 +14,4 @@ UPLOAD_IGTV_KEY: str = "Upload IGtv"
 
 # admin panel keys
 BACK_TO_HOME_KEY: str = "Back To Home"
+SEND_MESSAGE_TO_ALL_USER_KEY: str = "Send Message To All Users"
