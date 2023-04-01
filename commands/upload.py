@@ -21,7 +21,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from constants import BACK, LOGIN, YES, PROCESSING, DOCUMENT
-from constants.keyboards import (
+from constants.keys import (
     UPLOAD_REELS_KEY,
     UPLOAD_PHOTO_KEY,
     UPLOAD_VIDEO_KEY,
