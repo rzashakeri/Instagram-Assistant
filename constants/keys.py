@@ -11,3 +11,6 @@ UPLOAD_PHOTO_KEY: str = "Upload Photo"
 UPLOAD_VIDEO_KEY: str = "Upload IGtv"
 UPLOAD_ALBUM_KEY: str = "Upload Album"
 UPLOAD_IGTV_KEY: str = "Upload IGtv"
+
+# admin panel keys
+BACK_TO_HOME_KEY: str = "Back To Home"
