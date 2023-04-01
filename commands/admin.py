@@ -1,5 +1,5 @@
 # encoding: utf-8
-
+import time
 from logging import getLogger
 
 from telegram import Update
@@ -21,6 +21,7 @@ logger = getLogger(__name__)
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
+    time.sleep(3)
     await update.message.reply_text(
         WELCOME_TO_ADMIN,
         reply_markup=admin_keyboard,
