@@ -1,5 +1,6 @@
 # encoding: utf-8
 import time
+import psycopg2
 from logging import getLogger
 
 from telegram import Update
@@ -9,9 +10,9 @@ from telegram.ext import ContextTypes
 from constants.messages import WELCOME_MESSAGE
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
+from utils.decorators import send_action
 
 # Init logger
-from utils.decorators import send_action
 
 logger = getLogger(__name__)
 
