@@ -10,3 +10,5 @@ PHOTO: str = "Photo"
 DOCUMENT: str = "Document"
 EMAIL: str = "Email"
 PHONE: str = "Phone"
+DUPLICATE_KEY: str = "duplicate key"
+
