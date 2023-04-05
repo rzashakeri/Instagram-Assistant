@@ -60,3 +60,4 @@ INSIGHT_OF_MEDIA: str = (
     "Save Count: {save_count}"
 )
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
+USER_COUNT: str = "User Count: {user_count}"
