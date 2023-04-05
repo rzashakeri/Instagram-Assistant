@@ -14,7 +14,7 @@ from commands import admin
 from commands import upload
 from commands import insight
 from commands import download
-from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, USER_COUNT_KEY
+from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, USER_COUNT_KEY, BACK_TO_HOME_KEY
 from constants.states import (
     HOME_STATE,
     LOGIN_STATE,
@@ -82,6 +82,7 @@ def base_conversation_handler():
             # start admin section ==>
             ADMIN_STATE: [
                 MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home),
             ]
             # end of admin section <==
         },
