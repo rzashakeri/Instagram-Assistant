@@ -1,6 +1,6 @@
 import psycopg2
-
 from configurations.settings import POSTGRESQL_HOST, POSTGRESQL_NAME, POSTGRESQL_USERNAME, POSTGRESQL_PASSWORD, POSTGRESQL_PORT
+from constants import DUPLICATE_KEY
 
 
 def create_user(user_id, first_name, last_name, username):
@@ -17,7 +17,11 @@ def create_user(user_id, first_name, last_name, username):
         INSERT INTO users (user_id, first_name, last_name, username) 
         VALUES (%s, %s, %s, %s)
         """)
-    cursor.execute(query, (user_id, first_name, last_name, username))
+    try:
+        cursor.execute(query, (user_id, first_name, last_name, username))
+    except psycopg2.Error as error:
+        if DUPLICATE_KEY in str(error):
+            pass
     connection.commit()
     cursor.close()
     connection.close()
