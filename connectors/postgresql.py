@@ -25,3 +25,27 @@ def create_user(user_id, first_name, last_name, username):
     connection.commit()
     cursor.close()
     connection.close()
+
+
+def get_user_count():
+    """get user count from the database"""
+    connection = psycopg2.connect(
+        database=POSTGRESQL_NAME,
+        host=POSTGRESQL_HOST,
+        user=POSTGRESQL_USERNAME,
+        password=POSTGRESQL_PASSWORD,
+        port=POSTGRESQL_PORT
+    )
+    query = """
+    SELECT 
+    COUNT(*) 
+    FROM 
+    users
+    """
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchone()
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return result[0]
