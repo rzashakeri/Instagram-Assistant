@@ -7,8 +7,9 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from connectors.postgresql import get_user_count
-from constants.messages import WELCOME_TO_ADMIN, USER_COUNT
-from constants.states import ADMIN_STATE
+from constants.keys import BACK_TO_HOME_KEY
+from constants.messages import WELCOME_TO_ADMIN, USER_COUNT, WELCOME_TO_HOME
+from constants.states import ADMIN_STATE, HOME_STATE
 from core.keyboards import base_keyboard, admin_keyboard
 
 from utils.decorators import restricted, send_action
@@ -41,3 +42,15 @@ async def user_count(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         reply_markup=admin_keyboard,
     )
     return ADMIN_STATE
+
+
+@restricted
+@send_action(ChatAction.TYPING)
+async def back_to_home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    """get user count"""
+    # pylint: disable=unused-argument
+    await update.message.reply_text(
+        WELCOME_TO_HOME,
+        reply_markup=base_keyboard,
+    )
+    return HOME_STATE
