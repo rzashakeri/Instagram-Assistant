@@ -27,7 +27,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     last_name = update.effective_user.last_name
     username = update.effective_user.username
     create_user(user_id, first_name, last_name, username)
-    time.sleep(5)
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
