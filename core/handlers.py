@@ -10,11 +10,11 @@ from telegram.ext import (
 # Init logger
 from commands import start
 from commands import login
+from commands import admin
 from commands import upload
 from commands import insight
 from commands import download
-from commands.admin import admin
-from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY
+from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, USER_COUNT_KEY
 from constants.states import (
     HOME_STATE,
     LOGIN_STATE,
@@ -46,7 +46,7 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
-                CommandHandler("admin", admin)
+                CommandHandler("admin", admin.admin)
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
@@ -81,7 +81,7 @@ def base_conversation_handler():
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
             ]
             # end of admin section <==
         },
