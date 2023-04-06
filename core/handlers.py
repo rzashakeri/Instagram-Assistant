@@ -12,6 +12,7 @@ from commands import start
 from commands import login
 from commands import admin
 from commands import upload
+from commands import privacy
 from commands import insight
 from commands import download
 from constants.keys import (
@@ -21,7 +22,7 @@ from constants.keys import (
     INSIGHT_KEY,
     USER_COUNT_KEY,
     BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY,
+    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY,
 )
 from constants.states import (
     HOME_STATE,
@@ -54,6 +55,9 @@ def base_conversation_handler():
                 ),
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
                 ),
                 CommandHandler("admin", admin.admin),
             ],
