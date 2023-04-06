@@ -3,6 +3,7 @@ DOWNLOAD_KEY: str = "Download Media 📥"
 UPLOAD_KEY: str = "Upload Media 📤"
 LOGIN_KEY: str = "Login To Instagram 🔐"
 INSIGHT_KEY: str = "Insights 📈"
+PRIVACY_KEY: str = "Privacy 🔒"
 BACK_KEY: str = "Back ◀️"
 
 # upload the media type keys
