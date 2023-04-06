@@ -49,3 +49,25 @@ def get_user_count():
     cursor.close()
     connection.close()
     return result[0]
+
+
+def get_user_id():
+    """get user ids from the database"""
+    connection = psycopg2.connect(
+        database=POSTGRESQL_NAME,
+        host=POSTGRESQL_HOST,
+        user=POSTGRESQL_USERNAME,
+        password=POSTGRESQL_PASSWORD,
+        port=POSTGRESQL_PORT
+    )
+    query = """
+    SELECT user_id
+    FROM users
+    """
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchall()
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return result
