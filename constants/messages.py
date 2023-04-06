@@ -41,9 +41,7 @@ YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
-OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = (
-    "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
-)
+OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
 SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
     "Send the post link you want to get the statistics"
 )
@@ -67,5 +65,6 @@ YOUR_MESSAGE_WAS_SENT: str = "Your Message Was Sent"
 PRIVACY_MESSAGE: str = (
     "⚠️ This robot stores the following information:\n"
     "User ID,First Name, Last Name, Username\n"
-    "And when you Login Instagram via this robot, we store the session inside our servers for next login"
+    "And when you Login Instagram via this robot, we store the session inside "
+    "our servers for next login"
 )
