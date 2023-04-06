@@ -14,7 +14,15 @@ from commands import admin
 from commands import upload
 from commands import insight
 from commands import download
-from constants.keys import LOGIN_KEY, DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, USER_COUNT_KEY, BACK_TO_HOME_KEY
+from constants.keys import (
+    LOGIN_KEY,
+    DOWNLOAD_KEY,
+    UPLOAD_KEY,
+    INSIGHT_KEY,
+    USER_COUNT_KEY,
+    BACK_TO_HOME_KEY,
+    SEND_MESSAGE_TO_ALL_USER_KEY,
+)
 from constants.states import (
     HOME_STATE,
     LOGIN_STATE,
@@ -24,7 +32,8 @@ from constants.states import (
     SET_MEDIA_AND_GET_CAPTION,
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
-    INSIGHT_STATE, ADMIN_STATE,
+    INSIGHT_STATE,
+    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER,
 )
 
 logger = getLogger(__name__)
@@ -46,7 +55,7 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
-                CommandHandler("admin", admin.admin)
+                CommandHandler("admin", admin.admin),
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
@@ -82,7 +91,18 @@ def base_conversation_handler():
             # start admin section ==>
             ADMIN_STATE: [
                 MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
-                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home),
+                MessageHandler(
+                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
+                    admin.get_message_for_send_to_all_user,
+                ),
+            ],
+            SEND_MESSAGE_TO_ALL_USER: [
+                MessageHandler(
+                    filters.TEXT, admin.send_message_to_all_user
+                )
             ]
             # end of admin section <==
         },
