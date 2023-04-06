@@ -62,4 +62,5 @@ INSIGHT_OF_MEDIA: str = (
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
 USER_COUNT: str = "User Count: {user_count}"
 WELCOME_TO_HOME: str = "Welcome To Home, What are you doing?"
-
+SEND_YOUR_MESSAGE: str = "Send Your Message 👇"
+YOUR_MESSAGE_WAS_SENT: str = "Your Message Was Sent"
