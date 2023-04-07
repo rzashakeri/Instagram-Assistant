@@ -10,7 +10,12 @@ from telegram.ext import ContextTypes
 
 from constants import BACK, LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY
+from constants.messages import (
+    MESSAGE_FOR_GET_LOGIN_DATA,
+    WHAT_DO_YOU_WANT,
+    YOU_WERE_ALREADY_LOGGED_IN,
+    LOGGED_IN_SUCCESSFULLY,
+)
 from constants.states import LOGIN_STATE, HOME_STATE
 from core.keyboards import base_keyboard, back_keyboard
 
@@ -56,12 +61,12 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(
-                f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
                 await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again", reply_markup=base_keyboard
+                    "Please wait a few minutes before you try again",
+                    reply_markup=base_keyboard,
                 )
                 return HOME_STATE
         await update.effective_user.send_message(

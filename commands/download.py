@@ -75,8 +75,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(
-        user_instagram_session_path)
+    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
     message_is_url = validators.url(message)
     client = Client()
     if not login_directory_is_exist:
@@ -91,8 +90,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             if user_instagram_session_is_exist:
                 os.remove(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME,
-                         settings.INSTAGRAM_PASSWORD)
+            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
             client.dump_settings(user_instagram_session_path)
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
@@ -210,9 +208,13 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 with open(file_path, "rb") as file:
                     file_type = guess_the_type(file_path=file_path)
                     if file_type == IS_VIDEO:
-                        await update.effective_user.send_video(video=file, write_timeout=20)
+                        await update.effective_user.send_video(
+                            video=file, write_timeout=20
+                        )
                     else:
-                        await update.effective_user.send_photo(photo=file, write_timeout=20)
+                        await update.effective_user.send_photo(
+                            photo=file, write_timeout=20
+                        )
                     os.remove(file_path)
             await update.message.reply_text(
                 DOWNLOAD_COMPLETED, reply_markup=base_keyboard
@@ -230,20 +232,14 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         profile_picture_file_name = (
             f"{username}_profile_picture.{profile_picture_extension}"
         )
-        profile_picture_file_path = (
-            f"{download_directory}/{profile_picture_file_name}"
-        )
+        profile_picture_file_path = f"{download_directory}/{profile_picture_file_name}"
         with open(profile_picture_file_path, "wb") as file:
             file.write(request.content)
-        await update.message.reply_text(
-            UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
-        )
+        await update.message.reply_text(UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard)
         await update.effective_user.send_photo(photo=profile_picture_file_path)
         os.remove(profile_picture_file_path)
         del request
-        await update.message.reply_text(
-            DOWNLOAD_COMPLETED, reply_markup=base_keyboard
-        )
+        await update.message.reply_text(DOWNLOAD_COMPLETED, reply_markup=base_keyboard)
         return HOME_STATE
     else:
         await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)

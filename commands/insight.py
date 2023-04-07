@@ -16,7 +16,8 @@ from constants.keys import BACK_KEY
 from constants.messages import (
     SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
     PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
-    INSIGHT_OF_MEDIA, LINK_IS_INVALID,
+    INSIGHT_OF_MEDIA,
+    LINK_IS_INVALID,
 )
 from constants.states import HOME_STATE, INSIGHT_STATE
 from core.keyboards import base_keyboard, back_keyboard
@@ -57,8 +58,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(
-        user_instagram_session_path)
+    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
     client = Client()
     if not login_directory_is_exist:
         os.makedirs(login_directory)
@@ -68,15 +68,13 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if message_is_url:
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME,
-                         settings.INSTAGRAM_PASSWORD)
+            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
             try:
                 client.get_timeline_feed()
             except LoginRequired:
                 if user_instagram_session_is_exist:
                     os.remove(user_instagram_session_path)
-                client.login(settings.INSTAGRAM_USERNAME,
-                             settings.INSTAGRAM_PASSWORD)
+                client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
                 client.dump_settings(user_instagram_session_path)
             except ClientError as error:
                 if PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN in error.message:
