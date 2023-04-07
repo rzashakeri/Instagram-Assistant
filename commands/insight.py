@@ -12,6 +12,7 @@ from telegram.ext import ContextTypes
 
 from configurations import settings
 from constants import LOGIN, BACK
+from constants.keys import BACK_KEY
 from constants.messages import (
     SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
     PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
@@ -42,7 +43,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     message = update.message.text
-    if message == BACK:
+    if message == BACK_KEY:
         await update.message.reply_text(
             "what do you want ?", reply_markup=base_keyboard
         )
