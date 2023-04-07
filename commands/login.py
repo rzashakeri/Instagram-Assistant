@@ -28,13 +28,13 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_login_data(update: Update,
+                         context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
 
     message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
-    await update.message.reply_text(
-        message_for_get_login_data, reply_markup=back_keyboard
-    )
+    await update.message.reply_text(message_for_get_login_data,
+                                    reply_markup=back_keyboard)
     return LOGIN_STATE
 
 
@@ -43,7 +43,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
     username, password = message.split("\n")
@@ -63,7 +64,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(
+                f"{login_directory}/{username}_{user_id}.json")
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
                 await update.effective_user.send_message(
@@ -71,19 +73,16 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
-        await update.effective_user.send_message(
-            YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
-        )
+        await update.effective_user.send_message(YOU_WERE_ALREADY_LOGGED_IN,
+                                                 reply_markup=base_keyboard)
         return HOME_STATE
     try:
         client.login(username, password)
         client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
-        await update.effective_user.send_message(
-            LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
-        )
+        await update.effective_user.send_message(LOGGED_IN_SUCCESSFULLY,
+                                                 reply_markup=base_keyboard)
         return HOME_STATE
     except TwoFactorRequired:
         await update.effective_user.send_message(
-            "Two-factor authentication required", reply_markup=base_keyboard
-        )
+            "Two-factor authentication required", reply_markup=base_keyboard)
         return HOME_STATE
