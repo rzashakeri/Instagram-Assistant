@@ -56,7 +56,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(
+                f"{login_directory}/{username}_{user_id}.json")
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
                 await update.effective_user.send_message(

@@ -75,7 +75,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
+    user_instagram_session_is_exist = os.path.exists(
+        user_instagram_session_path)
     message_is_url = validators.url(message)
     client = Client()
     if not login_directory_is_exist:
@@ -90,7 +91,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             if user_instagram_session_is_exist:
                 os.remove(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
+            client.login(settings.INSTAGRAM_USERNAME,
+                         settings.INSTAGRAM_PASSWORD)
             client.dump_settings(user_instagram_session_path)
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
