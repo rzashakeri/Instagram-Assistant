@@ -1,27 +1,23 @@
 # encoding: utf-8
 import os
-
 from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired, ClientError
+from instagrapi.exceptions import ClientError, LoginRequired
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
-from constants import LOGIN, BACK
+from constants import BACK, LOGIN
 from constants.keys import BACK_KEY
 from constants.messages import (
-    SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS,
+    INSIGHT_OF_MEDIA, LINK_IS_INVALID,
     PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
-    INSIGHT_OF_MEDIA,
-    LINK_IS_INVALID,
-)
+    SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS)
 from constants.states import HOME_STATE, INSIGHT_STATE
-from core.keyboards import base_keyboard, back_keyboard
-
+from core.keyboards import back_keyboard, base_keyboard
 # Init logger
 from utils.decorators import send_action
 

@@ -1,66 +1,40 @@
 # encoding: utf-8
 import os
 import time
-
-from telegram.constants import ChatAction
-
-import constants
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import (
-    LoginRequired,
-    ClientError,
-    PhotoNotUpload,
-    IGTVNotUpload,
-    ClipNotUpload,
-    VideoNotUpload,
-    UnknownError,
-    TwoFactorRequired,
-)
+from instagrapi.exceptions import (ClientError, ClipNotUpload, IGTVNotUpload,
+                                   LoginRequired, PhotoNotUpload,
+                                   TwoFactorRequired, UnknownError,
+                                   VideoNotUpload)
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
-from constants import BACK, LOGIN, YES, PROCESSING, DOCUMENT
-from constants.keys import (
-    UPLOAD_REELS_KEY,
-    UPLOAD_PHOTO_KEY,
-    UPLOAD_VIDEO_KEY,
-    UPLOAD_ALBUM_KEY,
-    UPLOAD_IGTV_KEY,
-    BACK_KEY,
-)
-from constants.media_types import REEL, PHOTO, VIDEO, ALBUM, IGTV
+import constants
+from constants import BACK, DOCUMENT, LOGIN, PROCESSING, YES
+from constants.keys import (BACK_KEY, UPLOAD_ALBUM_KEY, UPLOAD_IGTV_KEY,
+                            UPLOAD_PHOTO_KEY, UPLOAD_REELS_KEY,
+                            UPLOAD_VIDEO_KEY)
+from constants.media_types import ALBUM, IGTV, PHOTO, REEL, VIDEO
 from constants.messages import (
-    MESSAGE_FOR_GET_LOGIN_DATA,
-    WHAT_DO_YOU_WANT,
-    SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
     ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+    CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM, FILE_IS_NOT_VALID,
     MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
-    CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
-    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM,
-    SOMETHING_WENT_WRONG,
-    FILE_IS_NOT_VALID,
-    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO,
-    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
-)
-from constants.states import (
-    HOME_STATE,
-    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
-    SET_MEDIA_TYPE_AND_GET_MEDIA,
-    SET_MEDIA_AND_GET_CAPTION,
-    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
-)
-from core.keyboards import (
-    base_keyboard,
-    back_keyboard,
-    media_type_keyboard,
-    yes_or_no_keyboard,
-)
-
+    MESSAGE_FOR_GET_LOGIN_DATA, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+    SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, SOMETHING_WENT_WRONG,
+    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO, WHAT_DO_YOU_WANT,
+    WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM)
+from constants.states import (HOME_STATE, LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
+                              SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
+                              SET_MEDIA_AND_GET_CAPTION,
+                              SET_MEDIA_TYPE_AND_GET_MEDIA,
+                              VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM)
+from core.keyboards import (back_keyboard, base_keyboard, media_type_keyboard,
+                            yes_or_no_keyboard)
 # Init logger
 from utils.decorators import send_action
 
