@@ -9,6 +9,7 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from constants import BACK, LOGIN
+from constants.keys import BACK_KEY
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY
 from constants.states import LOGIN_STATE, HOME_STATE
 from core.keyboards import base_keyboard, back_keyboard
@@ -34,7 +35,7 @@ async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    if message == BACK:
+    if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id

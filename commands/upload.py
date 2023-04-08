@@ -26,7 +26,7 @@ from constants.keys import (
     UPLOAD_PHOTO_KEY,
     UPLOAD_VIDEO_KEY,
     UPLOAD_ALBUM_KEY,
-    UPLOAD_IGTV_KEY,
+    UPLOAD_IGTV_KEY, BACK_KEY,
 )
 from constants.media_types import REEL, PHOTO, VIDEO, ALBUM, IGTV
 from constants.messages import (
@@ -92,7 +92,7 @@ async def login_attempt_and_get_media_type(
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
     message = update.message.text
-    if message == BACK:
+    if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
@@ -153,7 +153,7 @@ async def set_media_type_and_get_media(
     """Select an action: Adding parent/child or show data."""
     message = update.message
     global MEDIA_TYPE
-    if message.text == BACK:
+    if message.text == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     elif message.text == UPLOAD_PHOTO_KEY:
@@ -207,7 +207,7 @@ async def set_media_and_get_caption(
     global USER_UPLOADED_FILE_TYPE
     global FILE_PATH_ON_SERVER
     message = update.message
-    if message.text == BACK:
+    if message.text == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     elif update.message.document:
@@ -245,7 +245,7 @@ async def set_caption_and_asking_to_confirm_the_content(
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    if message == BACK:
+    if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     global CAPTION
