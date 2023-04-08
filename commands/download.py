@@ -47,13 +47,13 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_media_link(update: Update,
-                         context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     time.sleep(5)
-    await update.message.reply_text(OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
-                                    reply_markup=back_keyboard)
+    await update.message.reply_text(
+        OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD, reply_markup=back_keyboard
+    )
     return DOWNLOAD_STATE
 
 
@@ -63,19 +63,20 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text("what do you want ?",
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(
+            "what do you want ?", reply_markup=base_keyboard
+        )
         return HOME_STATE
     current_directory = os.getcwd()
     download_directory = f"{current_directory}/download"
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     user_instagram_session_name = (
-        f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json")
+        f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
+    )
     user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
     login_directory_is_exist = os.path.exists(login_directory)
     download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(
-        user_instagram_session_path)
+    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
     message_is_url = validators.url(message)
     client = Client()
     if not login_directory_is_exist:
@@ -90,8 +91,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             if user_instagram_session_is_exist:
                 os.remove(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME,
-                         settings.INSTAGRAM_PASSWORD)
+            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
             client.dump_settings(user_instagram_session_path)
         except ClientError as error:
             if "Please wait a few minutes before you try again" in error.message:
@@ -123,91 +123,106 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             request = requests.get(user_profile_picture_url)
             profile_picture_extension = guess(request.content).EXTENSION
             profile_picture_file_name = (
-                f"{username}_profile_picture.{profile_picture_extension}")
+                f"{username}_profile_picture.{profile_picture_extension}"
+            )
             profile_picture_file_path = (
-                f"{download_directory}/{profile_picture_file_name}")
+                f"{download_directory}/{profile_picture_file_name}"
+            )
             with open(profile_picture_file_path, "wb") as file:
                 file.write(request.content)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
-            await update.effective_user.send_photo(
-                photo=profile_picture_file_path)
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
+            await update.effective_user.send_photo(photo=profile_picture_file_path)
             os.remove(profile_picture_file_path)
             del request
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         media_type = media_info["media_type"]
         product_type = media_info["product_type"]
         if media_type == PHOTO:
-            file_path = client.photo_download(media_pk=media_pk_from_url,
-                                              folder=download_directory)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
+            file_path = client.photo_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_photo(photo=file,
-                                                       write_timeout=20)
+                await update.effective_user.send_photo(photo=file, write_timeout=20)
             os.remove(file_path)
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         elif media_type == VIDEO and product_type == IS_FEED:
-            file_path = client.video_download(media_pk=media_pk_from_url,
-                                              folder=download_directory)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
+            file_path = client.video_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file,
-                                                       write_timeout=20)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         elif media_type == IGTV and product_type == IS_IGTV:
-            file_path = client.igtv_download(media_pk=media_pk_from_url,
-                                             folder=download_directory)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
+            file_path = client.igtv_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file,
-                                                       write_timeout=20)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         elif media_type == REEL and product_type == IS_CLIPS:
-            file_path = client.clip_download(media_pk=media_pk_from_url,
-                                             folder=download_directory)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
+            file_path = client.clip_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             with open(file_path, "rb") as file:
-                await update.effective_user.send_video(video=file,
-                                                       write_timeout=20)
+                await update.effective_user.send_video(video=file, write_timeout=20)
             os.remove(file_path)
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         elif media_type == ALBUM:
-            files_path = client.album_download(media_pk=media_pk_from_url,
-                                               folder=download_directory)
-            await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                            reply_markup=base_keyboard)
+            files_path = client.album_download(
+                media_pk=media_pk_from_url, folder=download_directory
+            )
+            await update.message.reply_text(
+                UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard
+            )
             for file_path in files_path:
                 with open(file_path, "rb") as file:
                     file_type = guess_the_type(file_path=file_path)
                     if file_type == IS_VIDEO:
                         await update.effective_user.send_video(
-                            video=file, write_timeout=20)
+                            video=file, write_timeout=20
+                        )
                     else:
                         await update.effective_user.send_photo(
-                            photo=file, write_timeout=20)
+                            photo=file, write_timeout=20
+                        )
                     os.remove(file_path)
-            await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                            reply_markup=base_keyboard)
+            await update.message.reply_text(
+                DOWNLOAD_COMPLETED, reply_markup=base_keyboard
+            )
             return HOME_STATE
         else:
-            await update.message.reply_text(LINK_IS_INVALID,
-                                            reply_markup=back_keyboard)
+            await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
             return HOME_STATE
     elif message.startswith("@"):
         username = message.split("@")[1]
@@ -216,18 +231,16 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         request = requests.get(user_profile_picture_url)
         profile_picture_extension = guess(request.content).EXTENSION
         profile_picture_file_name = (
-            f"{username}_profile_picture.{profile_picture_extension}")
+            f"{username}_profile_picture.{profile_picture_extension}"
+        )
         profile_picture_file_path = f"{download_directory}/{profile_picture_file_name}"
         with open(profile_picture_file_path, "wb") as file:
             file.write(request.content)
-        await update.message.reply_text(UPLOAD_IN_TELEGRAM,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(UPLOAD_IN_TELEGRAM, reply_markup=base_keyboard)
         await update.effective_user.send_photo(photo=profile_picture_file_path)
         os.remove(profile_picture_file_path)
         del request
-        await update.message.reply_text(DOWNLOAD_COMPLETED,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(DOWNLOAD_COMPLETED, reply_markup=base_keyboard)
         return HOME_STATE
     else:
-        await update.message.reply_text(LINK_IS_INVALID,
-                                        reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
