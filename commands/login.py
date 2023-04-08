@@ -3,24 +3,18 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import LoginRequired
-from instagrapi.exceptions import TwoFactorRequired
+from instagrapi.exceptions import ClientError, LoginRequired, TwoFactorRequired
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
-from constants import BACK
-from constants import LOGIN
+from constants import BACK, LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY
-from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
-from constants.messages import WHAT_DO_YOU_WANT
-from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
-from constants.states import HOME_STATE
-from constants.states import LOGIN_STATE
-from core.keyboards import back_keyboard
-from core.keyboards import base_keyboard
+from constants.messages import (LOGGED_IN_SUCCESSFULLY,
+                                MESSAGE_FOR_GET_LOGIN_DATA, WHAT_DO_YOU_WANT,
+                                YOU_WERE_ALREADY_LOGGED_IN)
+from constants.states import HOME_STATE, LOGIN_STATE
+from core.keyboards import back_keyboard, base_keyboard
 from utils.decorators import send_action
 
 # Init logger
