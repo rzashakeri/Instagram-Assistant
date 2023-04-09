@@ -62,6 +62,7 @@ from utils.decorators import send_action
 logger = getLogger(__name__)
 
 CLIENT = Client()
+CLIENT.delay_range = [1, 3]
 CAPTION = None
 MEDIA_TYPE = None
 USER_UPLOADED_FILE_TYPE = None

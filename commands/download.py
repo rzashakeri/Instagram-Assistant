@@ -78,6 +78,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         user_instagram_session_path)
     message_is_url = validators.url(message)
     client = Client()
+    client.delay_range = [1, 3]
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     if not download_directory_is_exist:

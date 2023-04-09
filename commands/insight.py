@@ -60,6 +60,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     user_instagram_session_is_exist = os.path.exists(
         user_instagram_session_path)
     client = Client()
+    client.delay_range = [1, 3]
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     if not download_directory_is_exist:
