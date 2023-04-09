@@ -1,6 +1,8 @@
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ## Instagram Telegram Bot
 
- instagram in telegram with extra feature 💡 
+ instagram in telegram with extra feature 💡
+
 
 
 ## Features
@@ -12,3 +14,10 @@
 6. Admin Panel 
 7. Get User Count From Admin Panel
 8. Send Message To All User From Admin Panel
+
+# Stack
+1. python
+2. [python-telegram-bot](https://python-telegram-bot.org/)
+3. [instagrapi](https://github.com/adw0rd/instagrapi)
+4. PostgreSQL
+
