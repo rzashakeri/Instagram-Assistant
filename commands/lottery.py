@@ -5,7 +5,7 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_user
-from constants.messages import WELCOME_MESSAGE, PRIVACY_MESSAGE
+from constants.messages import WELCOME_MESSAGE, PRIVACY_MESSAGE, WELCOME_TO_THE_LOTTERY_SECTION
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
@@ -19,4 +19,8 @@ logger = getLogger(__name__)
 async def lottery(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
-    pass
+    await update.message.reply_text(
+        WELCOME_TO_THE_LOTTERY_SECTION,
+        reply_markup=base_keyboard,
+    )
+    return HOME_STATE
