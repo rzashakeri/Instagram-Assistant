@@ -56,6 +56,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
     client = Client()
+    client.delay_range = [1, 3]
     if user_instagram_session_is_exist:
         client.load_settings(user_instagram_session)
         client.login(username, password)
