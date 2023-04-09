@@ -68,3 +68,6 @@ PRIVACY_MESSAGE: str = (
     "And when you Login Instagram via this robot, we store the session inside "
     "our servers for next login"
 )
+WELCOME_TO_THE_LOTTERY_SECTION: str = (
+    "Welcome to the lottery section, what kind of draw do you want to do?"
+)
