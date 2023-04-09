@@ -14,6 +14,7 @@ from commands import admin
 from commands import upload
 from commands import privacy
 from commands import insight
+from commands import lottery
 from commands import download
 from constants.keys import (
     LOGIN_KEY,
@@ -22,7 +23,7 @@ from constants.keys import (
     INSIGHT_KEY,
     USER_COUNT_KEY,
     BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY,
+    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY, LOTTERY_KEY,
 )
 from constants.states import (
     HOME_STATE,
@@ -34,7 +35,7 @@ from constants.states import (
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
     INSIGHT_STATE,
-    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER,
+    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER, LOTTERY_STATE,
 )
 
 logger = getLogger(__name__)
@@ -58,6 +59,9 @@ def base_conversation_handler():
                 ),
                 MessageHandler(
                     filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{LOTTERY_KEY}$"), lottery.lottery
                 ),
                 CommandHandler("admin", admin.admin),
             ],
@@ -107,8 +111,11 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.TEXT, admin.send_message_to_all_user
                 )
-            ]
+            ],
             # end of admin section <==
+            # start lottery section ==>
+            LOTTERY_STATE:[]
+            # end of lottery section <==
         },
         fallbacks=[],
     )
