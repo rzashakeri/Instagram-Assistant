@@ -6,7 +6,8 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_user
-from constants.messages import PRIVACY_MESSAGE, WELCOME_MESSAGE
+from constants.messages import PRIVACY_MESSAGE
+from constants.messages import WELCOME_MESSAGE
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
