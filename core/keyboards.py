@@ -1,7 +1,7 @@
 from telegram import ReplyKeyboardMarkup
 
 from constants import YES, NO, EMAIL, PHONE
-from constants.keys import DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, LOGIN_KEY, BACK_KEY, UPLOAD_REELS_KEY, UPLOAD_PHOTO_KEY, UPLOAD_VIDEO_KEY, UPLOAD_ALBUM_KEY, UPLOAD_IGTV_KEY, BACK_TO_HOME_KEY, SEND_MESSAGE_TO_ALL_USER_KEY, USER_COUNT_KEY, PRIVACY_KEY
+from constants.keys import DOWNLOAD_KEY, UPLOAD_KEY, INSIGHT_KEY, LOGIN_KEY, BACK_KEY, UPLOAD_REELS_KEY, UPLOAD_PHOTO_KEY, UPLOAD_VIDEO_KEY, UPLOAD_ALBUM_KEY, UPLOAD_IGTV_KEY, BACK_TO_HOME_KEY, SEND_MESSAGE_TO_ALL_USER_KEY, USER_COUNT_KEY, PRIVACY_KEY, LOTTERY_WITH_COMMENTS_LIST, LOTTERY_WITH_LIKES_LIST
 
 base_reply_keyboard: list = [
     [DOWNLOAD_KEY, UPLOAD_KEY],
@@ -39,3 +39,9 @@ admin_reply_keyboard = [
     [BACK_TO_HOME_KEY]
 ]
 admin_keyboard = ReplyKeyboardMarkup(admin_reply_keyboard, resize_keyboard=True)
+
+lottery_reply_keyboard = [
+    [LOTTERY_WITH_LIKES_LIST],
+    [LOTTERY_WITH_COMMENTS_LIST]
+]
+lottery_keyboard = ReplyKeyboardMarkup(lottery_reply_keyboard, resize_keyboard=True)
