@@ -38,24 +38,25 @@ media_type_reply_keyboard = [
     [UPLOAD_ALBUM_KEY],
     [UPLOAD_IGTV_KEY],
 ]
-media_type_keyboard = ReplyKeyboardMarkup(
-    media_type_reply_keyboard, resize_keyboard=True
-)
+media_type_keyboard = ReplyKeyboardMarkup(media_type_reply_keyboard,
+                                          resize_keyboard=True)
 
 yes_or_no_reply_keyboard = [[NO], [YES]]
-yes_or_no_keyboard = ReplyKeyboardMarkup(yes_or_no_reply_keyboard, resize_keyboard=True)
-
+yes_or_no_keyboard = ReplyKeyboardMarkup(yes_or_no_reply_keyboard,
+                                         resize_keyboard=True)
 
 email_or_phone_reply_keyboard = [[EMAIL], [PHONE]]
-email_or_phone_keyboard = ReplyKeyboardMarkup(
-    email_or_phone_reply_keyboard, resize_keyboard=True
-)
+email_or_phone_keyboard = ReplyKeyboardMarkup(email_or_phone_reply_keyboard,
+                                              resize_keyboard=True)
 
 admin_reply_keyboard = [
     [SEND_MESSAGE_TO_ALL_USER_KEY, USER_COUNT_KEY],
     [BACK_TO_HOME_KEY],
 ]
-admin_keyboard = ReplyKeyboardMarkup(admin_reply_keyboard, resize_keyboard=True)
+admin_keyboard = ReplyKeyboardMarkup(admin_reply_keyboard,
+                                     resize_keyboard=True)
 
-lottery_reply_keyboard = [[LOTTERY_WITH_LIKES_LIST], [LOTTERY_WITH_COMMENTS_LIST]]
-lottery_keyboard = ReplyKeyboardMarkup(lottery_reply_keyboard, resize_keyboard=True)
+lottery_reply_keyboard = [[LOTTERY_WITH_LIKES_LIST],
+                          [LOTTERY_WITH_COMMENTS_LIST]]
+lottery_keyboard = ReplyKeyboardMarkup(lottery_reply_keyboard,
+                                       resize_keyboard=True)
