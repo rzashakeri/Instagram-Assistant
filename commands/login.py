@@ -1,15 +1,17 @@
 # encoding: utf-8
+import json
 import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError, ClientForbiddenError
+from instagrapi.exceptions import ClientError, ClientForbiddenError, PrivateError
 from instagrapi.exceptions import LoginRequired
 from instagrapi.exceptions import TwoFactorRequired
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from configurations import settings
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
@@ -101,3 +103,35 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+
+
+def login_user(client, login_directory):
+    """login user"""
+    with open("users.json", encoding="utf-8") as file:
+        users = json.load(file)
+    for user in users["users"]:
+        user_instagram_session_name = (
+            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+        )
+        user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
+        try:
+            if user_instagram_session_is_exist:
+                client.load_settings(user_instagram_session_path)
+                client.login(user['username'], user['password'])
+                try:
+                    client.get_timeline_feed()
+                    return True
+                except LoginRequired:
+                    if user_instagram_session_is_exist:
+                        os.remove(user_instagram_session_path)
+                    client.login(user['username'], user['password'])
+                    client.dump_settings(user_instagram_session_path)
+            client.login(user['username'], user['password'])
+            client.dump_settings(
+                f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+            )
+            return True
+        except (ClientError, PrivateError):
+            pass
+    return False
