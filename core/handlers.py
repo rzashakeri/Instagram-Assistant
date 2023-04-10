@@ -23,7 +23,10 @@ from constants.keys import (
     INSIGHT_KEY,
     USER_COUNT_KEY,
     BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY, LOTTERY_KEY, LOTTERY_WITH_LIKES_LIST,
+    SEND_MESSAGE_TO_ALL_USER_KEY,
+    PRIVACY_KEY,
+    LOTTERY_KEY,
+    LOTTERY_WITH_LIKES_LIST,
 )
 from constants.states import (
     HOME_STATE,
@@ -35,7 +38,9 @@ from constants.states import (
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
     INSIGHT_STATE,
-    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER, SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
+    ADMIN_STATE,
+    SEND_MESSAGE_TO_ALL_USER,
+    SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
 )
 
 logger = getLogger(__name__)
@@ -47,24 +52,20 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start.start)],
         states={
             HOME_STATE: [
-                MessageHandler(filters.Regex(
-                    f"^{LOGIN_KEY}$"), login.get_login_data),
+                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), login.get_login_data),
                 MessageHandler(
                     filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
                 ),
                 MessageHandler(
-                    filters.Regex(
-                        f"^{UPLOAD_KEY}$"), upload.get_login_information
+                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
+                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy),
                 MessageHandler(
-                    filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
-                ),
-                MessageHandler(
-                    filters.Regex(
-                        f"^{LOTTERY_KEY}$"), lottery.entry_point_and_get_post_link
+                    filters.Regex(f"^{LOTTERY_KEY}$"),
+                    lottery.entry_point_and_get_post_link,
                 ),
                 CommandHandler("admin", admin.admin),
             ],
@@ -73,12 +74,10 @@ def base_conversation_handler():
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(
-                    filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(
-                    filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -103,8 +102,7 @@ def base_conversation_handler():
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(
-                    f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
                 ),
@@ -114,15 +112,14 @@ def base_conversation_handler():
                 ),
             ],
             SEND_MESSAGE_TO_ALL_USER: [
-                MessageHandler(
-                    filters.TEXT, admin.send_message_to_all_user
-                )
+                MessageHandler(filters.TEXT, admin.send_message_to_all_user)
             ],
             # end of admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
                 MessageHandler(
-                    filters.TEXT, lottery.set_post_link_and_get_type_of_lottery),
+                    filters.TEXT, lottery.set_post_link_and_get_type_of_lottery
+                ),
             ]
             # end of lottery section <==
         },
