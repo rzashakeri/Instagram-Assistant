@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClientError, ClientForbiddenError
 from instagrapi.exceptions import LoginRequired
 from instagrapi.exceptions import TwoFactorRequired
 from telegram import Update
@@ -13,7 +13,7 @@ from telegram.ext import ContextTypes
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY, SOMETHING_WENT_WRONG
+from constants.messages import LOGGED_IN_SUCCESSFULLY, SOMETHING_WENT_WRONG, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
@@ -66,10 +66,16 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             os.remove(user_instagram_session)
             client.login(username, password)
             client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        except ClientForbiddenError:
+            await update.effective_user.send_message(
+                SOMETHING_WENT_WRONG,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
         except ClientError as error:
-            if "Please wait a few minutes before you try again" in error.message:
+            if PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN in error.message:
                 await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again",
+                    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
@@ -87,5 +93,11 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     except TwoFactorRequired:
         await update.effective_user.send_message(
             "Two-factor authentication required", reply_markup=base_keyboard
+        )
+        return HOME_STATE
+    except ClientForbiddenError:
+        await update.effective_user.send_message(
+            SOMETHING_WENT_WRONG,
+            reply_markup=base_keyboard,
         )
         return HOME_STATE
