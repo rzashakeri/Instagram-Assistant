@@ -23,7 +23,7 @@ from constants.keys import (
     INSIGHT_KEY,
     USER_COUNT_KEY,
     BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY, LOTTERY_KEY,
+    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY, LOTTERY_KEY, LOTTERY_WITH_LIKES_LIST,
 )
 from constants.states import (
     HOME_STATE,
@@ -35,7 +35,7 @@ from constants.states import (
     SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
     INSIGHT_STATE,
-    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER, LOTTERY_STATE,
+    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER, SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
 )
 
 logger = getLogger(__name__)
@@ -61,7 +61,7 @@ def base_conversation_handler():
                     filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
                 ),
                 MessageHandler(
-                    filters.Regex(f"^{LOTTERY_KEY}$"), lottery.lottery
+                    filters.Regex(f"^{LOTTERY_KEY}$"), lottery.entry_point_and_get_post_link
                 ),
                 CommandHandler("admin", admin.admin),
             ],
@@ -114,7 +114,9 @@ def base_conversation_handler():
             ],
             # end of admin section <==
             # start lottery section ==>
-            LOTTERY_STATE:[]
+            SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
+                MessageHandler(filters.TEXT, lottery.set_post_link_and_get_type_of_lottery),
+            ]
             # end of lottery section <==
         },
         fallbacks=[],
