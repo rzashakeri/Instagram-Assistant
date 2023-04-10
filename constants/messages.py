@@ -65,9 +65,12 @@ YOUR_MESSAGE_WAS_SENT: str = "Your Message Was Sent"
 PRIVACY_MESSAGE: str = (
     "⚠️ This robot stores the following information:\n"
     "User ID,First Name, Last Name, Username\n"
+    "\n"
     "And when you Login Instagram via this robot, we store the session inside "
-    "our servers for next login"
+    "our servers for next login\n"
+    "\n"
+    "Source Code: https://github.com/rzashakeri/instagram-telegram-bot"
 )
 WELCOME_TO_THE_LOTTERY_SECTION: str = (
-    "Welcome to the lottery section, what kind of draw do you want to do?"
+    "Welcome to the lottery section, Send the post link for lottery 👇"
 )
