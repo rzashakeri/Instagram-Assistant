@@ -1,47 +1,23 @@
 from logging import getLogger
 
-from telegram.ext import (
-    CommandHandler,
-    ConversationHandler,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import (CommandHandler, ConversationHandler, MessageHandler,
+                          filters)
 
 # Init logger
-from commands import start
-from commands import login
-from commands import admin
-from commands import upload
-from commands import privacy
-from commands import insight
-from commands import lottery
-from commands import download
-from constants.keys import (
-    LOGIN_KEY,
-    DOWNLOAD_KEY,
-    UPLOAD_KEY,
-    INSIGHT_KEY,
-    USER_COUNT_KEY,
-    BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY,
-    PRIVACY_KEY,
-    LOTTERY_KEY,
-    LOTTERY_WITH_LIKES_LIST,
-)
-from constants.states import (
-    HOME_STATE,
-    LOGIN_STATE,
-    DOWNLOAD_STATE,
-    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
-    SET_MEDIA_TYPE_AND_GET_MEDIA,
-    SET_MEDIA_AND_GET_CAPTION,
-    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
-    INSIGHT_STATE,
-    ADMIN_STATE,
-    SEND_MESSAGE_TO_ALL_USER,
-    SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
-)
+from commands import (admin, download, insight, login, lottery, privacy, start,
+                      upload)
+from constants.keys import (BACK_TO_HOME_KEY, DOWNLOAD_KEY, INSIGHT_KEY,
+                            LOGIN_KEY, LOTTERY_KEY, LOTTERY_WITH_LIKES_LIST,
+                            PRIVACY_KEY, SEND_MESSAGE_TO_ALL_USER_KEY,
+                            UPLOAD_KEY, USER_COUNT_KEY)
+from constants.states import (ADMIN_STATE, DOWNLOAD_STATE, HOME_STATE,
+                              INSIGHT_STATE, LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
+                              LOGIN_STATE, SEND_MESSAGE_TO_ALL_USER,
+                              SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
+                              SET_MEDIA_AND_GET_CAPTION,
+                              SET_MEDIA_TYPE_AND_GET_MEDIA,
+                              SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
+                              VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM)
 
 logger = getLogger(__name__)
 

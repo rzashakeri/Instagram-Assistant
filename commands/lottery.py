@@ -8,15 +8,12 @@ from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_user
 from constants.keys import BACK_KEY
-from constants.messages import (
-    WELCOME_MESSAGE,
-    PRIVACY_MESSAGE,
-    WELCOME_TO_THE_LOTTERY_SECTION,
-    WHAT_DO_YOU_WANT,
-    LINK_IS_INVALID,
-)
+from constants.messages import (LINK_IS_INVALID, PRIVACY_MESSAGE,
+                                WELCOME_MESSAGE,
+                                WELCOME_TO_THE_LOTTERY_SECTION,
+                                WHAT_DO_YOU_WANT)
 from constants.states import HOME_STATE, SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
-from core.keyboards import base_keyboard, lottery_keyboard, back_keyboard
+from core.keyboards import back_keyboard, base_keyboard, lottery_keyboard
 from utils.decorators import send_action
 
 # Init logger
