@@ -13,7 +13,11 @@ from telegram.ext import ContextTypes
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY, SOMETHING_WENT_WRONG, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
+from constants.messages import (
+    LOGGED_IN_SUCCESSFULLY,
+    SOMETHING_WENT_WRONG,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+)
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
@@ -65,8 +69,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(
-                f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
