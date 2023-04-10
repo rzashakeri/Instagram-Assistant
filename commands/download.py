@@ -91,21 +91,20 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
         )
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(
-            user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)
-                client.login(user['username'], user['password'])
+                client.login(user["username"], user["password"])
                 try:
                     client.get_timeline_feed()
                     break
                 except LoginRequired:
                     if user_instagram_session_is_exist:
                         os.remove(user_instagram_session_path)
-                    client.login(user['username'], user['password'])
+                    client.login(user["username"], user["password"])
                     client.dump_settings(user_instagram_session_path)
-            client.login(user['username'], user['password'])
+            client.login(user["username"], user["password"])
             client.dump_settings(
                 f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
             )
