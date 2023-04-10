@@ -1,12 +1,25 @@
 from telegram import ReplyKeyboardMarkup
 
-from constants import EMAIL, NO, PHONE, YES
-from constants.keys import (BACK_KEY, BACK_TO_HOME_KEY, DOWNLOAD_KEY,
-                            INSIGHT_KEY, LOGIN_KEY, LOTTERY_WITH_COMMENTS_LIST,
-                            LOTTERY_WITH_LIKES_LIST, PRIVACY_KEY,
-                            SEND_MESSAGE_TO_ALL_USER_KEY, UPLOAD_ALBUM_KEY,
-                            UPLOAD_IGTV_KEY, UPLOAD_KEY, UPLOAD_PHOTO_KEY,
-                            UPLOAD_REELS_KEY, UPLOAD_VIDEO_KEY, USER_COUNT_KEY)
+from constants import EMAIL
+from constants import NO
+from constants import PHONE
+from constants import YES
+from constants.keys import BACK_KEY
+from constants.keys import BACK_TO_HOME_KEY
+from constants.keys import DOWNLOAD_KEY
+from constants.keys import INSIGHT_KEY
+from constants.keys import LOGIN_KEY
+from constants.keys import LOTTERY_WITH_COMMENTS_LIST
+from constants.keys import LOTTERY_WITH_LIKES_LIST
+from constants.keys import PRIVACY_KEY
+from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
+from constants.keys import UPLOAD_ALBUM_KEY
+from constants.keys import UPLOAD_IGTV_KEY
+from constants.keys import UPLOAD_KEY
+from constants.keys import UPLOAD_PHOTO_KEY
+from constants.keys import UPLOAD_REELS_KEY
+from constants.keys import UPLOAD_VIDEO_KEY
+from constants.keys import USER_COUNT_KEY
 
 base_reply_keyboard: list = [
     [DOWNLOAD_KEY, UPLOAD_KEY],
