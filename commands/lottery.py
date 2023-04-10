@@ -19,6 +19,7 @@ logger = getLogger(__name__)
 
 POST_LINK = None
 
+
 @send_action(ChatAction.TYPING)
 async def entry_point_and_get_post_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""

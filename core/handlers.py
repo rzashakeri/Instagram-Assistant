@@ -47,12 +47,14 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start.start)],
         states={
             HOME_STATE: [
-                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), login.get_login_data),
+                MessageHandler(filters.Regex(
+                    f"^{LOGIN_KEY}$"), login.get_login_data),
                 MessageHandler(
                     filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
                 ),
                 MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
+                    filters.Regex(
+                        f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
@@ -61,7 +63,8 @@ def base_conversation_handler():
                     filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
                 ),
                 MessageHandler(
-                    filters.Regex(f"^{LOTTERY_KEY}$"), lottery.entry_point_and_get_post_link
+                    filters.Regex(
+                        f"^{LOTTERY_KEY}$"), lottery.entry_point_and_get_post_link
                 ),
                 CommandHandler("admin", admin.admin),
             ],
@@ -70,10 +73,12 @@ def base_conversation_handler():
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(
+                    filters.TEXT, upload.login_attempt_and_get_media_type)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(
+                    filters.TEXT, upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -98,7 +103,8 @@ def base_conversation_handler():
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(
+                    f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
                 ),
@@ -115,7 +121,8 @@ def base_conversation_handler():
             # end of admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
-                MessageHandler(filters.TEXT, lottery.set_post_link_and_get_type_of_lottery),
+                MessageHandler(
+                    filters.TEXT, lottery.set_post_link_and_get_type_of_lottery),
             ]
             # end of lottery section <==
         },
