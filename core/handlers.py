@@ -1,42 +1,41 @@
 from logging import getLogger
 
-from telegram.ext import (
-    CommandHandler,
-    ConversationHandler,
-    MessageHandler,
-    filters,
-)
+from telegram.ext import CommandHandler
+from telegram.ext import ConversationHandler
+from telegram.ext import filters
+from telegram.ext import MessageHandler
 
-# Init logger
-from commands import start
-from commands import login
 from commands import admin
-from commands import upload
-from commands import privacy
-from commands import insight
-from commands import lottery
 from commands import download
-from constants.keys import (
-    LOGIN_KEY,
-    DOWNLOAD_KEY,
-    UPLOAD_KEY,
-    INSIGHT_KEY,
-    USER_COUNT_KEY,
-    BACK_TO_HOME_KEY,
-    SEND_MESSAGE_TO_ALL_USER_KEY, PRIVACY_KEY, LOTTERY_KEY, LOTTERY_WITH_LIKES_LIST,
-)
-from constants.states import (
-    HOME_STATE,
-    LOGIN_STATE,
-    DOWNLOAD_STATE,
-    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
-    SET_MEDIA_TYPE_AND_GET_MEDIA,
-    SET_MEDIA_AND_GET_CAPTION,
-    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
-    INSIGHT_STATE,
-    ADMIN_STATE, SEND_MESSAGE_TO_ALL_USER, SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY,
-)
+from commands import insight
+from commands import login
+from commands import lottery
+from commands import privacy
+from commands import start
+from commands import upload
+from constants.keys import BACK_TO_HOME_KEY
+from constants.keys import DOWNLOAD_KEY
+from constants.keys import INSIGHT_KEY
+from constants.keys import LOGIN_KEY
+from constants.keys import LOTTERY_KEY
+from constants.keys import LOTTERY_WITH_LIKES_LIST
+from constants.keys import PRIVACY_KEY
+from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
+from constants.keys import UPLOAD_KEY
+from constants.keys import USER_COUNT_KEY
+from constants.states import ADMIN_STATE
+from constants.states import DOWNLOAD_STATE
+from constants.states import HOME_STATE
+from constants.states import INSIGHT_STATE
+from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
+from constants.states import LOGIN_STATE
+from constants.states import SEND_MESSAGE_TO_ALL_USER
+from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
+from constants.states import SET_MEDIA_AND_GET_CAPTION
+from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
+from constants.states import SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
+from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
+# Init logger
 
 logger = getLogger(__name__)
 
@@ -47,21 +46,19 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start.start)],
         states={
             HOME_STATE: [
-                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), login.get_login_data),
+                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"),
+                               login.get_login_data),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"),
+                               download.get_media_link),
+                MessageHandler(filters.Regex(f"^{UPLOAD_KEY}$"),
+                               upload.get_login_information),
+                MessageHandler(filters.Regex(f"^{INSIGHT_KEY}$"),
+                               insight.get_media_link),
+                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"),
+                               privacy.privacy),
                 MessageHandler(
-                    filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{LOTTERY_KEY}$"), lottery.entry_point_and_get_post_link
+                    filters.Regex(f"^{LOTTERY_KEY}$"),
+                    lottery.entry_point_and_get_post_link,
                 ),
                 CommandHandler("admin", admin.admin),
             ],
@@ -70,10 +67,12 @@ def base_conversation_handler():
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(filters.TEXT,
+                               upload.login_attempt_and_get_media_type)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(filters.TEXT,
+                               upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -87,35 +86,32 @@ def base_conversation_handler():
             ],
             SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT: [
                 MessageHandler(
-                    filters.TEXT, upload.set_caption_and_asking_to_confirm_the_content
-                )
+                    filters.TEXT,
+                    upload.set_caption_and_asking_to_confirm_the_content)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
-                MessageHandler(
-                    filters.TEXT, upload.verify_content_and_upload_on_instagram
-                )
+                MessageHandler(filters.TEXT,
+                               upload.verify_content_and_upload_on_instagram)
             ],
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
-                MessageHandler(
-                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
-                ),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
+                               admin.user_count),
+                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                               admin.back_to_home),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
                 ),
             ],
-            SEND_MESSAGE_TO_ALL_USER: [
-                MessageHandler(
-                    filters.TEXT, admin.send_message_to_all_user
-                )
-            ],
+            SEND_MESSAGE_TO_ALL_USER:
+            [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
-                MessageHandler(filters.TEXT, lottery.set_post_link_and_get_type_of_lottery),
+                MessageHandler(filters.TEXT,
+                               lottery.set_post_link_and_get_type_of_lottery),
             ]
             # end of lottery section <==
         },
