@@ -60,3 +60,4 @@ PRIVACY_MESSAGE: str = (
     "Source Code: https://github.com/rzashakeri/instagram-telegram-bot")
 WELCOME_TO_THE_LOTTERY_SECTION: str = (
     "Welcome to the lottery section, Send the post link for lottery 👇")
+WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = "Well you want to do the lottery on what basis:"
