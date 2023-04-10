@@ -91,7 +91,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
         )
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(
+            user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)
