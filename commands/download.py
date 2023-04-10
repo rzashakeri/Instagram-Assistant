@@ -2,6 +2,7 @@
 import os
 import re
 import time
+import json
 from logging import getLogger
 
 import requests
@@ -9,7 +10,7 @@ import validators
 from file_validator.utils import guess_the_type
 from filetype import guess
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClientError, PrivateError
 from instagrapi.exceptions import LoginRequired
 from instagrapi.exceptions import MediaNotFound
 from instagrapi.exceptions import UnknownError
@@ -67,44 +68,50 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             "what do you want ?", reply_markup=base_keyboard
         )
         return HOME_STATE
-    current_directory = os.getcwd()
-    download_directory = f"{current_directory}/download"
-    login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session_name = (
-        f"{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
-    )
-    user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-    login_directory_is_exist = os.path.exists(login_directory)
-    download_directory_is_exist = os.path.exists(download_directory)
-    user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
-    message_is_url = validators.url(message)
     client = Client()
     client.delay_range = [1, 3]
-    if not login_directory_is_exist:
-        os.makedirs(login_directory)
+    message_is_url = validators.url(message)
+    current_directory = os.getcwd()
+
+    download_directory = f"{current_directory}/download"
+    download_directory_is_exist = os.path.exists(download_directory)
     if not download_directory_is_exist:
         os.makedirs(download_directory)
-    if user_instagram_session_is_exist:
-        client.load_settings(user_instagram_session_path)
-        client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
+
+    login_directory = f"{current_directory}/{LOGIN.lower()}"
+    login_directory_is_exist = os.path.exists(login_directory)
+    if not login_directory_is_exist:
+        os.makedirs(login_directory)
+
+    with open("users.json", encoding="utf-8") as file:
+        users = json.load(file)
+
+    for user in users["users"]:
+        user_instagram_session_name = (
+            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+        )
+        user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
         try:
-            client.get_timeline_feed()
-        except LoginRequired:
             if user_instagram_session_is_exist:
-                os.remove(user_instagram_session_path)
-            client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-            client.dump_settings(user_instagram_session_path)
-        except ClientError as error:
-            if "Please wait a few minutes before you try again" in error.message:
-                await update.effective_user.send_message(
-                    "Please wait a few minutes before you try again",
-                    reply_markup=base_keyboard,
-                )
-                return HOME_STATE
-    client.login(settings.INSTAGRAM_USERNAME, settings.INSTAGRAM_PASSWORD)
-    client.dump_settings(
-        f"{login_directory}/{settings.INSTAGRAM_USERNAME}_{settings.TELEGRAM_USER_ID}.json"
-    )
+                client.load_settings(user_instagram_session_path)
+                client.login(user['username'], user['password'])
+                try:
+                    client.get_timeline_feed()
+                    break
+                except LoginRequired:
+                    if user_instagram_session_is_exist:
+                        os.remove(user_instagram_session_path)
+                    client.login(user['username'], user['password'])
+                    client.dump_settings(user_instagram_session_path)
+            client.login(user['username'], user['password'])
+            client.dump_settings(
+                f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+            )
+            break
+        except (ClientError, PrivateError):
+            pass
+
     if message_is_url:
         try:
             media_pk_from_url = client.media_pk_from_url(message)
