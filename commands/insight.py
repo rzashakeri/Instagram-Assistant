@@ -23,6 +23,7 @@ from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
+from utils import create_requirement_folders
 from utils.decorators import send_action
 
 # Init logger
@@ -55,19 +56,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
-    current_directory = os.getcwd()
-
-    download_directory = f"{current_directory}/download"
-    download_directory_is_exist = os.path.exists(download_directory)
-    if not download_directory_is_exist:
-        os.makedirs(download_directory)
-
-    login_directory = f"{current_directory}/{LOGIN.lower()}"
-    login_directory_is_exist = os.path.exists(login_directory)
-    if not login_directory_is_exist:
-        os.makedirs(login_directory)
-
-    logged_in_user = login_user(client, login_directory)
+    create_requirement_folders()
+    logged_in_user = login_user(client)
     if not logged_in_user:
         await update.message.reply_text(
             SOMETHING_WENT_WRONG, reply_markup=base_keyboard

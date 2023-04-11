@@ -105,8 +105,10 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         return HOME_STATE
 
 
-def login_user(client, login_directory):
+def login_user(client):
     """login user"""
+    current_directory = os.getcwd()
+    login_directory = f"{current_directory}/{LOGIN.lower()}"
     with open("users.json", encoding="utf-8") as file:
         users = json.load(file)
     for user in users["users"]:

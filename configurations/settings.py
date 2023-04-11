@@ -6,8 +6,6 @@ load_dotenv()
 
 TOKEN = os.environ['TOKEN']
 NAME = os.environ['NAME']
-INSTAGRAM_USERNAME = os.environ['INSTAGRAM_USERNAME']
-INSTAGRAM_PASSWORD = os.environ['INSTAGRAM_PASSWORD']
 TELEGRAM_USER_ID = int(os.environ['TELEGRAM_USER_ID'])
 POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
 POSTGRESQL_PORT = os.environ['POSTGRESQL_PORT']
