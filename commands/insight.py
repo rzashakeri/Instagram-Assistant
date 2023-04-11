@@ -15,10 +15,11 @@ from configurations import settings
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import INSIGHT_OF_MEDIA, SOMETHING_WENT_WRONG
+from constants.messages import INSIGHT_OF_MEDIA
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
+from constants.messages import SOMETHING_WENT_WRONG
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from core.keyboards import back_keyboard
@@ -49,9 +50,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(
-            "what do you want ?", reply_markup=base_keyboard
-        )
+        await update.message.reply_text("what do you want ?",
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     client = Client()
     client.delay_range = [1, 3]
@@ -59,9 +59,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     create_requirement_folders()
     logged_in_user = login_user(client)
     if not logged_in_user:
-        await update.message.reply_text(
-            SOMETHING_WENT_WRONG, reply_markup=base_keyboard
-        )
+        await update.message.reply_text(SOMETHING_WENT_WRONG,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
 
     if message_is_url:
