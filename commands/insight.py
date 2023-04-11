@@ -32,8 +32,7 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_media_link(update: Update,
-                         context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -80,5 +79,4 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
     else:
-        await update.message.reply_text(LINK_IS_INVALID,
-                                        reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)

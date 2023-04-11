@@ -15,7 +15,11 @@ from configurations import settings
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY, SOMETHING_WENT_WRONG, PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
+from constants.messages import (
+    LOGGED_IN_SUCCESSFULLY,
+    SOMETHING_WENT_WRONG,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+)
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
@@ -67,8 +71,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(
-                f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -117,21 +120,20 @@ def login_user(client):
             f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
         )
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(
-            user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)
-                client.login(user['username'], user['password'])
+                client.login(user["username"], user["password"])
                 try:
                     client.get_timeline_feed()
                     return True
                 except LoginRequired:
                     if user_instagram_session_is_exist:
                         os.remove(user_instagram_session_path)
-                    client.login(user['username'], user['password'])
+                    client.login(user["username"], user["password"])
                     client.dump_settings(user_instagram_session_path)
-            client.login(user['username'], user['password'])
+            client.login(user["username"], user["password"])
             client.dump_settings(
                 f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
             )
