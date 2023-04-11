@@ -19,6 +19,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from commands.login import login_user
 from configurations import settings
 from constants import BACK
 from constants import LOGIN
@@ -28,7 +29,7 @@ from constants.media_types import IGTV
 from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED
+from constants.messages import DOWNLOAD_COMPLETED, SOMETHING_WENT_WRONG
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
@@ -83,34 +84,12 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if not login_directory_is_exist:
         os.makedirs(login_directory)
 
-    with open("users.json", encoding="utf-8") as file:
-        users = json.load(file)
-
-    for user in users["users"]:
-        user_instagram_session_name = (
-            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+    logged_in_user = login_user(client, login_directory)
+    if not logged_in_user:
+        await update.message.reply_text(
+            SOMETHING_WENT_WRONG, reply_markup=base_keyboard
         )
-        user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
-        try:
-            if user_instagram_session_is_exist:
-                client.load_settings(user_instagram_session_path)
-                client.login(user['username'], user['password'])
-                try:
-                    client.get_timeline_feed()
-                    break
-                except LoginRequired:
-                    if user_instagram_session_is_exist:
-                        os.remove(user_instagram_session_path)
-                    client.login(user['username'], user['password'])
-                    client.dump_settings(user_instagram_session_path)
-            client.login(user['username'], user['password'])
-            client.dump_settings(
-                f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
-            )
-            break
-        except (ClientError, PrivateError):
-            pass
+        return HOME_STATE
 
     if message_is_url:
         try:
