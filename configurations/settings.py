@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 TOKEN = os.environ["TOKEN"]
 NAME = os.environ["NAME"]
 TELEGRAM_USER_ID = int(os.environ["TELEGRAM_USER_ID"])
