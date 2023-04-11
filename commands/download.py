@@ -75,6 +75,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     create_requirement_folders()
+    current_directory = os.getcwd()
+    download_directory = f"{current_directory}/download"
     logged_in_user = login_user(client)
     if not logged_in_user:
         await update.message.reply_text(SOMETHING_WENT_WRONG,
