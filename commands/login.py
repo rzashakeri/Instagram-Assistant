@@ -67,7 +67,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             client.login(username, password)
-            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+            client.dump_settings(
+                f"{login_directory}/{username}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -116,7 +117,8 @@ def login_user(client):
             f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
         )
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(
+            user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)
