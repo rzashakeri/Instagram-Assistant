@@ -133,13 +133,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif media_type == ALBUM:
             for media in media_info["resources"]:
                 if media["video_url"] is not None:
-                    await update.effective_user.send_video(
-                        video=media["video_url"]
-                    )
+                    await update.effective_user.send_video(video=media["video_url"])
                 else:
-                    await update.effective_user.send_photo(
-                        photo=media["thumbnail_url"]
-                    )
+                    await update.effective_user.send_photo(photo=media["thumbnail_url"])
             await update.effective_user.send_message(text=media_info["caption_text"])
             return HOME_STATE
         else:
