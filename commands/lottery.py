@@ -244,4 +244,3 @@ async def lottery_with_comments_list(
         await update.message.reply_text(
             "media not found, check your link and try again",
             reply_markup=base_keyboard)
-
