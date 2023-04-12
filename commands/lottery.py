@@ -122,27 +122,38 @@ async def lottery_with_likes_list(update: Update,
         number_three = await context.bot.send_message(
             chat_id=update.message.chat_id, text="3️⃣")
         time.sleep(1)
-        await context.bot.deleteMessage(message_id=number_three.message_id,
-                                        chat_id=update.message.chat_id)
+        await context.bot.deleteMessage(
+            message_id=number_three.message_id,
+            chat_id=update.message.chat_id
+        )
 
         number_two = await context.bot.send_message(
             chat_id=update.message.chat_id, text="2️⃣")
         time.sleep(1)
-        await context.bot.deleteMessage(message_id=number_two.message_id,
-                                        chat_id=update.message.chat_id)
+        await context.bot.deleteMessage(
+            message_id=number_two.message_id,
+            chat_id=update.message.chat_id
+        )
 
         number_one = await context.bot.send_message(
-            chat_id=update.message.chat_id, text="1️⃣")
+            chat_id=update.message.chat_id,
+            text="1️⃣"
+        )
         time.sleep(1)
-        await context.bot.deleteMessage(message_id=number_one.message_id,
-                                        chat_id=update.message.chat_id)
-        await context.bot.send_photo(chat_id=update.message.chat_id,
-                                     photo=winner.profile_pic_url)
+        await context.bot.deleteMessage(
+            message_id=number_one.message_id,
+            chat_id=update.message.chat_id
+        )
+        await context.bot.send_photo(
+            chat_id=update.message.chat_id,
+            photo=winner.profile_pic_url
+        )
         await context.bot.send_message(
             chat_id=update.message.chat_id,
             text=f"https://instagram.com/{winner.username}",
             reply_markup=base_keyboard,
         )
+        return HOME_STATE
     except MediaNotFound:
         await update.message.reply_text(
             "media not found, check your link and try again",
@@ -159,3 +170,78 @@ async def lottery_with_comments_list(
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
+    try:
+        login_admin_user_to_instagram(CLIENT)
+
+        # start getting post information ==>
+        processing_message = await context.bot.send_message(
+            chat_id=update.message.chat_id, text=PROCESSING)
+        media_pk_from_url = CLIENT.media_pk_from_url(POST_LINK)
+        media_id = CLIENT.media_id(media_pk_from_url)
+        await context.bot.deleteMessage(
+            message_id=processing_message.message_id,
+            chat_id=update.message.chat_id)
+
+        # getting like the list from instagram ==>
+        getting_comments_list_message = await context.bot.send_message(
+            chat_id=update.message.chat_id, text="Grabbing Comments List ...")
+        media_comments = CLIENT.media_comments(media_id)
+        await context.bot.deleteMessage(
+            message_id=getting_comments_list_message.message_id,
+            chat_id=update.message.chat_id,
+        )
+
+        # find winner ==>
+        find_winner_message = await context.bot.send_message(
+            chat_id=update.message.chat_id, text="Finding Winner ... 🎖️")
+        winner = random.choice(media_comments)
+        await context.bot.deleteMessage(
+            message_id=find_winner_message.message_id,
+            chat_id=update.message.chat_id)
+
+        countdown_message = await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text="Countdown to introduce the winner 🕐",
+        )
+        time.sleep(1)
+        await context.bot.deleteMessage(
+            message_id=countdown_message.message_id,
+            chat_id=update.message.chat_id)
+
+        number_three = await context.bot.send_message(
+            chat_id=update.message.chat_id, text="3️⃣")
+        time.sleep(1)
+        await context.bot.deleteMessage(
+            message_id=number_three.message_id,
+            chat_id=update.message.chat_id
+        )
+
+        number_two = await context.bot.send_message(
+            chat_id=update.message.chat_id, text="2️⃣")
+        time.sleep(1)
+        await context.bot.deleteMessage(
+            message_id=number_two.message_id,
+            chat_id=update.message.chat_id
+        )
+
+        number_one = await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text="1️⃣"
+        )
+        time.sleep(1)
+        await context.bot.deleteMessage(
+            message_id=number_one.message_id,
+            chat_id=update.message.chat_id
+        )
+        await context.bot.send_photo(
+            chat_id=update.message.chat_id,
+            photo=winner.user.profile_pic_url,
+            caption=f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
+    except MediaNotFound:
+        await update.message.reply_text(
+            "media not found, check your link and try again",
+            reply_markup=base_keyboard)
+
