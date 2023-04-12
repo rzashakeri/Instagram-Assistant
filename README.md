@@ -11,9 +11,10 @@
 3. Received Insights Of Instagram Post from Telegram
 4. Login To Instagram From Telegram
 5. Get Insight instagram post
-6. Admin Panel 
-7. Get User Count From Admin Panel
-8. Send Message To All User From Admin Panel
+6. Lottery with comments and likes
+7. Admin Panel 
+8. Get User Count From Admin Panel
+9. Send Message To All User From Admin Panel
 
 # Stack
 1. python
