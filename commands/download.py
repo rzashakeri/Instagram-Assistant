@@ -78,7 +78,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     message_is_url = validators.url(message)
     create_requirement_folders()
     current_directory = os.getcwd()
-    download_directory = f"{current_directory}/download"
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await update.message.reply_text(
