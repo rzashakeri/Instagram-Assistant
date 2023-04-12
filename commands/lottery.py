@@ -12,6 +12,7 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
+from constants import PROCESSING
 from constants.keys import BACK_KEY
 from constants.messages import (
     LINK_IS_INVALID,
@@ -86,7 +87,7 @@ async def lottery_with_likes_list(
 
         # start getting post information ==>
         processing_message = await context.bot.send_message(
-            chat_id=update.message.chat_id, text="Processing ..."
+            chat_id=update.message.chat_id, text=PROCESSING
         )
         media_pk_from_url = CLIENT.media_pk_from_url(POST_LINK)
         media_id = CLIENT.media_id(media_pk_from_url)
@@ -145,7 +146,9 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=number_one.message_id, chat_id=update.message.chat_id
         )
-
+        await context.bot.send_photo(
+            chat_id=update.message.chat_id, photo=winner.profile_pic_url
+        )
         await context.bot.send_message(
             chat_id=update.message.chat_id,
             text=f"https://instagram.com/{winner.username}",
