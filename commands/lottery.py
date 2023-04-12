@@ -10,7 +10,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
-from commands.login import login_user
+from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
 from constants.keys import BACK_KEY
 from constants.messages import (
@@ -82,7 +82,7 @@ async def lottery_with_likes_list(
         await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     try:
-        login_user(CLIENT)
+        login_admin_user_to_instagram(CLIENT)
 
         # start getting post information ==>
         processing_message = await context.bot.send_message(

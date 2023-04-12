@@ -20,7 +20,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
-from commands.login import login_user
+from commands.login import login_admin_user_to_instagram
 from configurations import settings
 from constants import BACK
 from constants import LOGIN
@@ -75,7 +75,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     create_requirement_folders()
-    logged_in_user = login_user(client)
+    current_directory = os.getcwd()
+    download_directory = f"{current_directory}/download"
+    logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await update.message.reply_text(SOMETHING_WENT_WRONG,
                                         reply_markup=base_keyboard)
