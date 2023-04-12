@@ -14,18 +14,14 @@ from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.messages import LINK_IS_INVALID
-from constants.messages import PRIVACY_MESSAGE
-from constants.messages import WELCOME_MESSAGE
-from constants.messages import WELCOME_TO_THE_LOTTERY_SECTION
-from constants.messages import WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS
-from constants.messages import WHAT_DO_YOU_WANT
-from constants.states import HOME_STATE
-from constants.states import LOTTERY
-from constants.states import SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
-from core.keyboards import back_keyboard
-from core.keyboards import base_keyboard
-from core.keyboards import lottery_keyboard
+from constants.messages import (LINK_IS_INVALID, PRIVACY_MESSAGE,
+                                WELCOME_MESSAGE,
+                                WELCOME_TO_THE_LOTTERY_SECTION,
+                                WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS,
+                                WHAT_DO_YOU_WANT)
+from constants.states import (HOME_STATE, LOTTERY,
+                              SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY)
+from core.keyboards import back_keyboard, base_keyboard, lottery_keyboard
 from utils.decorators import send_action
 
 # Init logger
