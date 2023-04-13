@@ -46,8 +46,9 @@ from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
-from constants.states import HOME_STATE, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
+from constants.states import HOME_STATE
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
+from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 from constants.states import SET_MEDIA_AND_GET_CAPTION
 from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
@@ -85,7 +86,7 @@ async def get_login_information(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
@@ -136,7 +137,8 @@ async def login_attempt_and_get_media_type(
         USERNAME = username
         PASSWORD = password
         await update.effective_user.send_message(
-            "Please Send Two Factor Authentication Code", reply_markup=back_keyboard)
+            "Please Send Two Factor Authentication Code",
+            reply_markup=back_keyboard)
         return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
@@ -146,8 +148,8 @@ async def login_attempt_and_get_media_type(
 
 
 @send_action(ChatAction.TYPING)
-async def login_with_two_factor_authentication(update: Update,
-                                               context: ContextTypes.DEFAULT_TYPE) -> str:
+async def login_with_two_factor_authentication(
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
 
@@ -174,7 +176,7 @@ async def login_with_two_factor_authentication(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -268,7 +270,7 @@ async def set_media_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -300,7 +302,7 @@ async def set_caption_and_asking_to_confirm_the_content(
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text

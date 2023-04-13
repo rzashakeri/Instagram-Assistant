@@ -13,22 +13,25 @@ from commands import lottery
 from commands import privacy
 from commands import start
 from commands import upload
-from constants.keys import BACK_TO_HOME_KEY, LOTTERY_WITH_COMMENTS_LIST
+from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
 from constants.keys import LOGIN_KEY
 from constants.keys import LOTTERY_KEY
+from constants.keys import LOTTERY_WITH_COMMENTS_LIST
 from constants.keys import LOTTERY_WITH_LIKES_LIST
 from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, LOTTERY, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
+from constants.states import ADMIN_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_STATE
+from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
+from constants.states import LOTTERY
 from constants.states import SEND_MESSAGE_TO_ALL_USER
 from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 from constants.states import SET_MEDIA_AND_GET_CAPTION
@@ -47,17 +50,16 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", start.start)],
         states={
             HOME_STATE: [
-                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"), login.get_login_data),
-                MessageHandler(
-                    filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
-                ),
-                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy),
+                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"),
+                               login.get_login_data),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"),
+                               download.get_media_link),
+                MessageHandler(filters.Regex(f"^{UPLOAD_KEY}$"),
+                               upload.get_login_information),
+                MessageHandler(filters.Regex(f"^{INSIGHT_KEY}$"),
+                               insight.get_media_link),
+                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"),
+                               privacy.privacy),
                 MessageHandler(
                     filters.Regex(f"^{LOTTERY_KEY}$"),
                     lottery.entry_point_and_get_post_link,
@@ -69,13 +71,16 @@ def base_conversation_handler():
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(filters.TEXT,
+                               upload.login_attempt_and_get_media_type)
             ],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION: [
-                MessageHandler(filters.TEXT, upload.login_with_two_factor_authentication)
+                MessageHandler(filters.TEXT,
+                               upload.login_with_two_factor_authentication)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(filters.TEXT,
+                               upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -89,35 +94,32 @@ def base_conversation_handler():
             ],
             SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT: [
                 MessageHandler(
-                    filters.TEXT, upload.set_caption_and_asking_to_confirm_the_content
-                )
+                    filters.TEXT,
+                    upload.set_caption_and_asking_to_confirm_the_content)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
-                MessageHandler(
-                    filters.TEXT, upload.verify_content_and_upload_on_instagram
-                )
+                MessageHandler(filters.TEXT,
+                               upload.verify_content_and_upload_on_instagram)
             ],
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
-                MessageHandler(
-                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
-                ),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
+                               admin.user_count),
+                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                               admin.back_to_home),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
                 ),
             ],
-            SEND_MESSAGE_TO_ALL_USER: [
-                MessageHandler(filters.TEXT, admin.send_message_to_all_user)
-            ],
+            SEND_MESSAGE_TO_ALL_USER:
+            [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
-                MessageHandler(
-                    filters.TEXT, lottery.set_post_link_and_get_type_of_lottery
-                ),
+                MessageHandler(filters.TEXT,
+                               lottery.set_post_link_and_get_type_of_lottery),
             ],
             LOTTERY: [
                 MessageHandler(
