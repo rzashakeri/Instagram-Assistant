@@ -85,7 +85,7 @@ async def get_login_information(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
@@ -174,7 +174,7 @@ async def login_with_two_factor_authentication(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -268,7 +268,7 @@ async def set_media_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -300,7 +300,7 @@ async def set_caption_and_asking_to_confirm_the_content(
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
