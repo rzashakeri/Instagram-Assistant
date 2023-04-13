@@ -54,7 +54,6 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
-    create_requirement_folders()
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await update.message.reply_text(SOMETHING_WENT_WRONG,
