@@ -53,10 +53,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
-    login_directory_is_exist = os.path.isdir(login_directory)
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
-    if not login_directory_is_exist:
-        os.makedirs(login_directory)
     client = Client()
     client.delay_range = [1, 3]
     if user_instagram_session_is_exist:
