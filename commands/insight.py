@@ -33,8 +33,7 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_media_link(update: Update,
-                         context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -50,16 +49,18 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text("what do you want ?",
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(
+            "what do you want ?", reply_markup=base_keyboard
+        )
         return HOME_STATE
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
-        await update.message.reply_text(SOMETHING_WENT_WRONG,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(
+            SOMETHING_WENT_WRONG, reply_markup=base_keyboard
+        )
         return HOME_STATE
 
     if message_is_url:
@@ -78,5 +79,4 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
     else:
-        await update.message.reply_text(LINK_IS_INVALID,
-                                        reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
