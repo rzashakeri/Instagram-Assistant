@@ -77,7 +77,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     create_requirement_folders()
-    current_directory = os.getcwd()
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await update.message.reply_text(
@@ -156,4 +155,4 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         await update.effective_user.send_photo(photo=user_profile_picture_url)
         return HOME_STATE
     else:
-        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=base_keyboard)
