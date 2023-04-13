@@ -23,7 +23,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, LOTTERY
+from constants.states import ADMIN_STATE, LOTTERY, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -70,6 +70,9 @@ def base_conversation_handler():
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+            ],
+            LOGIN_WITH_TWO_FACTOR_AUTHENTICATION: [
+                MessageHandler(filters.TEXT, upload.login_with_two_factor_authentication)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
                 MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
