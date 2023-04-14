@@ -95,3 +95,6 @@ WELCOME_TO_THE_LOTTERY_SECTION: str = (
 WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
     "Well you want to do the lottery on what basis:"
 )
+IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN: str = (
+    "Is your login information saved for the next login?"
+)
