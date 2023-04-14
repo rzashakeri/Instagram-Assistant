@@ -46,7 +46,7 @@ from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
-from constants.states import HOME_STATE
+from constants.states import HOME_STATE, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
@@ -139,7 +139,7 @@ async def login_attempt_and_get_media_type(
         await update.effective_user.send_message(
             "Please Send Two Factor Authentication Code",
             reply_markup=back_keyboard)
-        return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
+        return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
