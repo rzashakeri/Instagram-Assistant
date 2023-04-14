@@ -14,10 +14,10 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
-from constants import BACK
+from constants import BACK, YES
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY
+from constants.messages import LOGGED_IN_SUCCESSFULLY, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SOMETHING_WENT_WRONG
@@ -38,9 +38,16 @@ logger = getLogger(__name__)
 async def get_login_data(update: Update,
                          context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
+    await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                    reply_markup=back_keyboard)
+    return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 
-    message_for_get_login_data: str = MESSAGE_FOR_GET_LOGIN_DATA
-    await update.message.reply_text(message_for_get_login_data,
+
+@send_action(ChatAction.TYPING)
+async def remember_me(update: Update,
+                      context: ContextTypes.DEFAULT_TYPE) -> str:
+    """Select an action: Adding parent/child or show data."""
+    await update.message.reply_text(IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
                                     reply_markup=back_keyboard)
     return LOGIN_STATE
 
@@ -88,8 +95,11 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                                                  reply_markup=base_keyboard)
         return HOME_STATE
     try:
-        client.login(username, password)
-        client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        if message == YES:
+            client.login(username, password)
+            client.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        else:
+            client.login(username, password)
         await update.effective_user.send_message(LOGGED_IN_SUCCESSFULLY,
                                                  reply_markup=base_keyboard)
         return HOME_STATE
