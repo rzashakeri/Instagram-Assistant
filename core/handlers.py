@@ -24,7 +24,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -77,9 +77,14 @@ def base_conversation_handler():
             IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN: [
                 MessageHandler(filters.TEXT, login.remember_me)
             ],
+            # download ==>
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
+            # insight ==>
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
+            LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
+                upload.login_with_two_factor_authentication
+            ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT,
                                upload.login_attempt_and_get_media_type)
