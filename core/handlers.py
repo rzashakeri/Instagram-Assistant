@@ -24,7 +24,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE
+from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -49,6 +49,7 @@ def base_conversation_handler():
     conversation_handler = ConversationHandler(
         entry_points=[CommandHandler("start", start.start)],
         states={
+            # home ==>
             HOME_STATE: [
                 MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"),
                                login.get_login_data),
@@ -67,17 +68,21 @@ def base_conversation_handler():
                 CommandHandler("admin", admin.admin),
                 CommandHandler("privacy", privacy.privacy),
             ],
+            # login ==>
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
+            LOGIN_WITH_TWO_FACTOR_AUTHENTICATION: [
+                MessageHandler(filters.TEXT,
+                               login.login_with_two_factor_authentication)
+            ],
+            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN: [
+                MessageHandler(filters.TEXT, login.remember_me)
+            ],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT,
                                upload.login_attempt_and_get_media_type)
-            ],
-            LOGIN_WITH_TWO_FACTOR_AUTHENTICATION: [
-                MessageHandler(filters.TEXT,
-                               upload.login_with_two_factor_authentication)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
                 MessageHandler(filters.TEXT,
