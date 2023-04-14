@@ -65,6 +65,7 @@ def base_conversation_handler():
                     lottery.entry_point_and_get_post_link,
                 ),
                 CommandHandler("admin", admin.admin),
+                CommandHandler("privacy", privacy.privacy),
             ],
             LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
