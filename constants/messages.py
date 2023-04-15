@@ -25,7 +25,7 @@ WELCOME_MESSAGE: str = (
     "5. Get Insight instagram post\n"
     "6. Lottery based on likes and comments.\n"
     "7. All features are free\n"
-    "8. Open Source\n"
+    "8. [Open Source](https://github.com/rzashakeri/instagram-telegram-bot) \n"
     "9. There is no compulsory membership\n"
     "\n"
     "Please read the rules and privacy with privacy button\n"
