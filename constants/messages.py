@@ -98,3 +98,6 @@ WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
 REMEMBER_ME: str = (
     "Is your login information saved for the next login?"
 )
+USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
+    "User not found, check username and try again"
+)
