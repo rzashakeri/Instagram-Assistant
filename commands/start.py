@@ -4,11 +4,10 @@ import psycopg2
 from logging import getLogger
 from datetime import datetime, timezone
 from telegram import Update
-from telegram.constants import ChatAction
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import ContextTypes
-
 from connectors.postgresql import create_user
-from constants.messages import WELCOME_MESSAGE
+from constants.messages import WELCOME_MESSAGE, PRIVACY_MESSAGE
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
@@ -30,5 +29,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
+        parse_mode=ParseMode.MARKDOWN
     )
     return HOME_STATE
