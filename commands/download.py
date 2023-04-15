@@ -124,6 +124,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif (media_type == VIDEO and product_type == IS_FEED
               or media_type == IGTV and product_type == IS_IGTV
               or media_type == REEL and product_type == IS_CLIPS):
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_VIDEO)
             await update.effective_user.send_video(
                 video=media_info["video_url"],
                 caption=media_info["caption_text"],
@@ -133,9 +136,15 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif media_type == ALBUM:
             for media in media_info["resources"]:
                 if media["video_url"] is not None:
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_VIDEO)
                     await update.effective_user.send_video(
                         video=media["video_url"])
                 else:
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_PHOTO)
                     await update.effective_user.send_photo(
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
