@@ -5,33 +5,25 @@ import time
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import ClientForbiddenError
-from instagrapi.exceptions import LoginRequired
-from instagrapi.exceptions import PrivateError
-from instagrapi.exceptions import TwoFactorRequired
+from instagrapi.exceptions import (ClientError, ClientForbiddenError,
+                                   LoginRequired, PrivateError,
+                                   TwoFactorRequired)
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from configurations import settings
-from constants import BACK, YES
-from constants import LOGIN
+from constants import BACK, LOGIN, YES
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY, REMEMBER_ME
-from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
-from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
-from constants.messages import SOMETHING_WENT_WRONG
-from constants.messages import WHAT_DO_YOU_WANT
-from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
+from constants.messages import (LOGGED_IN_SUCCESSFULLY,
+                                MESSAGE_FOR_GET_LOGIN_DATA,
+                                PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+                                REMEMBER_ME, SOMETHING_WENT_WRONG,
+                                WHAT_DO_YOU_WANT, YOU_WERE_ALREADY_LOGGED_IN)
 from constants.states import (
-    HOME_STATE,
-    IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
-    LOGIN_WITH_TWO_FACTOR_AUTHENTICATION,
-)
-from constants.states import LOGIN_STATE
-from core.keyboards import back_keyboard, yes_or_no_keyboard
-from core.keyboards import base_keyboard
+    HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
+    LOGIN_STATE, LOGIN_WITH_TWO_FACTOR_AUTHENTICATION)
+from core.keyboards import back_keyboard, base_keyboard, yes_or_no_keyboard
 from utils.decorators import send_action
 
 # Init logger
