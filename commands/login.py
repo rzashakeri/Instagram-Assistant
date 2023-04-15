@@ -46,17 +46,18 @@ PASSWORD = None
 
 
 @send_action(ChatAction.TYPING)
-async def get_login_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_login_data(update: Update,
+                         context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     logger.info("get login information")
-    await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA, reply_markup=back_keyboard
-    )
+    await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                    reply_markup=back_keyboard)
     return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 
 
 @send_action(ChatAction.TYPING)
-async def remember_me(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def remember_me(update: Update,
+                      context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     logger.info("Is your login information saved for the next login?")
     message = update.message.text
@@ -65,11 +66,11 @@ async def remember_me(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
         global PASSWORD
         USERNAME, PASSWORD = message.split("\n")
     except ValueError:
-        await update.message.reply_text(
-            MESSAGE_FOR_GET_LOGIN_DATA, reply_markup=back_keyboard
-        )
+        await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                        reply_markup=back_keyboard)
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
-    await update.message.reply_text(REMEMBER_ME, reply_markup=yes_or_no_keyboard)
+    await update.message.reply_text(REMEMBER_ME,
+                                    reply_markup=yes_or_no_keyboard)
     return LOGIN_STATE
 
 
@@ -79,7 +80,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     logger.info("login attempt")
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
     current_directory = os.getcwd()
@@ -94,7 +96,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             CLIENT.login(USERNAME, PASSWORD)
-            CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
+            CLIENT.dump_settings(
+                f"{login_directory}/{USERNAME}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -108,9 +111,8 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
-        await update.effective_user.send_message(
-            YOU_WERE_ALREADY_LOGGED_IN, reply_markup=base_keyboard
-        )
+        await update.effective_user.send_message(YOU_WERE_ALREADY_LOGGED_IN,
+                                                 reply_markup=base_keyboard)
         return HOME_STATE
     global SAVED_LOGIN_INFORMATION
     try:
@@ -118,20 +120,20 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             logger.info("Saved login information for %s", USERNAME)
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
-            CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
+            CLIENT.dump_settings(
+                f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
             logger.info("not Save login information for %s", USERNAME)
             SAVED_LOGIN_INFORMATION = False
             CLIENT.login(USERNAME, PASSWORD)
-        await update.effective_user.send_message(
-            LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
-        )
+        await update.effective_user.send_message(LOGGED_IN_SUCCESSFULLY,
+                                                 reply_markup=base_keyboard)
         return HOME_STATE
     except TwoFactorRequired:
         logger.info("Get Two Factor Authentication Code")
         await update.effective_user.send_message(
-            "Please Send Two Factor Authentication Code", reply_markup=back_keyboard
-        )
+            "Please Send Two Factor Authentication Code",
+            reply_markup=back_keyboard)
         return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
     except ClientForbiddenError:
         await update.effective_user.send_message(
@@ -143,15 +145,15 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
 
 @send_action(ChatAction.TYPING)
 async def login_with_two_factor_authentication(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     logger.info("Login With Two Factor Authentication Code")
     time.sleep(5)
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
     verification_code = message
@@ -159,20 +161,18 @@ async def login_with_two_factor_authentication(
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     global SAVED_LOGIN_INFORMATION
     if SAVED_LOGIN_INFORMATION:
-        CLIENT.login(
-            username=USERNAME, password=PASSWORD, verification_code=verification_code
-        )
+        CLIENT.login(username=USERNAME,
+                     password=PASSWORD,
+                     verification_code=verification_code)
         CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
-        await update.effective_user.send_message(
-            LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
-        )
+        await update.effective_user.send_message(LOGGED_IN_SUCCESSFULLY,
+                                                 reply_markup=base_keyboard)
         return HOME_STATE
-    CLIENT.login(
-        username=USERNAME, password=PASSWORD, verification_code=verification_code
-    )
-    await update.effective_user.send_message(
-        LOGGED_IN_SUCCESSFULLY, reply_markup=base_keyboard
-    )
+    CLIENT.login(username=USERNAME,
+                 password=PASSWORD,
+                 verification_code=verification_code)
+    await update.effective_user.send_message(LOGGED_IN_SUCCESSFULLY,
+                                             reply_markup=base_keyboard)
     return HOME_STATE
 
 
@@ -184,10 +184,10 @@ def login_admin_user_to_instagram(client):
         users = json.load(file)
     for user in users["users"]:
         user_instagram_session_name = (
-            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
-        )
+            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json")
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(
+            user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)
