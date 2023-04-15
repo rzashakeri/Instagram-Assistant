@@ -31,13 +31,14 @@ from constants.media_types import IGTV
 from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED, USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
+from constants.messages import DOWNLOAD_COMPLETED
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
 from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import STARTING_DOWNLOAD
 from constants.messages import UPLOAD_IN_TELEGRAM
+from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
 from constants.product_types import IS_CLIPS
 from constants.product_types import IS_FEED
 from constants.product_types import IS_IGTV
@@ -123,6 +124,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif (media_type == VIDEO and product_type == IS_FEED
               or media_type == IGTV and product_type == IS_IGTV
               or media_type == REEL and product_type == IS_CLIPS):
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_VIDEO)
             await update.effective_user.send_video(
                 video=media_info["video_url"],
                 caption=media_info["caption_text"],
@@ -132,9 +136,15 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif media_type == ALBUM:
             for media in media_info["resources"]:
                 if media["video_url"] is not None:
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_VIDEO)
                     await update.effective_user.send_video(
                         video=media["video_url"])
                 else:
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_PHOTO)
                     await update.effective_user.send_photo(
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
@@ -160,15 +170,16 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 chat_id=update.effective_message.chat_id,
                 action=ChatAction.UPLOAD_PHOTO)
             user_profile_picture_url = user_data["profile_pic_url_hd"]
-            await update.effective_user.send_photo(photo=user_profile_picture_url,
-                                                   reply_markup=base_keyboard)
+            await update.effective_user.send_photo(
+                photo=user_profile_picture_url, reply_markup=base_keyboard)
             return HOME_STATE
         except UserNotFound:
             await context.bot.deleteMessage(
                 message_id=processing_message.message_id,
                 chat_id=update.message.chat_id)
-            await update.message.reply_text(USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
-                                            reply_markup=back_keyboard)
+            await update.message.reply_text(
+                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
+                reply_markup=back_keyboard)
     else:
         await update.message.reply_text(LINK_IS_INVALID,
                                         reply_markup=base_keyboard)
