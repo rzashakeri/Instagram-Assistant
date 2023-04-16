@@ -9,7 +9,13 @@ from telegram.ext import ContextTypes
 from connectors.postgresql import get_user_count, get_user_id
 from constants import BACK
 from constants.keys import BACK_TO_HOME_KEY, BACK_KEY
-from constants.messages import WELCOME_TO_ADMIN, USER_COUNT, WELCOME_TO_HOME, SEND_YOUR_MESSAGE, YOUR_MESSAGE_WAS_SENT
+from constants.messages import (
+    WELCOME_TO_ADMIN,
+    USER_COUNT,
+    WELCOME_TO_HOME,
+    SEND_YOUR_MESSAGE,
+    YOUR_MESSAGE_WAS_SENT,
+)
 from constants.states import ADMIN_STATE, HOME_STATE, SEND_MESSAGE_TO_ALL_USER
 from core.keyboards import base_keyboard, admin_keyboard, back_keyboard
 
@@ -59,7 +65,9 @@ async def back_to_home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def get_message_for_send_to_all_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_message_for_send_to_all_user(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -71,7 +79,9 @@ async def get_message_for_send_to_all_user(update: Update, context: ContextTypes
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def send_message_to_all_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_message_to_all_user(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     message = update.message.text

@@ -29,6 +29,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
     return HOME_STATE
