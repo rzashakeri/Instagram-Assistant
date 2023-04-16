@@ -138,13 +138,15 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 if media["video_url"] is not None:
                     await context.bot.send_chat_action(
                         chat_id=update.effective_message.chat_id,
-                        action=ChatAction.UPLOAD_VIDEO)
+                        action=ChatAction.UPLOAD_VIDEO,
+                    )
                     await update.effective_user.send_video(
                         video=media["video_url"])
                 else:
                     await context.bot.send_chat_action(
                         chat_id=update.effective_message.chat_id,
-                        action=ChatAction.UPLOAD_PHOTO)
+                        action=ChatAction.UPLOAD_PHOTO,
+                    )
                     await update.effective_user.send_photo(
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
