@@ -12,6 +12,7 @@ UPLOAD_REELS_KEY: str = "Upload Reels 📤"
 UPLOAD_PHOTO_KEY: str = "Upload Photo 📤"
 UPLOAD_VIDEO_KEY: str = "Upload IGtv 📤"
 UPLOAD_ALBUM_KEY: str = "Upload Album 📤"
+UPLOAD_STORY_KEY: str = "Upload Story 📤"
 UPLOAD_IGTV_KEY: str = "Upload IGtv 📤"
 
 # admin panel keys
