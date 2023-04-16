@@ -1,13 +1,18 @@
 # encoding: utf-8
 import time
-import psycopg2
+from datetime import datetime
+from datetime import timezone
 from logging import getLogger
-from datetime import datetime, timezone
+
+import psycopg2
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
+
 from connectors.postgresql import create_user
-from constants.messages import WELCOME_MESSAGE, PRIVACY_MESSAGE
+from constants.messages import PRIVACY_MESSAGE
+from constants.messages import WELCOME_MESSAGE
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
