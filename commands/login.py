@@ -68,6 +68,10 @@ async def remember_me(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
             MESSAGE_FOR_GET_LOGIN_DATA, reply_markup=back_keyboard
         )
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+    await update.message.reply_text(
+        "⚠️ Attention: This robot saves a session for next Login if you want",
+        reply_markup=back_keyboard,
+    )
     await update.message.reply_text(REMEMBER_ME, reply_markup=yes_or_no_keyboard)
     return LOGIN_STATE
 
