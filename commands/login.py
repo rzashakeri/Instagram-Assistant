@@ -97,8 +97,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         except LoginRequired:
             os.remove(user_instagram_session)
             CLIENT.login(USERNAME, PASSWORD)
-            CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME}_{user_id}.json")
+            CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -122,8 +121,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             logger.info("Saved login information for %s", USERNAME)
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
-            CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME}_{user_id}.json")
+            CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
             logger.info("not Save login information for %s", USERNAME)
             SAVED_LOGIN_INFORMATION = False
@@ -192,8 +190,7 @@ def login_admin_user_to_instagram(client):
             f"{user['username']}_{settings.TELEGRAM_USER_ID}.json"
         )
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
-        user_instagram_session_is_exist = os.path.exists(
-            user_instagram_session_path)
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
                 client.load_settings(user_instagram_session_path)

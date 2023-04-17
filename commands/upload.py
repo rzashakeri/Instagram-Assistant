@@ -33,7 +33,10 @@ from constants.media_types import IGTV
 from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, PLEASE_SEND_PHOTO_OR_VIDEO
+from constants.messages import (
+    ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+    PLEASE_SEND_PHOTO_OR_VIDEO,
+)
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
@@ -120,8 +123,7 @@ async def login_attempt_and_get_media_type(
         except LoginRequired:
             os.remove(user_instagram_session)
             CLIENT.login(username, password)
-            CLIENT.dump_settings(
-                f"{login_directory}/{username}_{user_id}.json")
+            CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
             await update.effective_user.send_message(
                 WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
                 reply_markup=media_type_keyboard,
@@ -410,8 +412,7 @@ async def verify_content_and_upload_on_instagram(
             return HOME_STATE
         if MEDIA_TYPE == REEL:
             await update.effective_user.send_message(PROCESSING)
-            media_object = CLIENT.clip_upload(
-                path=FILE_PATH_ON_SERVER, caption=CAPTION)
+            media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER, caption=CAPTION)
             media_url = f"https://instagram.com/reel/{media_object.code}"
             os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
