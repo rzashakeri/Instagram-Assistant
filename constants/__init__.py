@@ -11,4 +11,4 @@ DOCUMENT: str = "Document"
 EMAIL: str = "Email"
 PHONE: str = "Phone"
 DUPLICATE_KEY: str = "duplicate key"
-
+JPEG_MIME: str = "image/jpeg"
