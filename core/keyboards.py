@@ -24,7 +24,8 @@ media_type_reply_keyboard = [
 media_type_keyboard = ReplyKeyboardMarkup(media_type_reply_keyboard, resize_keyboard=True)
 
 yes_or_no_reply_keyboard = [
-    [NO, YES]
+    [NO, YES],
+    [BACK_KEY]
 ]
 yes_or_no_keyboard = ReplyKeyboardMarkup(yes_or_no_reply_keyboard, resize_keyboard=True)
 
