@@ -123,6 +123,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
+                await context.bot.deleteMessage(
+                    message_id=getting_media_information.message_id,
+                    chat_id=update.message.chat_id
+                )
                 user_profile_picture_url = user_data["profile_pic_url_hd"]
                 await update.effective_user.send_photo(
                     photo=user_profile_picture_url,
