@@ -412,8 +412,7 @@ async def verify_content_and_upload_on_instagram(
                         message_id=processing_message.message_id,
                         chat_id=update.message.chat_id)
                     await update.effective_user.send_message(
-                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                            format(media_url=media_url),
+                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
