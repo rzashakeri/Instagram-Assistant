@@ -4,75 +4,42 @@ import time
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError, ClientForbiddenError
-from instagrapi.exceptions import ClipNotUpload
-from instagrapi.exceptions import IGTVNotUpload
-from instagrapi.exceptions import LoginRequired
-from instagrapi.exceptions import PhotoNotUpload
-from instagrapi.exceptions import TwoFactorRequired
-from instagrapi.exceptions import UnknownError
-from instagrapi.exceptions import VideoNotUpload
+from instagrapi.exceptions import (ClientError, ClientForbiddenError,
+                                   ClipNotUpload, IGTVNotUpload, LoginRequired,
+                                   PhotoNotUpload, TwoFactorRequired,
+                                   UnknownError, VideoNotUpload)
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 import constants
-from constants import BACK
-from constants import DOCUMENT
-from constants import LOGIN
-from constants import PROCESSING
-from constants import YES
-from constants.keys import BACK_KEY
-from constants.keys import UPLOAD_ALBUM_KEY
-from constants.keys import UPLOAD_IGTV_KEY
-from constants.keys import UPLOAD_PHOTO_KEY
-from constants.keys import UPLOAD_REELS_KEY
-from constants.keys import UPLOAD_STORY_KEY
-from constants.keys import UPLOAD_VIDEO_KEY
-from constants.media_types import ALBUM
-from constants.media_types import IGTV
-from constants.media_types import PHOTO
-from constants.media_types import REEL
-from constants.media_types import STORY
-from constants.media_types import VIDEO
+from constants import BACK, DOCUMENT, LOGIN, PROCESSING, YES
+from constants.keys import (BACK_KEY, UPLOAD_ALBUM_KEY, UPLOAD_IGTV_KEY,
+                            UPLOAD_PHOTO_KEY, UPLOAD_REELS_KEY,
+                            UPLOAD_STORY_KEY, UPLOAD_VIDEO_KEY)
+from constants.media_types import ALBUM, IGTV, PHOTO, REEL, STORY, VIDEO
 from constants.messages import (
     ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
-    REMEMBER_ME,
-    YOU_WERE_ALREADY_LOGGED_IN,
-    LOGGED_IN_SUCCESSFULLY,
-)
-from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
-from constants.messages import FILE_IS_NOT_VALID
-from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
-from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
-from constants.messages import PLEASE_SEND_PHOTO_OR_VIDEO
-from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
-from constants.messages import (
+    CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM, FILE_IS_NOT_VALID,
+    LOGGED_IN_SUCCESSFULLY, MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
+    MESSAGE_FOR_GET_LOGIN_DATA, PLEASE_SEND_PHOTO_OR_VIDEO,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN, REMEMBER_ME,
     SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-)
-from constants.messages import SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
-from constants.messages import SOMETHING_WENT_WRONG
-from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
-from constants.messages import WHAT_DO_YOU_WANT
-from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
-from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
+    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, SOMETHING_WENT_WRONG,
+    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO, WHAT_DO_YOU_WANT,
+    WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+    YOU_WERE_ALREADY_LOGGED_IN,
+    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM)
 from constants.states import (
-    HOME_STATE,
-    IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
-    LOGIN_STATE,
+    HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
     IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD,
-)
-from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
-from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
-from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
-from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
-from constants.states import SET_MEDIA_AND_GET_CAPTION
-from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
-from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
-from core.keyboards import back_keyboard
-from core.keyboards import base_keyboard
-from core.keyboards import media_type_keyboard
-from core.keyboards import yes_or_no_keyboard
+    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE, LOGIN_STATE,
+    LOGIN_WITH_TWO_FACTOR_AUTHENTICATION,
+    LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD,
+    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT, SET_MEDIA_AND_GET_CAPTION,
+    SET_MEDIA_TYPE_AND_GET_MEDIA, VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM)
+from core.keyboards import (back_keyboard, base_keyboard, media_type_keyboard,
+                            yes_or_no_keyboard)
 from utils.decorators import send_action
 
 # Init logger
