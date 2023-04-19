@@ -4,7 +4,7 @@ import time
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClientError, ClientForbiddenError
 from instagrapi.exceptions import ClipNotUpload
 from instagrapi.exceptions import IGTVNotUpload
 from instagrapi.exceptions import LoginRequired
@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
@@ -49,7 +49,7 @@ from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
-from constants.states import HOME_STATE
+from constants.states import HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN, LOGIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
@@ -86,46 +86,65 @@ async def get_login_information(update: Update,
     time.sleep(5)
     await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
                                     reply_markup=back_keyboard)
+    return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
+
+
+@send_action(ChatAction.TYPING)
+async def remember_me(update: Update,
+                      context: ContextTypes.DEFAULT_TYPE) -> str:
+    """Select an action: Adding parent/child or show data."""
+    logger.info("Is your login information saved for the next login?")
+    message = update.message.text
+    try:
+        global USERNAME
+        global PASSWORD
+        USERNAME, PASSWORD = message.split("\n")
+    except ValueError:
+        await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                        reply_markup=back_keyboard)
+        return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+    await update.message.reply_text(
+        "⚠️ Attention: This robot saves a session for next Login if you want",
+        reply_markup=back_keyboard,
+    )
+    await update.message.reply_text(REMEMBER_ME,
+                                    reply_markup=yes_or_no_keyboard)
     return LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
+    logger.info("login attempt")
     message = update.message.text
     if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
-    username, password = message.split("\n")
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session = f"{login_directory}/{username}_{user_id}.json"
+    user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if user_instagram_session_is_exist:
         CLIENT.load_settings(user_instagram_session)
-        CLIENT.login(username, password)
+        CLIENT.login(USERNAME, PASSWORD)
         try:
             CLIENT.get_timeline_feed()
-            await update.effective_user.send_message(
-                WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-                reply_markup=media_type_keyboard,
-            )
-            return SET_MEDIA_TYPE_AND_GET_MEDIA
         except LoginRequired:
             os.remove(user_instagram_session)
-            CLIENT.login(username, password)
+            CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
-                f"{login_directory}/{username}_{user_id}.json")
+                f"{login_directory}/{USERNAME}_{user_id}.json")
+        except ClientForbiddenError:
             await update.effective_user.send_message(
-                WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-                reply_markup=media_type_keyboard,
+                SOMETHING_WENT_WRONG,
+                reply_markup=base_keyboard,
             )
-            return SET_MEDIA_TYPE_AND_GET_MEDIA
+            return HOME_STATE
         except ClientError as error:
             if PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN in error.message:
                 await update.effective_user.send_message(
@@ -133,31 +152,48 @@ async def login_attempt_and_get_media_type(
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
+        await update.effective_user.send_message(
+            WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+            reply_markup=media_type_keyboard,
+        )
+        return SET_MEDIA_TYPE_AND_GET_MEDIA
+    global SAVED_LOGIN_INFORMATION
     try:
-        CLIENT.login(username, password)
-        CLIENT.dump_settings(f"{login_directory}/{username}_{user_id}.json")
+        if message == YES:
+            logger.info("Saved login information for %s", USERNAME)
+            SAVED_LOGIN_INFORMATION = True
+            CLIENT.login(USERNAME, PASSWORD)
+            CLIENT.dump_settings(
+                f"{login_directory}/{USERNAME}_{user_id}.json")
+        else:
+            logger.info("not Save login information for %s", USERNAME)
+            SAVED_LOGIN_INFORMATION = False
+            CLIENT.login(USERNAME, PASSWORD)
+        await update.effective_user.send_message(
+            WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+            reply_markup=media_type_keyboard,
+        )
+        return SET_MEDIA_TYPE_AND_GET_MEDIA
     except TwoFactorRequired:
-        global USERNAME
-        global PASSWORD
-        USERNAME = username
-        PASSWORD = password
+        logger.info("Get Two Factor Authentication Code")
         await update.effective_user.send_message(
             "Please Send Two Factor Authentication Code",
             reply_markup=back_keyboard)
         return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
-    await update.effective_user.send_message(
-        WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-        reply_markup=media_type_keyboard,
-    )
-    return SET_MEDIA_TYPE_AND_GET_MEDIA
+    except ClientForbiddenError:
+        await update.effective_user.send_message(
+            SOMETHING_WENT_WRONG,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
 
 
 @send_action(ChatAction.TYPING)
 async def login_with_two_factor_authentication(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
-
+    logger.info("Login With Two Factor Authentication Code")
     time.sleep(5)
     message = update.message.text
     if message == BACK_KEY:
@@ -165,13 +201,23 @@ async def login_with_two_factor_authentication(
                                         reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
-    code = message
+    verification_code = message
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-
-    CLIENT.login(username=USERNAME, password=PASSWORD, verification_code=code)
-    CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
-
+    global SAVED_LOGIN_INFORMATION
+    if SAVED_LOGIN_INFORMATION:
+        CLIENT.login(username=USERNAME,
+                     password=PASSWORD,
+                     verification_code=verification_code)
+        CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
+        await update.effective_user.send_message(
+            WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+            reply_markup=media_type_keyboard,
+        )
+        return SET_MEDIA_TYPE_AND_GET_MEDIA
+    CLIENT.login(username=USERNAME,
+                 password=PASSWORD,
+                 verification_code=verification_code)
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
@@ -181,7 +227,7 @@ async def login_with_two_factor_authentication(
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -196,7 +242,7 @@ async def set_media_type_and_get_media(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=back_keyboard,
         )
-        return SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
+        return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_PHOTO_KEY:
         MEDIA_TYPE = PHOTO
         await update.effective_user.send_message(
@@ -274,6 +320,34 @@ async def set_media_and_get_caption(update: Update,
     file_path = await media.download_to_drive()
     logger.info("download completed")
     FILE_PATH_ON_SERVER = str(file_path)
+    if MEDIA_TYPE == STORY:
+        await update.effective_user.send_message(
+            MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
+        if USER_UPLOADED_FILE_TYPE == constants.PHOTO:
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_PHOTO,
+            )
+            await update.effective_user.send_photo(photo=FILE_PATH_ON_SERVER)
+
+        elif USER_UPLOADED_FILE_TYPE == constants.VIDEO:
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_VIDEO,
+            )
+            await update.effective_user.send_video(video=FILE_PATH_ON_SERVER)
+
+        elif USER_UPLOADED_FILE_TYPE == constants.DOCUMENT:
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_DOCUMENT,
+            )
+            await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
+        await update.effective_user.send_message(
+            ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+            reply_markup=yes_or_no_keyboard,
+        )
+        return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=back_keyboard,
@@ -283,7 +357,7 @@ async def set_media_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -303,10 +377,9 @@ async def set_caption_and_asking_to_confirm_the_content(
 
     elif USER_UPLOADED_FILE_TYPE == constants.DOCUMENT:
         await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
-    if MEDIA_TYPE != STORY:
-        await update.effective_user.send_message(
-            CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
-        await update.effective_user.send_message(CAPTION)
+    await update.effective_user.send_message(
+        CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
+    await update.effective_user.send_message(CAPTION)
     await update.effective_user.send_message(
         ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
         reply_markup=yes_or_no_keyboard,
@@ -316,7 +389,7 @@ async def set_caption_and_asking_to_confirm_the_content(
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -327,27 +400,34 @@ async def verify_content_and_upload_on_instagram(
         return HOME_STATE
     try:
         if MEDIA_TYPE == STORY:
-            await update.effective_user.send_message(PROCESSING)
+            processing_message = await context.bot.send_message(
+                chat_id=update.message.chat_id, text=PROCESSING)
             try:
-                if MEDIA_MIME == "jpeg":
+                if MEDIA_MIME == constants.JPEG_MIME:
                     story_object = CLIENT.photo_upload_to_story(
                         path=FILE_PATH_ON_SERVER)
-                    media_url = f"https://instagram.com/stories/{story_object.user.username}/{story_object.code}"
+                    media_url = f"https://instagram.com/stories/{story_object.user.username}/{story_object.id}"
                     os.remove(FILE_PATH_ON_SERVER)
+                    await context.bot.deleteMessage(
+                        message_id=processing_message.message_id,
+                        chat_id=update.message.chat_id)
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                        format(media_url=media_url),
+                            format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
                 elif MEDIA_MIME == "mp4":
                     story_object = CLIENT.video_upload_to_story(
                         path=FILE_PATH_ON_SERVER)
-                    media_url = f"https://instagram.com/stories/{story_object.user.username}/{story_object.code}"
+                    media_url = f"https://instagram.com/stories/{story_object.user.username}/{story_object.id}"
                     os.remove(FILE_PATH_ON_SERVER)
+                    await context.bot.deleteMessage(
+                        message_id=processing_message.message_id,
+                        chat_id=update.message.chat_id)
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                        format(media_url=media_url),
+                            format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -404,6 +484,7 @@ async def verify_content_and_upload_on_instagram(
                                               caption=CAPTION)
             media_url = f"https://instagram.com/reel/{media_object.code}"
             os.remove(FILE_PATH_ON_SERVER)
+
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url),
