@@ -88,7 +88,8 @@ def base_conversation_handler():
                 MessageHandler(filters.TEXT, upload.remember_me)
             ],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
-                MessageHandler(filters.TEXT, upload.login_with_two_factor_authentication)
+                MessageHandler(
+                    filters.TEXT, upload.login_with_two_factor_authentication)
             ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT,
