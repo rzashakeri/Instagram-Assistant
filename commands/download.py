@@ -22,11 +22,11 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from configurations import settings
-from constants import BACK
+from constants import BACK, STORIES
 from constants import LOGIN
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.media_types import ALBUM
+from constants.media_types import ALBUM, STORY
 from constants.media_types import IGTV
 from constants.media_types import PHOTO
 from constants.media_types import REEL
@@ -83,34 +83,38 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         return HOME_STATE
 
     if message_is_url:
-        try:
-            await context.bot.send_chat_action(
-                chat_id=update.effective_message.chat_id,
-                action=ChatAction.TYPING)
-            processing_message = await context.bot.send_message(
-                chat_id=update.message.chat_id, text=PROCESSING)
-            media_pk_from_url = client.media_pk_from_url(message)
-            media_info = client.media_info(media_pk_from_url).dict()
-            await context.bot.deleteMessage(
-                message_id=processing_message.message_id,
-                chat_id=update.message.chat_id)
-        except (MediaNotFound, UnknownError):
-            regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
-            username = re.findall(regex, message)[0]
+        url_slices = message.split('/')
+        if STORIES in url_slices:
+            media_type = STORY
+        else:
             try:
-                user_data = client.user_info_by_username(username).dict()
-            except UserNotFound:
-                await update.message.reply_text(
-                    LINK_IS_INVALID,
-                    reply_markup=base_keyboard,
-                )
+                await context.bot.send_chat_action(
+                    chat_id=update.effective_message.chat_id,
+                    action=ChatAction.TYPING)
+                processing_message = await context.bot.send_message(
+                    chat_id=update.message.chat_id, text=PROCESSING)
+                media_pk_from_url = client.media_pk_from_url(message)
+                media_info = client.media_info(media_pk_from_url).dict()
+                media_type = media_info["media_type"]
+                product_type = media_info["product_type"]
+                await context.bot.deleteMessage(
+                    message_id=processing_message.message_id,
+                    chat_id=update.message.chat_id)
+            except (MediaNotFound, UnknownError):
+                regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
+                username = re.findall(regex, message)[0]
+                try:
+                    user_data = client.user_info_by_username(username).dict()
+                except UserNotFound:
+                    await update.message.reply_text(
+                        LINK_IS_INVALID,
+                        reply_markup=base_keyboard,
+                    )
+                    return HOME_STATE
+                user_profile_picture_url = user_data["profile_pic_url_hd"]
+                await update.effective_user.send_photo(
+                    photo=user_profile_picture_url, reply_markup=base_keyboard)
                 return HOME_STATE
-            user_profile_picture_url = user_data["profile_pic_url_hd"]
-            await update.effective_user.send_photo(
-                photo=user_profile_picture_url, reply_markup=base_keyboard)
-            return HOME_STATE
-        media_type = media_info["media_type"]
-        product_type = media_info["product_type"]
         if media_type == PHOTO:
             await context.bot.send_chat_action(
                 chat_id=update.effective_message.chat_id,
@@ -151,6 +155,17 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
                 text=media_info["caption_text"], reply_markup=base_keyboard)
+            return HOME_STATE
+        elif media_type == STORY:
+            story_pk_from_url = client.story_pk_from_url(message)
+            story_info = client.story_info(story_pk_from_url)
+            await context.bot.send_chat_action(
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_PHOTO)
+            await update.effective_user.send_photo(
+                photo=story_info.thumbnail_url,
+                reply_markup=base_keyboard,
+            )
             return HOME_STATE
         else:
             await update.message.reply_text(LINK_IS_INVALID,
