@@ -84,3 +84,4 @@ REMEMBER_ME: str = "Is your login information saved for the next login?"
 USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
     "User not found, check username and try again")
 PLEASE_SEND_PHOTO_OR_VIDEO: str = "file is not valid, please send a photo (Support JPG files) or video (Support MP4 files)"
+GETTING_STORY_INFORMATION: str = "Getting Story information ..."
