@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY, SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY, SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, TITLE_OF_YOUR_IGTV
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
@@ -402,6 +402,7 @@ async def set_caption_and_asking_to_confirm_the_content(
         CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
     await update.effective_user.send_message(CAPTION)
     if IGTV_TITLE is not None:
+        await update.effective_user.send_message(TITLE_OF_YOUR_IGTV)
         await update.effective_user.send_message(IGTV_TITLE)
     await update.effective_user.send_message(
             ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
