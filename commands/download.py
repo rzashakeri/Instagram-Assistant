@@ -31,7 +31,7 @@ from constants.media_types import IGTV
 from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED
+from constants.messages import DOWNLOAD_COMPLETED, GETTING_STORY_INFORMATION
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
@@ -191,7 +191,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 chat_id=update.message.chat_id)
             getting_story_information = await context.bot.send_message(
                 chat_id=update.message.chat_id,
-                text="Getting Story information ..."
+                text=GETTING_STORY_INFORMATION
             )
             story_info = client.story_info(story_pk_from_url)
             await context.bot.deleteMessage(
