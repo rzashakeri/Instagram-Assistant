@@ -6,7 +6,7 @@ from constants import DUPLICATE_KEY
 def create_user(user_id, first_name, last_name, username):
     """create user in database"""
     connection = psycopg2.connect(
-        database=POSTGRESQL_NAME,
+        db_name=POSTGRESQL_NAME,
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
