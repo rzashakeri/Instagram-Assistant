@@ -15,7 +15,7 @@ from configurations import settings
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import INSIGHT_OF_MEDIA
+from constants.messages import INSIGHT_OF_MEDIA, WHAT_DO_YOU_WANT
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
@@ -50,7 +50,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text("what do you want ?",
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
     client = Client()
