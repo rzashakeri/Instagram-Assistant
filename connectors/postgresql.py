@@ -1,8 +1,10 @@
 import psycopg2
 
-from configurations.settings import (POSTGRESQL_HOST, POSTGRESQL_NAME,
-                                     POSTGRESQL_PASSWORD, POSTGRESQL_PORT,
-                                     POSTGRESQL_USERNAME)
+from configurations.settings import POSTGRESQL_HOST
+from configurations.settings import POSTGRESQL_NAME
+from configurations.settings import POSTGRESQL_PASSWORD
+from configurations.settings import POSTGRESQL_PORT
+from configurations.settings import POSTGRESQL_USERNAME
 from constants import DUPLICATE_KEY
 
 
