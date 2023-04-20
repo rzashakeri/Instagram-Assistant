@@ -34,6 +34,8 @@ SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the media you want to upload on Instagram")
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the caption of post you want to upload on Instagram")
+SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
+    "Send me the title of IGTV you want to upload on Instagram")
 WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     f"{LOGGED_IN_SUCCESSFULLY} What type of content do you want to upload on Instagram"
 )
