@@ -81,7 +81,7 @@ async def remember_me(update: Update,
 @send_action(ChatAction.TYPING)
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    logger.info("login attempt")
+    logger.info("login attempt ")
     message = update.message.text
     if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
@@ -182,6 +182,7 @@ async def login_with_two_factor_authentication(
 
 def login_admin_user_to_instagram(client):
     """login user"""
+    logger.info("Login Admin User")
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     with open("users.json", encoding="utf-8") as file:
