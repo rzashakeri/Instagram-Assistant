@@ -19,7 +19,7 @@ from constants import BACK
 from constants import LOGIN
 from constants import YES
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY
+from constants.messages import LOGGED_IN_SUCCESSFULLY, THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import REMEMBER_ME
@@ -58,7 +58,7 @@ async def get_login_data(update: Update,
 @send_action(ChatAction.TYPING)
 async def remember_me(update: Update,
                       context: ContextTypes.DEFAULT_TYPE) -> str:
-    """Select an action: Adding parent/child or show data."""
+    """Is your login information saved for the next login?"""
     logger.info("Is your login information saved for the next login?")
     message = update.message.text
     try:
@@ -70,7 +70,7 @@ async def remember_me(update: Update,
                                         reply_markup=back_keyboard)
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
     await update.message.reply_text(
-        "⚠️ Attention: This robot saves a session for next Login if you want",
+        THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT,
         reply_markup=back_keyboard,
     )
     await update.message.reply_text(REMEMBER_ME,

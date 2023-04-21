@@ -15,11 +15,12 @@ from configurations import settings
 from constants import BACK
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import INSIGHT_OF_MEDIA, WHAT_DO_YOU_WANT
+from constants.messages import INSIGHT_OF_MEDIA
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
 from constants.messages import SOMETHING_WENT_WRONG
+from constants.messages import WHAT_DO_YOU_WANT
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from core.keyboards import back_keyboard
