@@ -115,7 +115,7 @@ async def remember_me(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
@@ -191,7 +191,7 @@ async def login_attempt_and_get_media_type(
 
 @send_action(ChatAction.TYPING)
 async def login_with_two_factor_authentication(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     logger.info("Login With Two Factor Authentication Code")
@@ -228,7 +228,7 @@ async def login_with_two_factor_authentication(
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -363,7 +363,7 @@ async def set_media_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_title_of_igtv_and_get_caption(update: Update,
-                                context: ContextTypes.DEFAULT_TYPE) -> str:
+                                            context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     global IGTV_TITLE
@@ -377,7 +377,7 @@ async def set_title_of_igtv_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -405,15 +405,15 @@ async def set_caption_and_asking_to_confirm_the_content(
         await update.effective_user.send_message(TITLE_OF_YOUR_IGTV)
         await update.effective_user.send_message(IGTV_TITLE)
     await update.effective_user.send_message(
-            ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
-            reply_markup=yes_or_no_keyboard,
+        ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+        reply_markup=yes_or_no_keyboard,
     )
     return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -436,7 +436,8 @@ async def verify_content_and_upload_on_instagram(
                         message_id=processing_message.message_id,
                         chat_id=update.message.chat_id)
                     await update.effective_user.send_message(
-                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(media_url=media_url),
+                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                            media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -450,7 +451,7 @@ async def verify_content_and_upload_on_instagram(
                         chat_id=update.message.chat_id)
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                            format(media_url=media_url),
+                        format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
