@@ -106,6 +106,10 @@ async def remember_me(update: Update,
     """Select an action: Adding parent/child or show data."""
     logger.info("Is your login information saved for the next login?")
     message = update.message.text
+    if message == BACK_KEY:
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
+        return HOME_STATE
     try:
         global USERNAME
         global PASSWORD
