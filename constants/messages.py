@@ -42,8 +42,7 @@ WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
 ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA: str = "Are you sure of uploading this media?"
 MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
     "Media that is going to be uploaded to Instagram")
-TITLE_OF_YOUR_IGTV: str = (
-    "Title Of Your IGTV")
+TITLE_OF_YOUR_IGTV: str = "Title Of Your IGTV"
 CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
     "Caption that is going to be uploaded to Instagram")
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
