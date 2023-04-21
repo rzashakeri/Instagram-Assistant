@@ -19,11 +19,12 @@ from constants import BACK
 from constants import LOGIN
 from constants import YES
 from constants.keys import BACK_KEY
-from constants.messages import LOGGED_IN_SUCCESSFULLY, THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT
+from constants.messages import LOGGED_IN_SUCCESSFULLY
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import REMEMBER_ME
 from constants.messages import SOMETHING_WENT_WRONG
+from constants.messages import THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
 from constants.states import HOME_STATE
