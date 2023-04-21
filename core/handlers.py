@@ -24,11 +24,12 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD, SET_TITLE_OF_IGTV_AND_GET_CAPTION
+from constants.states import ADMIN_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_STATE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
@@ -39,6 +40,7 @@ from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 from constants.states import SET_MEDIA_AND_GET_CAPTION
 from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
 from constants.states import SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
+from constants.states import SET_TITLE_OF_IGTV_AND_GET_CAPTION
 from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
 # Init logger
@@ -76,19 +78,18 @@ def base_conversation_handler():
                 MessageHandler(filters.TEXT,
                                login.login_with_two_factor_authentication)
             ],
-            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN: [
-                MessageHandler(filters.TEXT, login.remember_me)
-            ],
+            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN:
+            [MessageHandler(filters.TEXT, login.remember_me)],
             # download ==>
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
             # insight ==>
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
-            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD: [
-                MessageHandler(filters.TEXT, upload.remember_me)
-            ],
+            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD:
+            [MessageHandler(filters.TEXT, upload.remember_me)],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
-                MessageHandler(filters.TEXT, upload.login_with_two_factor_authentication)
+                MessageHandler(filters.TEXT,
+                               upload.login_with_two_factor_authentication)
             ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
                 MessageHandler(filters.TEXT,
@@ -114,9 +115,8 @@ def base_conversation_handler():
                     upload.set_caption_and_asking_to_confirm_the_content)
             ],
             SET_TITLE_OF_IGTV_AND_GET_CAPTION: [
-                MessageHandler(
-                    filters.TEXT,
-                    upload.set_title_of_igtv_and_get_caption)
+                MessageHandler(filters.TEXT,
+                               upload.set_title_of_igtv_and_get_caption)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
                 MessageHandler(filters.TEXT,

@@ -4,7 +4,8 @@ import time
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError, ClientForbiddenError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClientForbiddenError
 from instagrapi.exceptions import ClipNotUpload
 from instagrapi.exceptions import IGTVNotUpload
 from instagrapi.exceptions import LoginRequired
@@ -35,27 +36,36 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY, SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, TITLE_OF_YOUR_IGTV
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
+from constants.messages import LOGGED_IN_SUCCESSFULLY
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import PLEASE_SEND_PHOTO_OR_VIDEO
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
+from constants.messages import REMEMBER_ME
 from constants.messages import SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import SOMETHING_WENT_WRONG
+from constants.messages import TITLE_OF_YOUR_IGTV
 from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
-from constants.states import HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN, LOGIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD, SET_TITLE_OF_IGTV_AND_GET_CAPTION
+from constants.states import HOME_STATE
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
+from constants.states import LOGIN_STATE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 from constants.states import SET_MEDIA_AND_GET_CAPTION
 from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
+from constants.states import SET_TITLE_OF_IGTV_AND_GET_CAPTION
 from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
@@ -115,7 +125,7 @@ async def remember_me(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
@@ -191,7 +201,7 @@ async def login_attempt_and_get_media_type(
 
 @send_action(ChatAction.TYPING)
 async def login_with_two_factor_authentication(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     logger.info("Login With Two Factor Authentication Code")
@@ -228,7 +238,7 @@ async def login_with_two_factor_authentication(
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -342,7 +352,8 @@ async def set_media_and_get_caption(update: Update,
                 chat_id=update.effective_message.chat_id,
                 action=ChatAction.UPLOAD_DOCUMENT,
             )
-            await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
+            await update.effective_user.send_document(
+                document=FILE_PATH_ON_SERVER)
         await update.effective_user.send_message(
             ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
             reply_markup=yes_or_no_keyboard,
@@ -362,8 +373,8 @@ async def set_media_and_get_caption(update: Update,
 
 
 @send_action(ChatAction.TYPING)
-async def set_title_of_igtv_and_get_caption(update: Update,
-                                context: ContextTypes.DEFAULT_TYPE) -> str:
+async def set_title_of_igtv_and_get_caption(
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     global IGTV_TITLE
@@ -377,7 +388,7 @@ async def set_title_of_igtv_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -405,15 +416,15 @@ async def set_caption_and_asking_to_confirm_the_content(
         await update.effective_user.send_message(TITLE_OF_YOUR_IGTV)
         await update.effective_user.send_message(IGTV_TITLE)
     await update.effective_user.send_message(
-            ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
-            reply_markup=yes_or_no_keyboard,
+        ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+        reply_markup=yes_or_no_keyboard,
     )
     return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -434,9 +445,11 @@ async def verify_content_and_upload_on_instagram(
                     os.remove(FILE_PATH_ON_SERVER)
                     await context.bot.deleteMessage(
                         message_id=processing_message.message_id,
-                        chat_id=update.message.chat_id)
+                        chat_id=update.message.chat_id,
+                    )
                     await update.effective_user.send_message(
-                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(media_url=media_url),
+                        YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
+                        format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -447,10 +460,11 @@ async def verify_content_and_upload_on_instagram(
                     os.remove(FILE_PATH_ON_SERVER)
                     await context.bot.deleteMessage(
                         message_id=processing_message.message_id,
-                        chat_id=update.message.chat_id)
+                        chat_id=update.message.chat_id,
+                    )
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                            format(media_url=media_url),
+                        format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -501,11 +515,9 @@ async def verify_content_and_upload_on_instagram(
             return HOME_STATE
         if MEDIA_TYPE == IGTV:
             await update.effective_user.send_message(PROCESSING)
-            media_object = CLIENT.igtv_upload(
-                path=FILE_PATH_ON_SERVER,
-                caption=CAPTION,
-                title=""
-            )
+            media_object = CLIENT.igtv_upload(path=FILE_PATH_ON_SERVER,
+                                              caption=CAPTION,
+                                              title="")
             media_url = f"https://instagram.com/p/{media_object.code}"
             os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
