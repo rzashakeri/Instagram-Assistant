@@ -4,26 +4,22 @@ from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import LoginRequired
+from instagrapi.exceptions import ClientError, LoginRequired
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from configurations import settings
-from constants import BACK
-from constants import LOGIN
+from constants import BACK, LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import INSIGHT_OF_MEDIA, WHAT_DO_YOU_WANT
-from constants.messages import LINK_IS_INVALID
-from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
-from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
-from constants.messages import SOMETHING_WENT_WRONG
-from constants.states import HOME_STATE
-from constants.states import INSIGHT_STATE
-from core.keyboards import back_keyboard
-from core.keyboards import base_keyboard
+from constants.messages import (
+    INSIGHT_OF_MEDIA, LINK_IS_INVALID,
+    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN,
+    SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS, SOMETHING_WENT_WRONG,
+    WHAT_DO_YOU_WANT)
+from constants.states import HOME_STATE, INSIGHT_STATE
+from core.keyboards import back_keyboard, base_keyboard
 from utils import create_requirement_folders
 from utils.decorators import send_action
 
