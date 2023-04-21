@@ -24,7 +24,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
+from constants.states import ADMIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD, SET_TITLE_OF_IGTV_AND_GET_CAPTION
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -112,6 +112,11 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.TEXT,
                     upload.set_caption_and_asking_to_confirm_the_content)
+            ],
+            SET_TITLE_OF_IGTV_AND_GET_CAPTION: [
+                MessageHandler(
+                    filters.TEXT,
+                    upload.set_title_of_igtv_and_get_caption)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
                 MessageHandler(filters.TEXT,

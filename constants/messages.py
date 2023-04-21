@@ -34,12 +34,16 @@ SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the media you want to upload on Instagram")
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the caption of post you want to upload on Instagram")
+SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
+    "Send me the title of IGTV you want to upload on Instagram")
 WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     f"{LOGGED_IN_SUCCESSFULLY} What type of content do you want to upload on Instagram"
 )
 ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA: str = "Are you sure of uploading this media?"
 MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
     "Media that is going to be uploaded to Instagram")
+TITLE_OF_YOUR_IGTV: str = (
+    "Title Of Your IGTV")
 CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
     "Caption that is going to be uploaded to Instagram")
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (

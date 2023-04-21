@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, REMEMBER_ME, YOU_WERE_ALREADY_LOGGED_IN, LOGGED_IN_SUCCESSFULLY, SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM, TITLE_OF_YOUR_IGTV
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
@@ -49,7 +49,7 @@ from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
-from constants.states import HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN, LOGIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
+from constants.states import HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN, LOGIN_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD, SET_TITLE_OF_IGTV_AND_GET_CAPTION
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
@@ -76,6 +76,7 @@ USER_UPLOADED_FILE_TYPE = None
 FILE_PATH_ON_SERVER = None
 USERNAME = None
 PASSWORD = None
+IGTV_TITLE = None
 
 
 @send_action(ChatAction.TYPING)
@@ -315,7 +316,6 @@ async def set_media_and_get_caption(update: Update,
         await update.message.reply_text(FILE_IS_NOT_VALID,
                                         reply_markup=base_keyboard)
         return HOME_STATE
-
     logger.info("starting download media ...")
     file_path = await media.download_to_drive()
     logger.info("download completed")
@@ -348,6 +348,26 @@ async def set_media_and_get_caption(update: Update,
             reply_markup=yes_or_no_keyboard,
         )
         return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
+    if MEDIA_TYPE == IGTV:
+        await update.effective_user.send_message(
+            SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+            reply_markup=back_keyboard,
+        )
+        return SET_TITLE_OF_IGTV_AND_GET_CAPTION
+    await update.effective_user.send_message(
+        SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+        reply_markup=back_keyboard,
+    )
+    return SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
+
+
+@send_action(ChatAction.TYPING)
+async def set_title_of_igtv_and_get_caption(update: Update,
+                                context: ContextTypes.DEFAULT_TYPE) -> str:
+    # pylint: disable=unused-argument
+    """Select an action: Adding parent/child or show data."""
+    global IGTV_TITLE
+    IGTV_TITLE = update.message.text
     await update.effective_user.send_message(
         SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=back_keyboard,
@@ -366,6 +386,7 @@ async def set_caption_and_asking_to_confirm_the_content(
                                         reply_markup=base_keyboard)
         return HOME_STATE
     global CAPTION
+    global IGTV_TITLE
     CAPTION = update.message.text
     await update.effective_user.send_message(
         MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
@@ -380,9 +401,12 @@ async def set_caption_and_asking_to_confirm_the_content(
     await update.effective_user.send_message(
         CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
     await update.effective_user.send_message(CAPTION)
+    if IGTV_TITLE is not None:
+        await update.effective_user.send_message(TITLE_OF_YOUR_IGTV)
+        await update.effective_user.send_message(IGTV_TITLE)
     await update.effective_user.send_message(
-        ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
-        reply_markup=yes_or_no_keyboard,
+            ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
+            reply_markup=yes_or_no_keyboard,
     )
     return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
@@ -476,6 +500,19 @@ async def verify_content_and_upload_on_instagram(
             )
             return HOME_STATE
         if MEDIA_TYPE == IGTV:
+            await update.effective_user.send_message(PROCESSING)
+            media_object = CLIENT.igtv_upload(
+                path=FILE_PATH_ON_SERVER,
+                caption=CAPTION,
+                title=""
+            )
+            media_url = f"https://instagram.com/p/{media_object.code}"
+            os.remove(FILE_PATH_ON_SERVER)
+            await update.effective_user.send_message(
+                YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
+                    media_url=media_url),
+                reply_markup=base_keyboard,
+            )
             return HOME_STATE
         if MEDIA_TYPE == REEL:
             await update.effective_user.send_message(PROCESSING)
