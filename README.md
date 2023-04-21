@@ -1,7 +1,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ## Instagram Assistant
 
- instagram in telegram with extra feature 💡
+ [Instagram Assistant](https://t.me/InstagramAssistantRobot) in telegram with extra feature 💡
 
 
 
