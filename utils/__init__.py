@@ -11,6 +11,7 @@ from constants import LOGIN
 
 
 class CustomRateLimiter(BaseRateLimiter):
+
     async def initialize(self) -> None:
         """Initialize resources used by this class. Must be implemented by a subclass."""
 
