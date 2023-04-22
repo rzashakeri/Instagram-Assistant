@@ -2,12 +2,16 @@ import os
 import time
 from abc import abstractmethod
 from collections import defaultdict
-from telegram.ext import BaseRateLimiter, Updater, CommandHandler
+
+from telegram.ext import BaseRateLimiter
+from telegram.ext import CommandHandler
+from telegram.ext import Updater
 
 from constants import LOGIN
 
 
 class CustomRateLimiter(BaseRateLimiter):
+
     async def initialize(self) -> None:
         """Initialize resources used by this class. Must be implemented by a subclass."""
 
@@ -23,7 +27,8 @@ class CustomRateLimiter(BaseRateLimiter):
     async def process_request(self, callback, *args, **kwargs):
         user_id = kwargs.get("chat_id") or kwargs.get("user_id")
         if user_id is not None and not self.check_limit(user_id):
-            return ValueError("rate limit is exceeded")  # Return None if rate limit is exceeded
+            # Return None if rate limit is exceeded
+            return ValueError("rate limit is exceeded")
 
         return await callback(*args, **kwargs)  # Proceed with the request
 
