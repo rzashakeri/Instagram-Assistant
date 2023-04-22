@@ -23,7 +23,8 @@ class CustomRateLimiter(BaseRateLimiter):
     async def process_request(self, callback, *args, **kwargs):
         user_id = kwargs.get("chat_id") or kwargs.get("user_id")
         if user_id is not None and not self.check_limit(user_id):
-            return ValueError("rate limit is exceeded")  # Return None if rate limit is exceeded
+            # Return None if rate limit is exceeded
+            return ValueError("rate limit is exceeded")
 
         return await callback(*args, **kwargs)  # Proceed with the request
 
