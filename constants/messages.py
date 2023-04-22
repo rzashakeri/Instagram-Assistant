@@ -72,7 +72,7 @@ PRIVACY_MESSAGE: str = (
     "⚠️ This robot stores the following information:\n"
     "User ID,First Name, Last Name, Username\n"
     "\n"
-    "And when you login Instagram through this robot, if you want to save the session for the next login on our servers\n"
+    "And when you login Instagram through this robot for upload media, if you want to save the session for the next login on our servers\n"
     "\n"
     "You can change your password after you log in via the robot "
     "and erase the relevant session through the original Instagram app\n"
