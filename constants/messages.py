@@ -24,7 +24,7 @@ WELCOME_MESSAGE: str = (
     "5. Get Insight instagram post\n"
     "6. Lottery based on likes and comments.\n"
     "7. All features are free\n"
-    "8. [Open Source](https://github.com/rzashakeri/instagram-telegram-bot) \n"
+    "8. [Open Source](https://github.com/rzashakeri/Instagram-Assistant) \n"
     "9. There is no compulsory membership\n"
     "\n"
     "Please read the rules and privacy with privacy button\n"
@@ -78,7 +78,7 @@ PRIVACY_MESSAGE: str = (
     "You can change your password after you log in via the robot "
     "and erase the relevant session through the original Instagram app\n"
     "\n"
-    "Source Code: https://github.com/rzashakeri/instagram-telegram-bot")
+    "Source Code: https://github.com/rzashakeri/Instagram-Assistant")
 WELCOME_TO_THE_LOTTERY_SECTION: str = (
     "Welcome to the lottery section, Send the post link for lottery 👇")
 WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
