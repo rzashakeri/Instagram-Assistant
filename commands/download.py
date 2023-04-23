@@ -184,7 +184,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             story_pk_from_url = client.story_pk_from_url(message)
             await context.bot.editMessageText(
                 chat_id=update.message.chat_id,
-                message_id=bot_message.message.message_id,
+                message_id=bot_message.message_id,
                 text=GETTING_STORY_INFORMATION)
             story_info = client.story_info(story_pk_from_url)
             await context.bot.deleteMessage(
