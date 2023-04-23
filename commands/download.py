@@ -80,8 +80,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     await context.bot.send_chat_action(
-        chat_id=update.effective_message.chat_id,
-        action=ChatAction.TYPING)
+        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     processing_message = await context.bot.send_message(
         chat_id=update.message.chat_id, text=PROCESSING)
     logged_in_user = login_admin_user_to_instagram(client)
@@ -202,11 +201,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     elif message.startswith("@"):
         username = message.split("@")[1]
         try:
-            await context.bot.send_chat_action(
-                chat_id=update.effective_message.chat_id,
-                action=ChatAction.TYPING)
-            processing_message = await context.bot.send_message(
-                chat_id=update.message.chat_id, text=PROCESSING)
             user_data = client.user_info_by_username(username).dict()
             await context.bot.deleteMessage(
                 message_id=processing_message.message_id,
