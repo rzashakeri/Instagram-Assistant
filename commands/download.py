@@ -85,6 +85,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         chat_id=update.message.chat_id, text=PROCESSING)
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
+        await context.bot.deleteMessage(
+            message_id=bot_message.message_id,
+            chat_id=update.message.chat_id,
+        )
         await update.message.reply_text(text=SOMETHING_WENT_WRONG,
                                         reply_markup=base_keyboard)
         return HOME_STATE
