@@ -79,6 +79,11 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
+    await context.bot.send_chat_action(
+        chat_id=update.effective_message.chat_id,
+        action=ChatAction.TYPING)
+    processing_message = await context.bot.send_message(
+        chat_id=update.message.chat_id, text=PROCESSING)
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await update.message.reply_text(text=SOMETHING_WENT_WRONG,
@@ -90,11 +95,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             media_type = STORY
         else:
             try:
-                await context.bot.send_chat_action(
-                    chat_id=update.effective_message.chat_id,
-                    action=ChatAction.TYPING)
-                processing_message = await context.bot.send_message(
-                    chat_id=update.message.chat_id, text=PROCESSING)
                 media_pk_from_url = client.media_pk_from_url(message)
                 await context.bot.deleteMessage(
                     message_id=processing_message.message_id,
