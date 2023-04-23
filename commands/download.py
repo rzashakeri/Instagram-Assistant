@@ -104,6 +104,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 media_info = client.media_info(media_pk_from_url).dict()
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
+                await context.bot.deleteMessage(
+                    message_id=bot_message.message_id,
+                    chat_id=update.message.chat_id,
+                )
             except (MediaNotFound, UnknownError):
                 regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                 username = re.findall(regex, message)[0]
@@ -128,6 +132,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     photo=user_profile_picture_url, reply_markup=base_keyboard)
                 return HOME_STATE
         if media_type == PHOTO:
+            await context.bot.deleteMessage(
+                message_id=bot_message.message_id,
+                chat_id=update.message.chat_id,
+            )
             await context.bot.send_chat_action(
                 chat_id=update.effective_message.chat_id,
                 action=ChatAction.UPLOAD_PHOTO)
@@ -140,6 +148,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         elif (media_type == VIDEO and product_type == IS_FEED
               or media_type == IGTV and product_type == IS_IGTV
               or media_type == REEL and product_type == IS_CLIPS):
+            await context.bot.deleteMessage(
+                message_id=bot_message.message_id,
+                chat_id=update.message.chat_id,
+            )
             await context.bot.send_chat_action(
                 chat_id=update.effective_message.chat_id,
                 action=ChatAction.UPLOAD_VIDEO)
@@ -150,6 +162,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             )
             return HOME_STATE
         elif media_type == ALBUM:
+            await context.bot.deleteMessage(
+                message_id=bot_message.message_id,
+                chat_id=update.message.chat_id,
+            )
             for media in media_info["resources"]:
                 if media["video_url"] is not None:
                     await context.bot.send_chat_action(
