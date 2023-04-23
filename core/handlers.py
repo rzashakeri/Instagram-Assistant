@@ -136,7 +136,7 @@ def base_conversation_handler():
             ],
             SEND_MESSAGE_TO_ALL_USER:
             [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
-            # end of admin section <==
+            # end of the admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
                 MessageHandler(filters.TEXT,
