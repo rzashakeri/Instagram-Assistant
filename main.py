@@ -13,6 +13,7 @@ if __name__ == "__main__":
     application = (Application.builder().token(settings.TOKEN).read_timeout(
         50).write_timeout(50).get_updates_read_timeout(50).build())
     if IS_MAINTENANCE:
+        application.add_handler(CommandHandler("start", maintenance))
         application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, maintenance))
     else:
