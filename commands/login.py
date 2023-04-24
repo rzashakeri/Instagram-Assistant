@@ -200,6 +200,7 @@ def login_admin_user_to_instagram(client):
             user_instagram_session_path)
         try:
             if user_instagram_session_is_exist:
+                logger.info("admin user session is exist")
                 client.load_settings(user_instagram_session_path)
                 client.login(user["username"], user["password"])
                 try:

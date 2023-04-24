@@ -62,10 +62,8 @@ async def get_media_link(update: Update,
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     time.sleep(5)
-    await update.message.reply_text(
-        OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
-        reply_markup=back_keyboard
-    )
+    await update.message.reply_text(OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
+                                    reply_markup=back_keyboard)
     return DOWNLOAD_STATE
 
 
@@ -87,6 +85,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         chat_id=update.message.chat_id, text=PROCESSING)
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
+        await context.bot.deleteMessage(
+            message_id=bot_message.message_id,
+            chat_id=update.message.chat_id,
+        )
         await update.message.reply_text(text=SOMETHING_WENT_WRONG,
                                         reply_markup=base_keyboard)
         return HOME_STATE
@@ -100,7 +102,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 await context.bot.editMessageText(
                     message_id=bot_message.message_id,
                     chat_id=update.message.chat_id,
-                    text="Getting media information ...")
+                    text="Getting media information ...",
+                )
                 media_info = client.media_info(media_pk_from_url).dict()
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
@@ -185,7 +188,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await context.bot.editMessageText(
                 chat_id=update.message.chat_id,
                 message_id=bot_message.message_id,
-                text=GETTING_STORY_INFORMATION)
+                text=GETTING_STORY_INFORMATION,
+            )
             story_info = client.story_info(story_pk_from_url)
             await context.bot.deleteMessage(
                 message_id=bot_message.message_id,
@@ -209,7 +213,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await context.bot.editMessageText(
                 message_id=bot_message.message_id,
                 chat_id=update.message.chat_id,
-                text="Getting profile information ...")
+                text="Getting profile information ...",
+            )
             user_data = client.user_info_by_username(username).dict()
             await context.bot.deleteMessage(
                 message_id=bot_message.message_id,
@@ -223,9 +228,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 photo=user_profile_picture_url, reply_markup=base_keyboard)
             return HOME_STATE
         except UserNotFound:
-            await context.bot.deleteMessage(
-                message_id=bot_message.message_id,
-                chat_id=update.message.chat_id)
+            await context.bot.deleteMessage(message_id=bot_message.message_id,
+                                            chat_id=update.message.chat_id)
             await update.message.reply_text(
                 USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
                 reply_markup=back_keyboard)
