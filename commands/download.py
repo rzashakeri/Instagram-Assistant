@@ -209,7 +209,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     chat_id=update.message.chat_id,
                     message_id=bot_message.message_id,
                     text=MEDIA_NOT_FOUND,
+                    reply_markup=base_keyboard
                 )
+                return HOME_STATE
         else:
             await update.message.reply_text(LINK_IS_INVALID,
                                             reply_markup=back_keyboard)
