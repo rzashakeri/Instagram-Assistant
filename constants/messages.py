@@ -90,3 +90,4 @@ GETTING_STORY_INFORMATION: str = "Getting Story information ..."
 GETTING_MEDIA_INFORMATION: str = "Getting media information ..."
 THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT: str = (
     "⚠️ Attention: This robot saves a session for next Login if you want")
+BOT_UNDER_MAINTENANCE: str = "Bot Under Maintenance 🛠️\nThank you for waiting"

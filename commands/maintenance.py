@@ -5,6 +5,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from constants.messages import BOT_UNDER_MAINTENANCE
 from utils.decorators import send_action
 
 # Init logger
@@ -19,5 +20,5 @@ async def maintenance(update: Update,
     # pylint: disable=unused-argument
     await context.bot.send_message(
         chat_id=update.message.chat_id,
-        text="Bot Under Maintenance 🛠️, Thank you for waiting",
+        text=BOT_UNDER_MAINTENANCE,
     )
