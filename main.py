@@ -4,8 +4,7 @@ from commands.maintenance import maintenance
 from configurations import settings
 from configurations.settings import IS_MAINTENANCE
 from core.handlers import base_conversation_handler
-from utils import create_requirement_folders
-from utils import logger
+from utils import create_requirement_folders, logger
 
 if __name__ == "__main__":
     logger.init_logger(f"logs/{settings.NAME}.log")
