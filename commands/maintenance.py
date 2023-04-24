@@ -17,5 +17,5 @@ async def maintenance(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
     # pylint: disable=unused-argument
     await context.bot.send_message(
         chat_id=update.message.chat_id,
-        text="Bot Under Maintenance 🛠️, Thank you for waiting"
+        text="Bot Under Maintenance 🛠️, Thank you for waiting",
     )
