@@ -33,10 +33,11 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED, MEDIA_NOT_FOUND
+from constants.messages import DOWNLOAD_COMPLETED
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
+from constants.messages import MEDIA_NOT_FOUND
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
 from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import STARTING_DOWNLOAD
@@ -118,17 +119,20 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     )
                     await context.bot.send_chat_action(
                         chat_id=update.effective_message.chat_id,
-                        action=ChatAction.TYPING)
+                        action=ChatAction.TYPING,
+                    )
                     await context.bot.send_message(
                         chat_id=update.effective_message.chat_id,
                         text="Media not found or unavailable",
-                        reply_markup=base_keyboard)
+                        reply_markup=base_keyboard,
+                    )
                     return HOME_STATE
                 else:
                     regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                     username = re.findall(regex, message)[0]
                     try:
-                        user_data = client.user_info_by_username(username).dict()
+                        user_data = client.user_info_by_username(
+                            username).dict()
                     except UserNotFound:
                         await context.bot.deleteMessage(
                             message_id=bot_message.message_id,
@@ -145,7 +149,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     )
                     user_profile_picture_url = user_data["profile_pic_url_hd"]
                     await update.effective_user.send_photo(
-                        photo=user_profile_picture_url, reply_markup=base_keyboard)
+                        photo=user_profile_picture_url,
+                        reply_markup=base_keyboard)
                     return HOME_STATE
         if media_type == PHOTO:
             await context.bot.deleteMessage(
@@ -215,7 +220,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 )
                 await context.bot.send_chat_action(
                     chat_id=update.effective_message.chat_id,
-                    action=ChatAction.UPLOAD_PHOTO)
+                    action=ChatAction.UPLOAD_PHOTO,
+                )
                 await update.effective_user.send_photo(
                     photo=story_info.thumbnail_url,
                     reply_markup=base_keyboard,
@@ -226,7 +232,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     chat_id=update.message.chat_id,
                     message_id=bot_message.message_id,
                     text=MEDIA_NOT_FOUND,
-                    reply_markup=base_keyboard
+                    reply_markup=base_keyboard,
                 )
                 return HOME_STATE
         else:
