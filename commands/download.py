@@ -22,7 +22,7 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from configurations import settings
-from constants import BACK
+from constants import BACK, P, REELS
 from constants import LOGIN
 from constants import PROCESSING
 from constants import STORIES
@@ -96,7 +96,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     if message_is_url:
         is_link_for_post = None
         url_slices = message.split("/")
-        if "p" in url_slices:
+        if P or REELS in url_slices:
             is_link_for_post = True
         if STORIES in url_slices:
             media_type = STORY
