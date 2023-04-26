@@ -22,9 +22,11 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from configurations import settings
-from constants import BACK, P, REELS
+from constants import BACK
 from constants import LOGIN
+from constants import P
 from constants import PROCESSING
+from constants import REELS
 from constants import STORIES
 from constants.keys import BACK_KEY
 from constants.media_types import ALBUM
