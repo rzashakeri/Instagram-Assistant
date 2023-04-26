@@ -93,7 +93,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                                         reply_markup=base_keyboard)
         return HOME_STATE
     if message_is_url:
+        is_link_for_post = None
         url_slices = message.split("/")
+        if "p" in url_slices:
+            is_link_for_post = True
         if STORIES in url_slices:
             media_type = STORY
         else:
@@ -108,28 +111,40 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
             except (MediaNotFound, UnknownError):
-                regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
-                username = re.findall(regex, message)[0]
-                try:
-                    user_data = client.user_info_by_username(username).dict()
-                except UserNotFound:
+                if is_link_for_post:
                     await context.bot.deleteMessage(
                         message_id=bot_message.message_id,
                         chat_id=update.message.chat_id,
                     )
-                    await update.message.reply_text(
-                        LINK_IS_INVALID,
-                        reply_markup=base_keyboard,
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.TYPING)
+                    await context.bot.send_message(
+                        chat_id=update.effective_message.chat_id,
+                        text="Media not found or unavailable")
+                else:
+                    regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
+                    username = re.findall(regex, message)[0]
+                    try:
+                        user_data = client.user_info_by_username(username).dict()
+                    except UserNotFound:
+                        await context.bot.deleteMessage(
+                            message_id=bot_message.message_id,
+                            chat_id=update.message.chat_id,
+                        )
+                        await update.message.reply_text(
+                            LINK_IS_INVALID,
+                            reply_markup=base_keyboard,
+                        )
+                        return HOME_STATE
+                    await context.bot.deleteMessage(
+                        message_id=bot_message.message_id,
+                        chat_id=update.message.chat_id,
                     )
+                    user_profile_picture_url = user_data["profile_pic_url_hd"]
+                    await update.effective_user.send_photo(
+                        photo=user_profile_picture_url, reply_markup=base_keyboard)
                     return HOME_STATE
-                await context.bot.deleteMessage(
-                    message_id=bot_message.message_id,
-                    chat_id=update.message.chat_id,
-                )
-                user_profile_picture_url = user_data["profile_pic_url_hd"]
-                await update.effective_user.send_photo(
-                    photo=user_profile_picture_url, reply_markup=base_keyboard)
-                return HOME_STATE
         if media_type == PHOTO:
             await context.bot.deleteMessage(
                 message_id=bot_message.message_id,
