@@ -126,7 +126,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                     username = re.findall(regex, message)[0]
                     try:
-                        user_data = client.user_info_by_username(username).dict()
+                        user_data = client.user_info_by_username(
+                            username).dict()
                     except UserNotFound:
                         await context.bot.deleteMessage(
                             message_id=bot_message.message_id,
