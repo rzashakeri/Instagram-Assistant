@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED, WHAT_DO_YOU_WANT
+from constants.messages import DOWNLOAD_COMPLETED
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
@@ -45,6 +45,7 @@ from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import STARTING_DOWNLOAD
 from constants.messages import UPLOAD_IN_TELEGRAM
 from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
+from constants.messages import WHAT_DO_YOU_WANT
 from constants.product_types import IS_CLIPS
 from constants.product_types import IS_FEED
 from constants.product_types import IS_IGTV
