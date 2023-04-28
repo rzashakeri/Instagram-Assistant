@@ -12,10 +12,10 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from configurations import settings
-from constants import BACK
+from constants import BACK, PROCESSING
 from constants import LOGIN
 from constants.keys import BACK_KEY
-from constants.messages import INSIGHT_OF_MEDIA
+from constants.messages import INSIGHT_OF_MEDIA, GETTING_MEDIA_INFORMATION
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
@@ -57,18 +57,32 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
+    await context.bot.send_chat_action(
+        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
+    bot_message = await context.bot.send_message(
+        chat_id=update.message.chat_id, text=PROCESSING)
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
-        await update.message.reply_text(SOMETHING_WENT_WRONG,
-                                        reply_markup=base_keyboard)
+        await context.bot.editMessageText(
+            chat_id=update.message.chat_id,
+            message_id=bot_message.message_id,
+            text=SOMETHING_WENT_WRONG)
         return HOME_STATE
 
     if message_is_url:
+        await context.bot.editMessageText(
+            chat_id=update.message.chat_id,
+            message_id=bot_message.message_id,
+            text=GETTING_MEDIA_INFORMATION)
         media_pk_from_url = client.media_pk_from_url(message)
         insight_of_media = client.insights_media(media_pk_from_url)
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
+        await context.bot.deleteMessage(
+            message_id=bot_message.message_id,
+            chat_id=update.message.chat_id,
+        )
         await update.effective_user.send_message(
             INSIGHT_OF_MEDIA.format(
                 comment_count=comment_count,
