@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED, GETTING_MEDIA_INFORMATION
+from constants.messages import DOWNLOAD_COMPLETED, GETTING_MEDIA_INFORMATION, GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
@@ -126,7 +126,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     )
                     await context.bot.send_message(
                         chat_id=update.effective_message.chat_id,
-                        text="Media not found or unavailable",
+                        text=MEDIA_NOT_FOUND,
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -248,7 +248,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             await context.bot.editMessageText(
                 message_id=bot_message.message_id,
                 chat_id=update.message.chat_id,
-                text="Getting profile information ...",
+                text=GETTING_PROFILE_INFORMATION,
             )
             user_data = client.user_info_by_username(username).dict()
             await context.bot.deleteMessage(
