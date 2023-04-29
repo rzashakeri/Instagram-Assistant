@@ -35,7 +35,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED
+from constants.messages import DOWNLOAD_COMPLETED, GETTING_MEDIA_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
@@ -109,7 +109,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 await context.bot.editMessageText(
                     message_id=bot_message.message_id,
                     chat_id=update.message.chat_id,
-                    text="Getting media information ...",
+                    text=GETTING_MEDIA_INFORMATION,
                 )
                 media_info = client.media_info(media_pk_from_url).dict()
                 media_type = media_info["media_type"]

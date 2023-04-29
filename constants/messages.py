@@ -88,6 +88,7 @@ USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
 PLEASE_SEND_PHOTO_OR_VIDEO: str = "file is not valid, please send a photo (Support JPG files) or video (Support MP4 files)"
 GETTING_STORY_INFORMATION: str = "Getting Story information ..."
 GETTING_MEDIA_INFORMATION: str = "Getting media information ..."
+GETTING_PROFILE_INFORMATION: str = "Getting profile information ..."
 THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT: str = (
     "⚠️ Attention: This robot saves a session for next Login if you want")
 BOT_UNDER_MAINTENANCE: str = "Bot Under Maintenance 🛠️\nThank you for waiting"
