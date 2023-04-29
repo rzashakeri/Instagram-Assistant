@@ -24,7 +24,8 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION, GETTING_PROFILE_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
 from constants.messages import MEDIA_NOT_FOUND
