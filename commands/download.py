@@ -13,10 +13,10 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
-from constants import P
+from constants import P_SEGMENT
 from constants import PROCESSING
-from constants import REELS
-from constants import STORIES
+from constants import REEL_SEGMENT
+from constants import STORIES_SEGMENT
 from constants.keys import BACK_KEY
 from constants.media_types import ALBUM
 from constants.media_types import IGTV
@@ -84,10 +84,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         return HOME_STATE
     if message_is_url:
         is_link_for_post = None
-        url_slices = message.split("/")
-        if P or REELS in url_slices:
+        if P_SEGMENT or REEL_SEGMENT in message:
             is_link_for_post = True
-        if STORIES in url_slices:
+        if STORIES_SEGMENT in message:
             media_type = STORY
         else:
             try:
