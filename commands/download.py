@@ -1,19 +1,11 @@
 # encoding: utf-8
-import json
-import os
 import re
 import time
 from logging import getLogger
 
-import requests
 import validators
-from file_validator.utils import guess_the_type
-from filetype import guess
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import LoginRequired
 from instagrapi.exceptions import MediaNotFound
-from instagrapi.exceptions import PrivateError
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import UserNotFound
 from telegram import Update
@@ -21,9 +13,6 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
-from configurations import settings
-from constants import BACK
-from constants import LOGIN
 from constants import P
 from constants import PROCESSING
 from constants import REELS
@@ -35,15 +24,12 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import DOWNLOAD_COMPLETED, GETTING_MEDIA_INFORMATION, GETTING_PROFILE_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION, GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
-from constants.messages import IS_VIDEO
 from constants.messages import LINK_IS_INVALID
 from constants.messages import MEDIA_NOT_FOUND
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
 from constants.messages import SOMETHING_WENT_WRONG
-from constants.messages import STARTING_DOWNLOAD
-from constants.messages import UPLOAD_IN_TELEGRAM
 from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.product_types import IS_CLIPS
@@ -53,7 +39,6 @@ from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
-from utils import create_requirement_folders
 from utils.decorators import send_action
 
 # Init logger
