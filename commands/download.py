@@ -126,7 +126,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     )
                     await context.bot.send_message(
                         chat_id=update.effective_message.chat_id,
-                        text="Media not found or unavailable",
+                        text=MEDIA_NOT_FOUND,
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
