@@ -84,8 +84,11 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         return HOME_STATE
     if message_is_url:
         is_link_for_post = False
-        if P_SEGMENT or REEL_SEGMENT in message:
+        is_link_for_reel = False
+        if P_SEGMENT in message:
             is_link_for_post = True
+        if REEL_SEGMENT in message:
+            is_link_for_reel = True
         if STORIES_SEGMENT in message:
             media_type = STORY
         else:
@@ -100,7 +103,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
             except (MediaNotFound, UnknownError, ValueError):
-                if is_link_for_post:
+                if is_link_for_post or is_link_for_reel:
                     await context.bot.deleteMessage(
                         message_id=bot_message.message_id,
                         chat_id=update.message.chat_id,
