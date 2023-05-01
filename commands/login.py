@@ -190,7 +190,7 @@ def login_admin_user_to_instagram(client):
     logger.info("Login Admin User")
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    with open("users.json", encoding="utf-8") as file:
+    with open("admin_users.json", encoding="utf-8") as file:
         users = json.load(file)
     for user in users["users"]:
         user_instagram_session_name = (
