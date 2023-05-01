@@ -11,9 +11,9 @@ from commands import insight
 from commands import login
 from commands import lottery
 from commands import privacy
+from commands import rule
 from commands import start
 from commands import upload
-from commands import rule
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
@@ -25,7 +25,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, START_STATE
+from constants.states import ADMIN_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -42,6 +42,7 @@ from constants.states import SET_MEDIA_AND_GET_CAPTION
 from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
 from constants.states import SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
 from constants.states import SET_TITLE_OF_IGTV_AND_GET_CAPTION
+from constants.states import START_STATE
 from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 
 # Init logger
