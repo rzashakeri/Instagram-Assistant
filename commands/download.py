@@ -99,7 +99,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 media_info = client.media_info(media_pk_from_url).dict()
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
-            except (MediaNotFound, UnknownError):
+            except (MediaNotFound, UnknownError, ValueError):
                 if is_link_for_post:
                     await context.bot.deleteMessage(
                         message_id=bot_message.message_id,
