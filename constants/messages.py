@@ -65,7 +65,7 @@ WELCOME_TO_HOME: str = "Welcome To Home, What are you doing?"
 SEND_YOUR_MESSAGE: str = "Send Your Message 👇"
 YOUR_MESSAGE_WAS_SENT: str = "Your Message Was Sent"
 PRIVACY_MESSAGE: str = (
-    "⚠️ This robot stores the following information:\n"
+    "⚠️ This robot stores the following telegram information:\n"
     "User ID,First Name, Last Name, Username\n"
     "\n"
     "And when you login Instagram through this robot for upload media, if you want to save the session for the next login on our servers\n"
