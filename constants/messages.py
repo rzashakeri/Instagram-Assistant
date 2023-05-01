@@ -25,8 +25,7 @@ WELCOME_MESSAGE: str = (
     "6. Lottery based on likes and comments.\n"
     "7. All features are free\n"
     "8. [Open Source](https://github.com/rzashakeri/Instagram-Assistant) \n"
-    "9. There is no compulsory membership\n"
-)
+    "9. There is no compulsory membership\n")
 SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the media you want to upload on Instagram")
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
@@ -89,11 +88,13 @@ GETTING_PROFILE_INFORMATION: str = "Getting profile information ..."
 THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT: str = (
     "⚠️ Attention: This robot saves a session for next Login if you want")
 BOT_UNDER_MAINTENANCE: str = "Bot Under Maintenance 🛠️\nThank you for waiting"
-MEDIA_NOT_FOUND: str = "Media Not Found or Unavailable, Please Check Your Link And Try Again"
+MEDIA_NOT_FOUND: str = (
+    "Media Not Found or Unavailable, Please Check Your Link And Try Again")
 RULE_MESSAGE: str = """
 Hi {first_name}, To work with the robot you must first read the following rules and then you can work with the robot\n
 {rule_message}\n
 \n
 Do you accept the privacy laws of this robot?
 """
-GOODBYE_WE_ARE_SORRY: str = "Goodbye, we are sorry that we couldn't create a good experience for you"
+GOODBYE_WE_ARE_SORRY: str = (
+    "Goodbye, we are sorry that we couldn't create a good experience for you")
