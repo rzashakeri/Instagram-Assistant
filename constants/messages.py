@@ -2,7 +2,8 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "Please send me login information in the following format and format: \n"
     "\n"
     "username\n"
-    "password")
+    "password"
+)
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
 LOGGED_IN_SUCCESSFULLY: str = "Logged In Successfully"
@@ -25,40 +26,52 @@ WELCOME_MESSAGE: str = (
     "6. Lottery based on likes and comments.\n"
     "7. All features are free\n"
     "8. [Open Source](https://github.com/rzashakeri/Instagram-Assistant) \n"
-    "9. There is no compulsory membership\n")
+    "9. There is no compulsory membership\n"
+)
 SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
-    "Send me the media you want to upload on Instagram")
+    "Send me the media you want to upload on Instagram"
+)
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
-    "Send me the caption of post you want to upload on Instagram")
+    "Send me the caption of post you want to upload on Instagram"
+)
 SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
-    "Send me the title of IGTV you want to upload on Instagram")
+    "Send me the title of IGTV you want to upload on Instagram"
+)
 WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     f"{LOGGED_IN_SUCCESSFULLY} What type of content do you want to upload on Instagram"
 )
 ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA: str = "Are you sure of uploading this media?"
 MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
-    "Media that is going to be uploaded to Instagram")
+    "Media that is going to be uploaded to Instagram"
+)
 TITLE_OF_YOUR_IGTV: str = "Title Of Your IGTV"
 CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
-    "Caption that is going to be uploaded to Instagram")
+    "Caption that is going to be uploaded to Instagram"
+)
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
     "Your content is successfully uploaded to Instagram and you can "
     "access it with the following link:\n"
-    "{media_url}")
+    "{media_url}"
+)
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
 OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
 SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
-    "Send the post link you want to get the statistics")
+    "Send the post link you want to get the statistics"
+)
 PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
-    "Please wait a few minutes before you try again")
+    "Please wait a few minutes before you try again"
+)
 UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
-    "Uploaded image isn't in an allowed aspect ratio")
-INSIGHT_OF_MEDIA: str = ("Post statistics:\n"
-                         "Like Count: {like_count}\n"
-                         "Comment Count: {comment_count}\n"
-                         "Save Count: {save_count}")
+    "Uploaded image isn't in an allowed aspect ratio"
+)
+INSIGHT_OF_MEDIA: str = (
+    "Post statistics:\n"
+    "Like Count: {like_count}\n"
+    "Comment Count: {comment_count}\n"
+    "Save Count: {save_count}"
+)
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
 USER_COUNT: str = "User Count: {user_count}"
 WELCOME_TO_HOME: str = "Welcome To Home, What are you doing?"
@@ -73,23 +86,29 @@ PRIVACY_MESSAGE: str = (
     "You can change your password after you log in via the robot "
     "and erase the relevant session through the original Instagram app\n"
     "\n"
-    "Source Code: https://github.com/rzashakeri/Instagram-Assistant")
+    "Source Code: https://github.com/rzashakeri/Instagram-Assistant"
+)
 WELCOME_TO_THE_LOTTERY_SECTION: str = (
-    "Welcome to the lottery section, Send the post link for lottery 👇")
+    "Welcome to the lottery section, Send the post link for lottery 👇"
+)
 WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
-    "Well you want to do the lottery on what basis:")
+    "Well you want to do the lottery on what basis:"
+)
 REMEMBER_ME: str = "Is your login information saved for the next login?"
 USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
-    "User not found, check username and try again")
+    "User not found, check username and try again"
+)
 PLEASE_SEND_PHOTO_OR_VIDEO: str = "file is not valid, please send a photo (Support JPG files) or video (Support MP4 files)"
 GETTING_STORY_INFORMATION: str = "Getting Story information ..."
 GETTING_MEDIA_INFORMATION: str = "Getting media information ..."
 GETTING_PROFILE_INFORMATION: str = "Getting profile information ..."
 THIS_ROBOT_SAVES_A_SESSION_FOR_NEXT_LOGIN_IF_YOU_WANT: str = (
-    "⚠️ Attention: This robot saves a session for next Login if you want")
+    "⚠️ Attention: This robot saves a session for next Login if you want"
+)
 BOT_UNDER_MAINTENANCE: str = "Bot Under Maintenance 🛠️\nThank you for waiting"
 MEDIA_NOT_FOUND: str = (
-    "Media Not Found or Unavailable, Please Check Your Link And Try Again")
+    "Media Not Found or Unavailable, Please Check Your Link And Try Again"
+)
 RULE_MESSAGE: str = """
 Hi {first_name}, To work with the robot you must first read the following rules and then you can work with the robot\n
 {rule_message}\n
@@ -97,4 +116,5 @@ Hi {first_name}, To work with the robot you must first read the following rules 
 Do you accept the privacy laws of this robot?
 """
 GOODBYE_WE_ARE_SORRY: str = (
-    "Goodbye, we are sorry that we couldn't create a good experience for you")
+    "Goodbye, we are sorry that we couldn't create a good experience for you"
+)
