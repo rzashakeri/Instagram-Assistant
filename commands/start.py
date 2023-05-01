@@ -33,7 +33,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     last_name = update.effective_user.last_name
     username = update.effective_user.username
     if message != YES:
-        await context.bot.send_message(chat_id=update.message.chat_id, text=GOODBYE_WE_ARE_SORRY.format(first_name=first_name))
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=GOODBYE_WE_ARE_SORRY.format(first_name=first_name),
+        )
         return ConversationHandler.END
     create_user(user_id, first_name, last_name, username)
     await update.message.reply_text(
