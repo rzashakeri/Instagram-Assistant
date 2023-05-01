@@ -6,7 +6,7 @@
 
 ## Features
 1. Download Any Media From Instagram Such Reels, Profile Photo And etc... 
-2. Upload Any Type Of Media From Telegram in Instagram
+2. Upload Any Type Of Media From Telegram in Instagram (**Login Required**)
 3. Received Insights Of Instagram Post from Telegram
 4. Get Insight instagram post
 5. Lottery with comments and likes
