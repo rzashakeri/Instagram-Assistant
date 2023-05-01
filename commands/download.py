@@ -83,7 +83,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                                         reply_markup=base_keyboard)
         return HOME_STATE
     if message_is_url:
-        is_link_for_post = None
+        is_link_for_post = False
         if P_SEGMENT or REEL_SEGMENT in message:
             is_link_for_post = True
         if STORIES_SEGMENT in message:
