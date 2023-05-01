@@ -29,6 +29,10 @@ yes_or_no_reply_keyboard = [
 ]
 yes_or_no_keyboard = ReplyKeyboardMarkup(yes_or_no_reply_keyboard, resize_keyboard=True)
 
+yes_or_no_without_back_key_reply_keyboard = [
+    [NO, YES],
+]
+yes_or_no_without_back_key = ReplyKeyboardMarkup(yes_or_no_reply_keyboard, resize_keyboard=True)
 
 email_or_phone_reply_keyboard = [
     [EMAIL],

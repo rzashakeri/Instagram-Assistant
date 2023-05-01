@@ -1,4 +1,6 @@
 (  # states
+    # start
+    START_STATE,
     # home
     HOME_STATE,
     DOWNLOAD_STATE,
@@ -23,4 +25,4 @@
     VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM,
     # admin
     SEND_MESSAGE_TO_ALL_USER,
-) = range(19)
+) = range(20)

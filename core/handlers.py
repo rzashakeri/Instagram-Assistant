@@ -13,6 +13,7 @@ from commands import lottery
 from commands import privacy
 from commands import start
 from commands import upload
+from commands import rule
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
@@ -24,7 +25,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE
+from constants.states import ADMIN_STATE, START_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -51,8 +52,10 @@ logger = getLogger(__name__)
 def base_conversation_handler():
     """Process a /start command."""
     conversation_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", start.start)],
+        entry_points=[CommandHandler("start", rule.rule)],
         states={
+            # start ==>
+            START_STATE: [MessageHandler(filters.TEXT, start.start)],
             # home ==>
             HOME_STATE: [
                 MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"),
