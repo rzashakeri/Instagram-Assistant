@@ -1,6 +1,6 @@
 # main keyboards
-DOWNLOAD_KEY: str = "Download Media 📥"
-UPLOAD_KEY: str = "Upload Media 📤"
+DOWNLOAD_KEY: str = "Download 📥"
+UPLOAD_KEY: str = "Upload 📤"
 LOGIN_KEY: str = "Login To Instagram 🔐"
 INSIGHT_KEY: str = "Insights 📈"
 PRIVACY_KEY: str = "Privacy 🔒"
@@ -22,5 +22,5 @@ USER_COUNT_KEY: str = "User Count 📈"
 SEND_MESSAGE_KEY: str = "Send Message "
 
 # lottery keys
-LOTTERY_WITH_LIKES_LIST: str = "Lottery with Likes List ❤️🎲"
-LOTTERY_WITH_COMMENTS_LIST: str = "Lottery with Comments List 💭🎲"
+LOTTERY_WITH_LIKES_LIST: str = "Lottery with Likes ❤️🎲"
+LOTTERY_WITH_COMMENTS_LIST: str = "Lottery with Comments 💭🎲"
