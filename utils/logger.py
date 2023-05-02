@@ -10,7 +10,8 @@ def init_logger(logfile: str):
     )
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
-    rotate = TimedRotatingFileHandler('sample.log', when='D', interval=1, backupCount=0, encoding=None, delay=False, utc=False)
+    rotate = TimedRotatingFileHandler(
+        'sample.log', when='D', interval=1, backupCount=0, encoding=None, delay=False, utc=False)
     root_logger.addHandler(rotate)
 
     file_handler = logging.FileHandler(logfile)
