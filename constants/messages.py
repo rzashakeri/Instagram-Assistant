@@ -12,7 +12,7 @@ STARTING_DOWNLOAD: str = "Starting Download ..."
 UPLOAD_IN_TELEGRAM: str = "Upload In Telegram ..."
 IS_VIDEO: str = "video"
 WELCOME_MESSAGE: str = (
-    "Hi {first_name}, Welcome To Instagram in Telegram Bot, "
+    "Hi {first_name}, Welcome To Instagram Assistant Bot, "
     "With this robot you can do whatever you do "
     "on Instagram using the telegram with additional features.\n"
     "\n"
