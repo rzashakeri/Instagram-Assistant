@@ -12,7 +12,8 @@ from telegram.ext import ContextTypes
 from telegram.ext import ConversationHandler
 
 from connectors.postgresql import create_user
-from constants import YES
+from constants import YES, NO
+from constants.keys import BACK_KEY
 from constants.messages import GOODBYE_WE_ARE_SORRY
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import WELCOME_MESSAGE
@@ -34,7 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     first_name = update.effective_user.first_name
     last_name = update.effective_user.last_name
     username = update.effective_user.username
-    if message != YES:
+    if message == NO:
         await context.bot.send_message(
             chat_id=update.message.chat_id,
             text=GOODBYE_WE_ARE_SORRY.format(first_name=first_name),
