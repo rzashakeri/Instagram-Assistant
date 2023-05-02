@@ -20,12 +20,10 @@ WELCOME_MESSAGE: str = (
     "1. Download Any Media From Instagram Such Reels, Profile Photo And etc...\n"
     "2. Upload Any Type Of Media From Telegram in Instagram\n"
     "3. Received Insights Of Instagram Post from Telegram\n"
-    "4. Login To Instagram From Telegram\n"
-    "5. Get Insight instagram post\n"
-    "6. Lottery based on likes and comments.\n"
-    "7. All features are free\n"
-    "8. [Open Source](https://github.com/rzashakeri/Instagram-Assistant) \n"
-    "9. There is no compulsory membership\n")
+    "4. Lottery based on likes and comments.\n"
+    "5. All features are free\n"
+    "6. [Open Source](https://github.com/rzashakeri/Instagram-Assistant) \n"
+    "7. There is no compulsory membership\n")
 SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
     "Send me the media you want to upload on Instagram")
 SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM: str = (
@@ -48,7 +46,7 @@ YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
-OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc..."
+OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc... or for Download Profile Picture Send Username With @ Such @Username"
 SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
     "Send the post link you want to get the statistics")
 PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
