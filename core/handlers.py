@@ -14,7 +14,7 @@ from commands import privacy
 from commands import rule
 from commands import start
 from commands import upload
-from constants.keys import BACK_TO_HOME_KEY
+from constants.keys import BACK_TO_HOME_KEY, BACK_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
 from constants.keys import LOGIN_KEY
@@ -154,6 +154,10 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{LOTTERY_WITH_COMMENTS_LIST}$"),
                     lottery.lottery_with_comments_list,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{BACK_KEY}$"),
+                    start.start,
                 ),
             ]
             # end of lottery section <==
