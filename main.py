@@ -1,4 +1,4 @@
-from telegram.ext import Application, MessageHandler, filters, CommandHandler
+from telegram.ext import Application, MessageHandler, filters, CommandHandler, PicklePersistence
 
 from commands.maintenance import maintenance
 from configurations import settings
@@ -10,8 +10,9 @@ from utils import logger
 if __name__ == "__main__":
     logger.init_logger(f"logs/{settings.NAME}.log")
     create_requirement_folders()
+    persistence = PicklePersistence(filepath="conversation states/")
     application = (Application.builder().token(settings.TOKEN).read_timeout(
-        50).write_timeout(50).get_updates_read_timeout(50).build())
+        50).write_timeout(50).get_updates_read_timeout(50).persistence(persistence).build())
     if IS_MAINTENANCE:
         application.add_handler(CommandHandler("start", maintenance))
         application.add_handler(
