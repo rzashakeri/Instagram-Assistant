@@ -56,9 +56,3 @@ def create_requirement_folders():
     login_directory_is_exist = os.path.exists(login_directory)
     if not login_directory_is_exist:
         os.makedirs(login_directory)
-
-    # for storing conversation hanlder states
-    conversation_states_directory = f"{current_directory}/conversation states"
-    conversation_states_directory_is_exist = os.path.exists(conversation_states_directory)
-    if not conversation_states_directory_is_exist:
-        os.makedirs(conversation_states_directory)
