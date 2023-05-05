@@ -165,5 +165,6 @@ def base_conversation_handler():
         },
         fallbacks=[],
         persistent=True,
+        name="global"
     )
     return conversation_handler
