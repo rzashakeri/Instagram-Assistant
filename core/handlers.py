@@ -164,7 +164,7 @@ def base_conversation_handler():
             # end of lottery section <==
         },
         fallbacks=[],
+        name="base_conversation_handler",
         persistent=True,
-        name="global"
     )
     return conversation_handler
