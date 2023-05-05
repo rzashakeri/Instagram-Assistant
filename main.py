@@ -10,7 +10,7 @@ from utils import logger
 if __name__ == "__main__":
     logger.init_logger(f"logs/{settings.NAME}.log")
     create_requirement_folders()
-    persistence = PicklePersistence(filepath="conversation states/conversation_states")
+    persistence = PicklePersistence(filepath="conversation states")
     application = (Application.builder().token(settings.TOKEN).read_timeout(
         50).write_timeout(50).get_updates_read_timeout(50).persistence(persistence).build())
     if IS_MAINTENANCE:
