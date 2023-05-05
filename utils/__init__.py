@@ -3,7 +3,9 @@ import time
 from abc import abstractmethod
 from collections import defaultdict
 
-from telegram.ext import BaseRateLimiter, CommandHandler, Updater
+from telegram.ext import BaseRateLimiter
+from telegram.ext import CommandHandler
+from telegram.ext import Updater
 
 from constants import LOGIN
 
