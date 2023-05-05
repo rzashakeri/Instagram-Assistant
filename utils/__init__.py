@@ -11,7 +11,6 @@ from constants import LOGIN
 
 
 class CustomRateLimiter(BaseRateLimiter):
-
     async def initialize(self) -> None:
         """Initialize resources used by this class. Must be implemented by a subclass."""
 
@@ -60,6 +59,7 @@ def create_requirement_folders():
     # for storing conversation hanlder states
     conversation_states_directory = f"{current_directory}/conversation states"
     conversation_states_directory_is_exist = os.path.exists(
-        conversation_states_directory)
+        conversation_states_directory
+    )
     if not conversation_states_directory_is_exist:
         os.makedirs(conversation_states_directory)
