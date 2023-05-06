@@ -96,3 +96,5 @@ Do you accept the privacy laws of this robot?
 """
 GOODBYE_WE_ARE_SORRY: str = (
     "Goodbye, we are sorry that we couldn't create a good experience for you")
+SENDING_THUMBNAIL: str = "Sending thumbnail ..."
+SENDING_VIDEO: str = "Sending Video ..."
