@@ -24,7 +24,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION, SENDING_THUMBNAIL, SENDING_VIDEO
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
@@ -205,27 +205,55 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     text=GETTING_STORY_INFORMATION,
                 )
                 story_info = client.story_info(story_pk_from_url)
-                await context.bot.deleteMessage(
-                    message_id=bot_message.message_id,
-                    chat_id=update.message.chat_id,
-                )
-                await context.bot.send_chat_action(
-                    chat_id=update.effective_message.chat_id,
-                    action=ChatAction.UPLOAD_PHOTO,
-                )
+
                 if story_info.video_url is None:
+                    await context.bot.editMessageText(
+                        chat_id=update.message.chat_id,
+                        message_id=bot_message.message_id,
+                        text=SENDING_THUMBNAIL,
+                    )
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_PHOTO,
+                    )
                     await update.effective_user.send_photo(
                         photo=story_info.thumbnail_url,
                         reply_markup=base_keyboard,
                     )
+                    await context.bot.deleteMessage(
+                        message_id=bot_message.message_id,
+                        chat_id=update.message.chat_id,
+                    )
                 else:
+                    await context.bot.editMessageText(
+                        chat_id=update.message.chat_id,
+                        message_id=bot_message.message_id,
+                        text=SENDING_THUMBNAIL,
+                    )
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_PHOTO,
+                    )
                     await update.effective_user.send_photo(
                         photo=story_info.thumbnail_url,
                         reply_markup=base_keyboard,
+                    )
+                    await context.bot.editMessageText(
+                        chat_id=update.message.chat_id,
+                        message_id=bot_message.message_id,
+                        text=SENDING_VIDEO,
+                    )
+                    await context.bot.send_chat_action(
+                        chat_id=update.effective_message.chat_id,
+                        action=ChatAction.UPLOAD_VIDEO,
                     )
                     await update.effective_user.send_video(
                         video=story_info.video_url,
                         reply_markup=base_keyboard,
+                    )
+                    await context.bot.deleteMessage(
+                        message_id=bot_message.message_id,
+                        chat_id=update.message.chat_id,
                     )
                 return HOME_STATE
             except MediaNotFound:
