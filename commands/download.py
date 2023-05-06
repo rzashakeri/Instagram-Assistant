@@ -213,10 +213,20 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     chat_id=update.effective_message.chat_id,
                     action=ChatAction.UPLOAD_PHOTO,
                 )
-                await update.effective_user.send_photo(
-                    photo=story_info.thumbnail_url,
-                    reply_markup=base_keyboard,
-                )
+                if story_info.video_url is None:
+                    await update.effective_user.send_photo(
+                        photo=story_info.thumbnail_url,
+                        reply_markup=base_keyboard,
+                    )
+                else:
+                    await update.effective_user.send_photo(
+                        photo=story_info.thumbnail_url,
+                        reply_markup=base_keyboard,
+                    )
+                    await update.effective_user.send_video(
+                        video=story_info.video_url,
+                        reply_markup=base_keyboard,
+                    )
                 return HOME_STATE
             except MediaNotFound:
                 await context.bot.editMessageText(
