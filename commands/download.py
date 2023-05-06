@@ -24,12 +24,14 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION, SENDING_THUMBNAIL, SENDING_VIDEO
+from constants.messages import GETTING_MEDIA_INFORMATION
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
 from constants.messages import MEDIA_NOT_FOUND
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
+from constants.messages import SENDING_THUMBNAIL
+from constants.messages import SENDING_VIDEO
 from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
 from constants.messages import WHAT_DO_YOU_WANT
