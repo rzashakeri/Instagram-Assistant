@@ -109,7 +109,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 username=username, full_name=full_name,
                 following=following, follower=follower,
                 media_count=media_count, biography=biography
-            ))
+            ), reply_markup=base_keyboard)
         return HOME_STATE
 
     else:
