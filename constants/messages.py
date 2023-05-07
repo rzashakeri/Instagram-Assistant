@@ -48,7 +48,7 @@ SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
 OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc... or for Download Profile Picture Send Username With @ Such @Username"
 SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
-    "Send the post link you want to get the statistics")
+    "Send the post link you want to get the statistics or send instagram username such @username for getting user info")
 PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
     "Please wait a few minutes before you try again")
 UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
