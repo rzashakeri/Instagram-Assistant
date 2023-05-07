@@ -118,17 +118,13 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             chat_id=update.effective_message.chat_id,
             action=ChatAction.UPLOAD_PHOTO)
         await update.effective_user.send_photo(
-            photo=user_profile_picture_url, reply_markup=base_keyboard)
-        await context.bot.send_chat_action(
-            chat_id=update.effective_message.chat_id,
-            action=ChatAction.TYPING,
-        )
-        await context.bot.send_message(
-            chat_id=update.message.chat_id, text=USER_INFO.format(
+            photo=user_profile_picture_url,
+            reply_markup=base_keyboard,
+            caption=USER_INFO.format(
                 username=username, full_name=full_name,
                 following=following, follower=follower,
                 media_count=media_count, biography=biography
-            ), reply_markup=base_keyboard)
+            ))
         return HOME_STATE
 
     else:
