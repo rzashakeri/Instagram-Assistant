@@ -9,6 +9,7 @@
 2. Upload Any Type Of Media From Telegram in Instagram (**Login Required**)
 3. Received Insights Of Instagram Post from Telegram
 4. Lottery with comments and likes
+5. Getting User Info
 
 ### when you run as admin 
 6. Admin Panel 
