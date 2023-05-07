@@ -110,6 +110,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 following=following, follower=follower,
                 media_count=media_count, biography=biography
             ))
+        return HOME_STATE
+
     else:
         await update.message.reply_text(LINK_IS_INVALID,
                                         reply_markup=back_keyboard)
