@@ -16,7 +16,7 @@ from constants import BACK
 from constants import LOGIN
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION, USER_INFO
 from constants.messages import INSIGHT_OF_MEDIA
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
@@ -96,6 +96,20 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+    elif message.startswith("@"):
+        username = message.split("@")[1]
+        user_info = client.user_info_by_username(username).dict()
+        full_name = user_info["full_name"]
+        following = user_info["following_count"]
+        follower = user_info["follower_count"]
+        media_count = user_info["media_count"]
+        biography = user_info["biography"]
+        await context.bot.send_message(
+            chat_id=update.message.chat_id, text=USER_INFO.format(
+                username=username, full_name=full_name,
+                following=following, follower=follower,
+                media_count=media_count, biography=biography
+            ))
     else:
         await update.message.reply_text(LINK_IS_INVALID,
                                         reply_markup=back_keyboard)
