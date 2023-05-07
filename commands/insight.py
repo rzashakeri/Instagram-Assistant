@@ -109,9 +109,19 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         follower = user_info["follower_count"]
         media_count = user_info["media_count"]
         biography = user_info["biography"]
+        user_profile_picture_url = user_info["profile_pic_url_hd"]
         await context.bot.deleteMessage(
             message_id=bot_message.message_id,
             chat_id=update.message.chat_id,
+        )
+        await context.bot.send_chat_action(
+            chat_id=update.effective_message.chat_id,
+            action=ChatAction.UPLOAD_PHOTO)
+        await update.effective_user.send_photo(
+            photo=user_profile_picture_url, reply_markup=base_keyboard)
+        await context.bot.send_chat_action(
+            chat_id=update.effective_message.chat_id,
+            action=ChatAction.TYPING,
         )
         await context.bot.send_message(
             chat_id=update.message.chat_id, text=USER_INFO.format(
