@@ -101,7 +101,7 @@ SENDING_VIDEO: str = "Sending Video ..."
 USER_INFO: str = """
 {username} Info:\n
 Full Name: {full_name}\n
-Biography: {biography}\n
+Biography:\n {biography}\n
 Following: {following}\n
 Follower: {follower}\n
 Media Count: {media_count}
