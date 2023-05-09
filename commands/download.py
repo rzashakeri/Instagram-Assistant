@@ -92,6 +92,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 chat_id=update.message.chat_id,
                 text=PLEASE_SEND_THE_INSTAGRAM_LINK,
             )
+            return DOWNLOAD_STATE
         is_link_for_post = False
         is_link_for_reel = False
         if P_SEGMENT in message:
