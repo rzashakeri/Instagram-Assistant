@@ -106,3 +106,5 @@ Following: {following}\n
 Follower: {follower}\n
 Media Count: {media_count}
 """
+INSTAGRAM_COM: str = "instagram.com"
+PLEASE_SEND_THE_INSTAGRAM_LINK: str = "Link is Invalid, Please Send The Instagram Link With Domain instagram.com and Try Again"
