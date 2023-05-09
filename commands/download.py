@@ -24,7 +24,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION, INSTAGRAM_COM, PLEASE_SEND_THE_INSTAGRAM_LINK
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
@@ -84,7 +84,15 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         await update.message.reply_text(text=SOMETHING_WENT_WRONG,
                                         reply_markup=base_keyboard)
         return HOME_STATE
+
     if message_is_url:
+        if INSTAGRAM_COM not in message:
+            await context.bot.editMessageText(
+                message_id=bot_message.message_id,
+                chat_id=update.message.chat_id,
+                text=PLEASE_SEND_THE_INSTAGRAM_LINK,
+                reply_markup=back_keyboard
+            )
         is_link_for_post = False
         is_link_for_reel = False
         if P_SEGMENT in message:
