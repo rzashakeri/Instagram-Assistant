@@ -91,7 +91,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 message_id=bot_message.message_id,
                 chat_id=update.message.chat_id,
                 text=PLEASE_SEND_THE_INSTAGRAM_LINK,
-                reply_markup=back_keyboard
             )
         is_link_for_post = False
         is_link_for_reel = False
