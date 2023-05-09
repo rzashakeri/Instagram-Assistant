@@ -5,47 +5,28 @@ from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import MediaNotFound
-from instagrapi.exceptions import UnknownError
-from instagrapi.exceptions import UserNotFound
+from instagrapi.exceptions import MediaNotFound, UnknownError, UserNotFound
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
-from constants import P_SEGMENT
-from constants import PROCESSING
-from constants import REEL_SEGMENT
-from constants import STORIES_SEGMENT
+from constants import P_SEGMENT, PROCESSING, REEL_SEGMENT, STORIES_SEGMENT
 from constants.keys import BACK_KEY
-from constants.media_types import ALBUM
-from constants.media_types import IGTV
-from constants.media_types import PHOTO
-from constants.media_types import REEL
-from constants.media_types import STORY
-from constants.media_types import VIDEO
-from constants.messages import (
-    GETTING_MEDIA_INFORMATION,
-    INSTAGRAM_COM,
-    PLEASE_SEND_THE_INSTAGRAM_LINK,
-)
-from constants.messages import GETTING_PROFILE_INFORMATION
-from constants.messages import GETTING_STORY_INFORMATION
-from constants.messages import LINK_IS_INVALID
-from constants.messages import MEDIA_NOT_FOUND
-from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
-from constants.messages import SENDING_THUMBNAIL
-from constants.messages import SENDING_VIDEO
-from constants.messages import SOMETHING_WENT_WRONG
-from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
-from constants.messages import WHAT_DO_YOU_WANT
-from constants.product_types import IS_CLIPS
-from constants.product_types import IS_FEED
-from constants.product_types import IS_IGTV
-from constants.states import DOWNLOAD_STATE
-from constants.states import HOME_STATE
-from core.keyboards import back_keyboard
-from core.keyboards import base_keyboard
+from constants.media_types import ALBUM, IGTV, PHOTO, REEL, STORY, VIDEO
+from constants.messages import (GETTING_MEDIA_INFORMATION,
+                                GETTING_PROFILE_INFORMATION,
+                                GETTING_STORY_INFORMATION, INSTAGRAM_COM,
+                                LINK_IS_INVALID, MEDIA_NOT_FOUND,
+                                OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
+                                PLEASE_SEND_THE_INSTAGRAM_LINK,
+                                SENDING_THUMBNAIL, SENDING_VIDEO,
+                                SOMETHING_WENT_WRONG,
+                                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
+                                WHAT_DO_YOU_WANT)
+from constants.product_types import IS_CLIPS, IS_FEED, IS_IGTV
+from constants.states import DOWNLOAD_STATE, HOME_STATE
+from core.keyboards import back_keyboard, base_keyboard
 from utils.decorators import send_action
 
 # Init logger
