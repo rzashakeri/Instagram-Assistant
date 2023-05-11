@@ -36,7 +36,8 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_feedback(update: Update,
+                       context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
@@ -48,7 +49,8 @@ async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
 
 
 @send_action(ChatAction.TYPING)
-async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_feedback(update: Update,
+                        context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     user_id = update.effective_user.id
@@ -56,7 +58,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     last_name = update.effective_user.last_name
     username = update.effective_user.username
     if update.message.text == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
 
     if update.message.text is not None:
@@ -88,9 +91,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif update.message.audio is not None:
-        await context.bot.send_audio(
-            chat_id=ADMIN_TELEGRAM_USER_ID, audio=update.message.audio
-        )
+        await context.bot.send_audio(chat_id=ADMIN_TELEGRAM_USER_ID,
+                                     audio=update.message.audio)
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
@@ -103,9 +105,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif update.message.document is not None:
-        await context.bot.document(
-            chat_id=ADMIN_TELEGRAM_USER_ID, document=update.message.document
-        )
+        await context.bot.document(chat_id=ADMIN_TELEGRAM_USER_ID,
+                                   document=update.message.document)
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
@@ -118,9 +119,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif update.message.photo is not None:
-        await context.bot.photo(
-            chat_id=ADMIN_TELEGRAM_USER_ID, photo=update.message.photo
-        )
+        await context.bot.photo(chat_id=ADMIN_TELEGRAM_USER_ID,
+                                photo=update.message.photo)
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
@@ -134,8 +134,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
         )
     else:
         await update.message.reply_text(
-            "Your Message Not Valid, Please Try Again", reply_markup=back_keyboard
-        )
+            "Your Message Not Valid, Please Try Again",
+            reply_markup=back_keyboard)
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,
