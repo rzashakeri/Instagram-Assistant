@@ -25,7 +25,7 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE
+from constants.states import ADMIN_STATE, FEEDBACK_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -162,8 +162,19 @@ def base_conversation_handler():
                     filters.Regex(f"^{BACK_KEY}$"),
                     start.start,
                 ),
+            ],
+            # end of the lottery section <==
+            # start feedback section
+            FEEDBACK_STATE: [
+                MessageHandler(
+                    filters.PHOTO
+                    | filters.VIDEO
+                    | filters.AUDIO
+                    | filters.TEXT
+                    | filters.Document.IMAGE
+                    | filters.Document.VIDEO, feedback.send_feedback)
             ]
-            # end of lottery section <==
+            # end of feedback section
         },
         fallbacks=[],
         name="base_conversation_handler",

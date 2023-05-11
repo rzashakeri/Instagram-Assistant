@@ -118,3 +118,25 @@ Media Count: {media_count}
 """
 INSTAGRAM_COM: str = "instagram.com"
 PLEASE_SEND_THE_INSTAGRAM_LINK: str = "Link is Invalid, Please Send The Instagram Link With Domain instagram.com and Try Again"
+FEEDBACK_MESSAGE: str = (
+    "Welcome To Feedback Section\n"
+    "You can send us any comments or criticisms or suggestions"
+)
+NEW_MESSAGE: str = (
+    "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
+    "User Information:\n}"
+    "User ID: {user_id}"
+    "first name: {first_name}\n"
+    "last name: {last_name}\n"
+    "username: {username}\n"
+)
+NEW_TEXT_MESSAGE: str = (
+    "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
+    "Message: {message} \n"
+    "User Information:\n}"
+    "User ID: {user_id}"
+    "first name: {first_name}\n"
+    "last name: {last_name}\n"
+    "username: {username}\n"
+)
+YOUR_MESSAGE_WAS_SENT: str = "your message was sent\n Thank For Submit Feedback 🙏"
