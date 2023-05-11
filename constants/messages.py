@@ -122,3 +122,12 @@ FEEDBACK_MESSAGE: str = (
     "Welcome To Feedback Section\n"
     "You can send us any comments or criticisms or suggestions"
 )
+NEW_MESSAGE: str = (
+    "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
+    "Message: {message} \n"
+    "User Information:\n}"
+    "User ID: {user_id}"
+    "first name: {first_name}\n"
+    "last name: {last_name}\n"
+    "username: {username}\n"
+)
