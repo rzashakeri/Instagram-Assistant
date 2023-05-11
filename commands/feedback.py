@@ -28,7 +28,8 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_feedback(update: Update,
+                       context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     pass
