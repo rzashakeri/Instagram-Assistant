@@ -194,7 +194,7 @@ def login_admin_user_to_instagram(client):
         users = json.load(file)
     for user in users["users"]:
         user_instagram_session_name = (
-            f"{user['username']}_{settings.TELEGRAM_USER_ID}.json")
+            f"{user['username']}_{settings.ADMIN_TELEGRAM_USER_ID}.json")
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
         user_instagram_session_is_exist = os.path.exists(
             user_instagram_session_path)
@@ -213,7 +213,7 @@ def login_admin_user_to_instagram(client):
                     client.dump_settings(user_instagram_session_path)
             client.login(user["username"], user["password"])
             client.dump_settings(
-                f"{login_directory}/{user['username']}_{settings.TELEGRAM_USER_ID}.json"
+                f"{login_directory}/{user['username']}_{settings.ADMIN_TELEGRAM_USER_ID}.json"
             )
             return True
         except (ClientError, PrivateError):
