@@ -128,7 +128,7 @@ NEW_MESSAGE: str = (
     "User ID: {user_id}"
     "first name: {first_name}\n"
     "last name: {last_name}\n"
-    "username: {username}\n"
+    "username: @{username}\n"
 )
 NEW_TEXT_MESSAGE: str = (
     "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
@@ -137,6 +137,6 @@ NEW_TEXT_MESSAGE: str = (
     "User ID: {user_id}\n"
     "first name: {first_name}\n"
     "last name: {last_name}\n"
-    "username: {username}\n"
+    "username: @{username}\n"
 )
 YOUR_MESSAGE_WAS_SENT: str = "your message was sent\nThank For Submit Feedback 🙏"
