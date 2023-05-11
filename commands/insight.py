@@ -80,6 +80,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         media_pk_from_url = client.media_pk_from_url(message)
         insight_of_media = client.insights_media(media_pk_from_url)
+        logger.info(insight_of_media)
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
