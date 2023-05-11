@@ -114,7 +114,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
         photo = await context.bot.get_file(photo_id)
         await context.bot.photo(
             chat_id=ADMIN_TELEGRAM_USER_ID,
-            photo= photo
+            photo=photo
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
