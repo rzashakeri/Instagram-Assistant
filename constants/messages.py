@@ -66,7 +66,9 @@ UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
 INSIGHT_OF_MEDIA: str = ("Post statistics:\n"
                          "Like Count: {like_count}\n"
                          "Comment Count: {comment_count}\n"
-                         "Save Count: {save_count}")
+                         "Save Count: {save_count}\n"
+                         "Share Count: {share_count}"
+)
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
 USER_COUNT: str = "User Count: {user_count}"
 WELCOME_TO_HOME: str = "Welcome To Home, What are you doing?"
