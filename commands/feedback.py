@@ -110,7 +110,10 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2
         )
     elif photo_message is not None:
-        await update.effective_user.send_photo(photo=update.message.photo)
+        photo_id = update.message.photo[-1].file_id
+        photo = await context.bot.get_file(photo_id)
+        logger.info(photo)
+        await update.effective_user.send_photo(photo=photo.file_path)
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
