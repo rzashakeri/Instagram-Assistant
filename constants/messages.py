@@ -131,3 +131,4 @@ NEW_MESSAGE: str = (
     "last name: {last_name}\n"
     "username: {username}\n"
 )
+YOUR_MESSAGE_WAS_SENT: str = "your message was sent\n Thank For Submit Feedback 🙏"
