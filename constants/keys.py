@@ -24,3 +24,6 @@ SEND_MESSAGE_KEY: str = "Send Message "
 # lottery keys
 LOTTERY_WITH_LIKES_LIST: str = "Lottery with Likes ❤️🎲"
 LOTTERY_WITH_COMMENTS_LIST: str = "Lottery with Comments 💭🎲"
+
+# feedback key
+FEEDBACK_KEY: str = "Feedback 💡"
