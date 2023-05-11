@@ -14,7 +14,7 @@ from instagrapi.exceptions import TwoFactorRequired
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import VideoNotUpload
 from telegram import Update
-from telegram.constants import ChatAction
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import ContextTypes
 
 import constants
@@ -96,7 +96,8 @@ async def get_login_information(update: Update,
     """Select an action: Adding parent/child or show data."""
     time.sleep(5)
     await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
-                                    reply_markup=back_keyboard)
+                                    reply_markup=back_keyboard,
+                                    parse_mode=ParseMode.MARKDOWN)
     return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 
 
