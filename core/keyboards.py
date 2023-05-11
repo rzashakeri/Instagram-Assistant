@@ -25,7 +25,7 @@ from constants.keys import USER_COUNT_KEY
 base_reply_keyboard: list = [
     [DOWNLOAD_KEY, UPLOAD_KEY],
     [INSIGHT_KEY, LOTTERY_KEY],
-    [PRIVACY_KEY], [FEEDBACK_KEY]
+    [PRIVACY_KEY, FEEDBACK_KEY]
 ]
 base_keyboard = ReplyKeyboardMarkup(base_reply_keyboard, resize_keyboard=True)
 
