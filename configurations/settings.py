@@ -6,7 +6,7 @@ load_dotenv()
 
 TOKEN = os.environ["TOKEN"]
 NAME = os.environ["NAME"]
-ADMIN_TELEGRAM_USER_ID = int(os.environ["TELEGRAM_USER_ID"])
+ADMIN_TELEGRAM_USER_ID = int(os.environ["ADMIN_TELEGRAM_USER_ID"])
 POSTGRESQL_HOST = os.environ["POSTGRESQL_HOST"]
 POSTGRESQL_PORT = os.environ["POSTGRESQL_PORT"]
 POSTGRESQL_NAME = os.environ["POSTGRESQL_NAME"]
