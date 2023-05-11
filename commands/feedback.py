@@ -57,7 +57,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                 last_name=last_name, username=username,
                 message=update.message.text
             ),
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
     elif update.message.video:
         await context.bot.send_video(
@@ -71,7 +71,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                 last_name=last_name, username=username,
                 message=update.message.text
             ),
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
     elif update.message.audio:
         await context.bot.send_audio(
@@ -85,7 +85,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                 last_name=last_name, username=username,
                 message=update.message.text
             ),
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
     elif update.message.document:
         await context.bot.document(
@@ -99,7 +99,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                 last_name=last_name, username=username,
                 message=update.message.text
             ),
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
     elif update.message.photo:
         await context.bot.photo(
@@ -113,7 +113,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                 last_name=last_name, username=username,
                 message=update.message.text
             ),
-            parse_mode=ParseMode.MARKDOWN
+            parse_mode=ParseMode.MARKDOWN_V2
         )
     else:
         await update.message.reply_text(
