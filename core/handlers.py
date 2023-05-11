@@ -5,7 +5,7 @@ from telegram.ext import ConversationHandler
 from telegram.ext import filters
 from telegram.ext import MessageHandler
 
-from commands import admin
+from commands import admin, feedback
 from commands import download
 from commands import insight
 from commands import login
@@ -14,7 +14,7 @@ from commands import privacy
 from commands import rule
 from commands import start
 from commands import upload
-from constants.keys import BACK_TO_HOME_KEY, BACK_KEY
+from constants.keys import BACK_TO_HOME_KEY, BACK_KEY, FEEDBACK_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
 from constants.keys import LOGIN_KEY
@@ -69,6 +69,8 @@ def base_conversation_handler():
                                insight.get_media_link),
                 MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"),
                                privacy.privacy),
+                MessageHandler(filters.Regex(f"^{FEEDBACK_KEY}$"),
+                               feedback.get_feedback),
                 MessageHandler(
                     filters.Regex(f"^{LOTTERY_KEY}$"),
                     lottery.entry_point_and_get_post_link,
