@@ -170,6 +170,7 @@ def base_conversation_handler():
                     filters.PHOTO
                     | filters.VIDEO
                     | filters.AUDIO
+                    | filters.VOICE
                     | filters.TEXT
                     | filters.Document.IMAGE
                     | filters.Document.VIDEO, feedback.send_feedback)
