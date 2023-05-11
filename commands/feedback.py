@@ -96,9 +96,10 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2
         )
     elif voice_message is not None:
+        voice = await update.message.voice.get_file()
         await context.bot.send_audio(
             chat_id=ADMIN_TELEGRAM_USER_ID,
-            audio=voice_message
+            audio=voice
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
