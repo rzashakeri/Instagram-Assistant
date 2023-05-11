@@ -134,9 +134,9 @@ NEW_TEXT_MESSAGE: str = (
     "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
     "Message: {message} \n"
     "User Information:\n"
-    "User ID: {user_id}"
+    "User ID: {user_id}\n"
     "first name: {first_name}\n"
     "last name: {last_name}\n"
     "username: {username}\n"
 )
-YOUR_MESSAGE_WAS_SENT: str = "your message was sent\n Thank For Submit Feedback 🙏"
+YOUR_MESSAGE_WAS_SENT: str = "your message was sent\nThank For Submit Feedback 🙏"
