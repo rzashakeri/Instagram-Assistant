@@ -15,7 +15,14 @@ from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import create_user
 from constants import YES, NO
 from constants.keys import BACK_KEY
-from constants.messages import GOODBYE_WE_ARE_SORRY, FEEDBACK_MESSAGE, NEW_MESSAGE, YOUR_MESSAGE_WAS_SENT, NEW_TEXT_MESSAGE, WHAT_DO_YOU_WANT
+from constants.messages import (
+    GOODBYE_WE_ARE_SORRY,
+    FEEDBACK_MESSAGE,
+    NEW_MESSAGE,
+    YOUR_MESSAGE_WAS_SENT,
+    NEW_TEXT_MESSAGE,
+    WHAT_DO_YOU_WANT,
+)
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import WELCOME_MESSAGE
 from constants.states import HOME_STATE, FEEDBACK_STATE
@@ -32,7 +39,10 @@ async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
-        chat_id=update.message.chat_id, text=FEEDBACK_MESSAGE, reply_markup=back_keyboard)
+        chat_id=update.message.chat_id,
+        text=FEEDBACK_MESSAGE,
+        reply_markup=back_keyboard,
+    )
     return FEEDBACK_STATE
 
 
@@ -53,19 +63,20 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     document_message = update.message.document
 
     if update.message.text == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
 
     if text_message is not None:
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif video_message is not None:
         await context.bot.send_video(
@@ -75,76 +86,81 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif audio_message is not None:
         await context.bot.send_audio(
-            chat_id=ADMIN_TELEGRAM_USER_ID,
-            audio=update.message.audio
+            chat_id=ADMIN_TELEGRAM_USER_ID, audio=update.message.audio
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif voice_message is not None:
         await context.bot.send_audio(
-            chat_id=ADMIN_TELEGRAM_USER_ID,
-            audio=voice_message
+            chat_id=ADMIN_TELEGRAM_USER_ID, audio=voice_message
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif photo_message is not None:
         await context.bot.photo(
-            chat_id=ADMIN_TELEGRAM_USER_ID,
-            photo=update.message.photo
+            chat_id=ADMIN_TELEGRAM_USER_ID, photo=update.message.photo
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     elif document_message is not None:
         await context.bot.document(
-            chat_id=ADMIN_TELEGRAM_USER_ID,
-            document=update.message.document
+            chat_id=ADMIN_TELEGRAM_USER_ID, document=update.message.document
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name,
+                username=username,
+                message=update.message.text,
             ),
-            parse_mode=ParseMode.MARKDOWN_V2
+            parse_mode=ParseMode.MARKDOWN_V2,
         )
     else:
         await update.message.reply_text(
-            "Your Message Not Valid, Please Try Again",
-            reply_markup=back_keyboard
+            "Your Message Not Valid, Please Try Again", reply_markup=back_keyboard
         )
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,
-        reply_markup=base_keyboard
+        reply_markup=base_keyboard,
     )
     return HOME_STATE
