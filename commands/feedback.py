@@ -40,33 +40,25 @@ async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
 async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
+    message = update.message.text
     user_id = update.effective_user.id
     first_name = update.effective_user.first_name
     last_name = update.effective_user.last_name
     username = update.effective_user.username
-
-    text_message = update.message.text
-
-    if update.message.text == BACK_KEY:
+    
+    if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
-
-    if text_message is not None:
-        await context.bot.send_message(
-            chat_id=ADMIN_TELEGRAM_USER_ID,
-            text=NEW_TEXT_MESSAGE.format(
-                user_id=user_id, first_name=first_name,
-                last_name=last_name, username=username,
-                message=update.message.text
-            ),
-            parse_mode=ParseMode.MARKDOWN_V2
-        )
-    else:
-        await update.message.reply_text(
-            "Your Message Not Valid, Please Try Again",
-            reply_markup=back_keyboard
-        )
+    await context.bot.send_message(
+        chat_id=ADMIN_TELEGRAM_USER_ID,
+        text=NEW_TEXT_MESSAGE.format(
+            user_id=user_id, first_name=first_name,
+            last_name=last_name, username=username,
+            message=message
+        ),
+        parse_mode=ParseMode.MARKDOWN_V2
+    )
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,
