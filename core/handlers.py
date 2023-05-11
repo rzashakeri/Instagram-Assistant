@@ -166,14 +166,7 @@ def base_conversation_handler():
             # end of the lottery section <==
             # start feedback section
             FEEDBACK_STATE: [
-                MessageHandler(
-                    filters.PHOTO
-                    | filters.VIDEO
-                    | filters.AUDIO
-                    | filters.VOICE
-                    | filters.TEXT
-                    | filters.Document.IMAGE
-                    | filters.Document.VIDEO, feedback.send_feedback)
+                MessageHandler(filters.TEXT, feedback.send_feedback)
             ]
             # end of feedback section
         },
