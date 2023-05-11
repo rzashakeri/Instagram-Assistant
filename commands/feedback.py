@@ -44,7 +44,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     first_name = update.effective_user.first_name
     last_name = update.effective_user.last_name
     username = update.effective_user.username
-    
+
     text_message = update.message.text
     video_message = update.message.video
     audio_message = update.message.audio
