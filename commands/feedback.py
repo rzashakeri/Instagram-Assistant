@@ -44,7 +44,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     first_name = update.effective_user.first_name
     last_name = update.effective_user.last_name
     username = update.effective_user.username
-    
+
     text_message = update.message.text
     video_message = update.message.video
     audio_message = update.message.audio
@@ -110,9 +110,11 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             parse_mode=ParseMode.MARKDOWN_V2
         )
     elif photo_message is not None:
+        photo_id = update.message.photo[-1].file_id
+        photo = await context.bot.get_file(photo_id)
         await context.bot.photo(
             chat_id=ADMIN_TELEGRAM_USER_ID,
-            photo=update.message.photo
+            photo= photo
         )
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
