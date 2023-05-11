@@ -4,7 +4,7 @@ from constants import EMAIL
 from constants import NO
 from constants import PHONE
 from constants import YES
-from constants.keys import BACK_KEY
+from constants.keys import BACK_KEY, FEEDBACK_KEY
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
@@ -25,7 +25,7 @@ from constants.keys import USER_COUNT_KEY
 base_reply_keyboard: list = [
     [DOWNLOAD_KEY, UPLOAD_KEY],
     [INSIGHT_KEY, LOTTERY_KEY],
-    [PRIVACY_KEY],
+    [PRIVACY_KEY], [FEEDBACK_KEY]
 ]
 base_keyboard = ReplyKeyboardMarkup(base_reply_keyboard, resize_keyboard=True)
 
