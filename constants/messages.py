@@ -2,7 +2,17 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "Please send me login information in the following format and format: \n"
     "\n"
     "username\n"
-    "password")
+    "password"
+    "\n"
+    "**we don,t save your username and Password**\n"
+    "Next step if you want to save the session on our servers\n"
+    "\n"
+    "**what is session ?**\n"
+    "when you use your mobile device, you login to Instagram once and then you "
+    "can use it for a long time without logging in again. This is because "
+    "Instagram stores your session on your device and you can use it to "
+    "login to Instagram without entering your username and password again."
+)
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
 LOGGED_IN_SUCCESSFULLY: str = "Logged In Successfully"
