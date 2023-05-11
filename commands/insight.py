@@ -83,7 +83,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
-        share_count = insight_of_media.get("share_count")
+        share_count = insight_of_media.get("reshare_count")
         await context.bot.deleteMessage(
             message_id=bot_message.message_id,
             chat_id=update.message.chat_id,
