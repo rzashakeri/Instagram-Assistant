@@ -32,7 +32,7 @@ async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
-        chat_id=update.message.chat_id, text=FEEDBACK_MESSAGE)
+        chat_id=update.message.chat_id, text=FEEDBACK_MESSAGE, reply_markup=back_keyboard)
     return FEEDBACK_STATE
 
 
@@ -49,7 +49,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
                                         reply_markup=base_keyboard)
         return HOME_STATE
 
-    if update.message.text:
+    if update.message.text is not None:
         await context.bot.send_message(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             text=NEW_TEXT_MESSAGE.format(
@@ -59,7 +59,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             ),
             parse_mode=ParseMode.MARKDOWN_V2
         )
-    elif update.message.video:
+    elif update.message.video is not None:
         await context.bot.send_video(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             video=update.message.video,
@@ -73,7 +73,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             ),
             parse_mode=ParseMode.MARKDOWN_V2
         )
-    elif update.message.audio:
+    elif update.message.audio is not None:
         await context.bot.send_audio(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             audio=update.message.audio
@@ -87,7 +87,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             ),
             parse_mode=ParseMode.MARKDOWN_V2
         )
-    elif update.message.document:
+    elif update.message.document is not None:
         await context.bot.document(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             document=update.message.document
@@ -101,7 +101,7 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
             ),
             parse_mode=ParseMode.MARKDOWN_V2
         )
-    elif update.message.photo:
+    elif update.message.photo is not None:
         await context.bot.photo(
             chat_id=ADMIN_TELEGRAM_USER_ID,
             photo=update.message.photo
