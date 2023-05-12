@@ -117,7 +117,8 @@ async def remember_me(update: Update,
         USERNAME, PASSWORD = message.split("\n")
     except ValueError:
         await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
-                                        reply_markup=back_keyboard)
+                                        reply_markup=back_keyboard,
+                                        parse_mode=ParseMode.MARKDOWN)
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
     await update.message.reply_text(
         "⚠️ Attention: This robot saves a session for next Login if you want",
