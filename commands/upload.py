@@ -148,18 +148,18 @@ async def login_attempt_and_get_media_type(
     user_id = update.effective_user.id
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
+    user_instagram_session = f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json"
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if user_instagram_session_is_exist:
         CLIENT.load_settings(user_instagram_session)
-        CLIENT.login(USERNAME, PASSWORD)
+        CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
         try:
             CLIENT.get_timeline_feed()
         except LoginRequired:
             os.remove(user_instagram_session)
-            CLIENT.login(USERNAME, PASSWORD)
+            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
             CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME}_{user_id}.json")
+                f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -183,13 +183,13 @@ async def login_attempt_and_get_media_type(
         if message == YES:
             logger.info("Saved session")
             SAVED_LOGIN_INFORMATION = True
-            CLIENT.login(USERNAME, PASSWORD)
+            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
             CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME}_{user_id}.json")
+                f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
         else:
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
-            CLIENT.login(USERNAME, PASSWORD)
+            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
@@ -227,18 +227,18 @@ async def login_with_two_factor_authentication(
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     global SAVED_LOGIN_INFORMATION
     if SAVED_LOGIN_INFORMATION:
-        CLIENT.login(username=USERNAME,
-                     password=PASSWORD,
-                     verification_code=verification_code)
-        CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
+        CLIENT.login(username=USERNAME.lower().strip(),
+                     password=PASSWORD.strip(),
+                     verification_code=verification_code.strip())
+        CLIENT.dump_settings(f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
         return SET_MEDIA_TYPE_AND_GET_MEDIA
-    CLIENT.login(username=USERNAME,
-                 password=PASSWORD,
-                 verification_code=verification_code)
+    CLIENT.login(username=USERNAME.lower().strip(),
+                 password=PASSWORD.strip(),
+                 verification_code=verification_code.strip())
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
