@@ -1,3 +1,4 @@
+INSTAGRAM_ASSISTANT_ID: str = "🆔 @InstagramAssistantRobot"
 MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "Please send me login information in the following format and format: \n"
     "\n"
@@ -11,7 +12,9 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "when you use your mobile device, you login to Instagram once and then you "
     "can use it for a long time without logging in again. This is because "
     "Instagram stores your session on your device and you can use it to "
-    "login to Instagram without entering your username and password again."
+    "login to Instagram without entering your username and password again.\n"
+    "\n"
+    "{instagram_assistant_id}"
 )
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
@@ -52,7 +55,10 @@ CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
     "Your content is successfully uploaded to Instagram and you can "
     "access it with the following link:\n"
-    "{media_url}")
+    "{media_url}\n"
+    "\n"
+    "{instagram_assistant_id}"
+)
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
@@ -67,7 +73,9 @@ INSIGHT_OF_MEDIA: str = ("Post statistics:\n"
                          "Like Count: {like_count}\n"
                          "Comment Count: {comment_count}\n"
                          "Save Count: {save_count}\n"
-                         "Share Count: {share_count}"
+                         "Share Count: {share_count}\n"
+                         "\n"
+                         "{instagram_assistant_id}"
 )
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
 USER_COUNT: str = "User Count: {user_count}"
@@ -88,7 +96,7 @@ WELCOME_TO_THE_LOTTERY_SECTION: str = (
     "Welcome to the lottery section, Send the post link for lottery 👇")
 WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
     "Well you want to do the lottery on what basis:")
-REMEMBER_ME: str = "Is your login information saved for the next login?"
+REMEMBER_ME: str = "Is your session saved for the next login?"
 USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
     "User not found, check username and try again")
 PLEASE_SEND_PHOTO_OR_VIDEO: str = "file is not valid, please send a photo (Support JPG files) or video (Support MP4 files)"
@@ -116,7 +124,9 @@ Full Name: {full_name}\n
 Biography:\n {biography}\n
 Following: {following}\n
 Follower: {follower}\n
-Media Count: {media_count}
+Media Count: {media_count}\n
+\n
+{instagram_assistant_id}
 """
 INSTAGRAM_COM: str = "instagram.com"
 PLEASE_SEND_THE_INSTAGRAM_LINK: str = "Link is Invalid, Please Send The Instagram Link With Domain instagram.com and Try Again"

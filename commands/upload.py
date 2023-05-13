@@ -37,7 +37,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, INSTAGRAM_ASSISTANT_ID
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import LOGGED_IN_SUCCESSFULLY
@@ -95,9 +95,8 @@ async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
-    time.sleep(5)
     await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA,
+        MESSAGE_FOR_GET_LOGIN_DATA.format(instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
         reply_markup=back_keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -108,7 +107,7 @@ async def get_login_information(update: Update,
 async def remember_me(update: Update,
                       context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    logger.info("Is your login information saved for the next login?")
+    logger.info("Is your session saved for the next login?")
     message = update.message.text
     if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
@@ -546,7 +545,9 @@ async def verify_content_and_upload_on_instagram(
 
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
-                    media_url=media_url),
+                    media_url=media_url,
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ),
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
