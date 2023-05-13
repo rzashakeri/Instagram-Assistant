@@ -108,7 +108,7 @@ async def get_login_information(update: Update,
 async def remember_me(update: Update,
                       context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    logger.info("Is your login information saved for the next login?")
+    logger.info("Is your session saved for the next login?")
     message = update.message.text
     if message == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
