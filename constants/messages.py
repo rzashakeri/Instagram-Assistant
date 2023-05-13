@@ -152,3 +152,4 @@ NEW_TEXT_MESSAGE: str = (
 )
 YOUR_MESSAGE_WAS_SENT: str = "your message was sent\nThank For Submit Feedback 🙏"
 MEDIA_CAPTION: str = "{caption}\n\n{instagram_assistant_id}"
+CHALLENGE_REQUIRED: str = "Challenge Required, Please Try Again A few Moment Later"
