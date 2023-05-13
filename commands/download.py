@@ -24,7 +24,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION, INSTAGRAM_COM, PLEASE_SEND_THE_INSTAGRAM_LINK
+from constants.messages import GETTING_MEDIA_INFORMATION, INSTAGRAM_COM, PLEASE_SEND_THE_INSTAGRAM_LINK, MEDIA_CAPTION, INSTAGRAM_ASSISTANT_ID
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
@@ -53,7 +53,6 @@ async def get_media_link(update: Update,
                          context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
-    time.sleep(5)
     await update.message.reply_text(OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
                                     reply_markup=back_keyboard)
     return DOWNLOAD_STATE
@@ -163,7 +162,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 action=ChatAction.UPLOAD_PHOTO)
             await update.effective_user.send_photo(
                 photo=media_info["thumbnail_url"],
-                caption=media_info["caption_text"],
+                caption=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ),
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
@@ -179,7 +181,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 action=ChatAction.UPLOAD_VIDEO)
             await update.effective_user.send_video(
                 video=media_info["video_url"],
-                caption=media_info["caption_text"],
+                caption=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ),
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
@@ -204,7 +209,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     await update.effective_user.send_photo(
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
-                text=media_info["caption_text"], reply_markup=base_keyboard)
+                text=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ), reply_markup=base_keyboard)
             return HOME_STATE
         elif media_type == STORY:
             try:
