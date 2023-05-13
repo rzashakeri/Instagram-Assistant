@@ -72,6 +72,7 @@ from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
 from core.keyboards import media_type_keyboard
 from core.keyboards import yes_or_no_keyboard
+from utils import remove_all_spaces
 from utils.decorators import send_action
 
 # Init logger
@@ -89,6 +90,7 @@ USERNAME = None
 PASSWORD = None
 IGTV_TITLE = None
 IS_IGTV = False
+
 
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
@@ -116,7 +118,9 @@ async def remember_me(update: Update,
     try:
         global USERNAME
         global PASSWORD
-        USERNAME, PASSWORD = message.split("\n")
+        username, password = message.split("\n")
+        USERNAME = remove_all_spaces(username).lower()
+        PASSWORD = remove_all_spaces(password)
     except ValueError:
         await update.message.reply_text(
             MESSAGE_FOR_GET_LOGIN_DATA,
@@ -135,7 +139,7 @@ async def remember_me(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def login_attempt_and_get_media_type(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(3)
@@ -148,18 +152,18 @@ async def login_attempt_and_get_media_type(
     user_id = update.effective_user.id
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
-    user_instagram_session = f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json"
+    user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if user_instagram_session_is_exist:
         CLIENT.load_settings(user_instagram_session)
-        CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
+        CLIENT.login(USERNAME, PASSWORD)
         try:
             CLIENT.get_timeline_feed()
         except LoginRequired:
             os.remove(user_instagram_session)
-            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
+            CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
+                f"{login_directory}/{USERNAME}_{user_id}.json")
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -183,13 +187,13 @@ async def login_attempt_and_get_media_type(
         if message == YES:
             logger.info("Saved session")
             SAVED_LOGIN_INFORMATION = True
-            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
+            CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
-                f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
+                f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
-            CLIENT.login(USERNAME.lower().strip(), PASSWORD.strip())
+            CLIENT.login(USERNAME, PASSWORD)
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
@@ -211,7 +215,7 @@ async def login_attempt_and_get_media_type(
 
 @send_action(ChatAction.TYPING)
 async def login_with_two_factor_authentication(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     logger.info("Login With Two Factor Authentication Code")
@@ -222,23 +226,23 @@ async def login_with_two_factor_authentication(
                                         reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
-    verification_code = message
+    verification_code = remove_all_spaces(message)
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     global SAVED_LOGIN_INFORMATION
     if SAVED_LOGIN_INFORMATION:
-        CLIENT.login(username=USERNAME.lower().strip(),
-                     password=PASSWORD.strip(),
-                     verification_code=verification_code.strip())
-        CLIENT.dump_settings(f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
+        CLIENT.login(username=USERNAME,
+                     password=PASSWORD,
+                     verification_code=verification_code)
+        CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
         return SET_MEDIA_TYPE_AND_GET_MEDIA
-    CLIENT.login(username=USERNAME.lower().strip(),
-                 password=PASSWORD.strip(),
-                 verification_code=verification_code.strip())
+    CLIENT.login(username=USERNAME,
+                 password=PASSWORD,
+                 verification_code=verification_code)
     await update.effective_user.send_message(
         WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
         reply_markup=media_type_keyboard,
@@ -248,7 +252,7 @@ async def login_with_two_factor_authentication(
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message
@@ -351,14 +355,14 @@ async def set_media_and_get_caption(update: Update,
                 action=ChatAction.UPLOAD_PHOTO,
             )
             await update.effective_user.send_photo(photo=FILE_PATH_ON_SERVER)
-
+        
         elif USER_UPLOADED_FILE_TYPE == constants.VIDEO:
             await context.bot.send_chat_action(
                 chat_id=update.effective_message.chat_id,
                 action=ChatAction.UPLOAD_VIDEO,
             )
             await update.effective_user.send_video(video=FILE_PATH_ON_SERVER)
-
+        
         elif USER_UPLOADED_FILE_TYPE == constants.DOCUMENT:
             await context.bot.send_chat_action(
                 chat_id=update.effective_message.chat_id,
@@ -386,7 +390,7 @@ async def set_media_and_get_caption(update: Update,
 
 @send_action(ChatAction.TYPING)
 async def set_title_of_igtv_and_get_caption(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     if update.message.text == BACK_KEY:
@@ -404,7 +408,7 @@ async def set_title_of_igtv_and_get_caption(
 
 @send_action(ChatAction.TYPING)
 async def set_caption_and_asking_to_confirm_the_content(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -419,10 +423,10 @@ async def set_caption_and_asking_to_confirm_the_content(
         MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM)
     if USER_UPLOADED_FILE_TYPE == constants.PHOTO:
         await update.effective_user.send_photo(photo=FILE_PATH_ON_SERVER)
-
+    
     elif USER_UPLOADED_FILE_TYPE == constants.VIDEO:
         await update.effective_user.send_video(video=FILE_PATH_ON_SERVER)
-
+    
     elif USER_UPLOADED_FILE_TYPE == constants.DOCUMENT:
         await update.effective_user.send_document(document=FILE_PATH_ON_SERVER)
     await update.effective_user.send_message(
@@ -440,7 +444,7 @@ async def set_caption_and_asking_to_confirm_the_content(
 
 @send_action(ChatAction.TYPING)
 async def verify_content_and_upload_on_instagram(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
@@ -465,7 +469,7 @@ async def verify_content_and_upload_on_instagram(
                     )
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                        format(media_url=media_url),
+                            format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
@@ -480,7 +484,7 @@ async def verify_content_and_upload_on_instagram(
                     )
                     await update.effective_user.send_message(
                         YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.
-                        format(media_url=media_url),
+                            format(media_url=media_url),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
