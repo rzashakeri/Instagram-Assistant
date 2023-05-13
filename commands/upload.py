@@ -88,7 +88,7 @@ FILE_PATH_ON_SERVER = None
 USERNAME = None
 PASSWORD = None
 IGTV_TITLE = None
-
+IS_IGTV = False
 
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
@@ -253,6 +253,7 @@ async def set_media_type_and_get_media(
     """Select an action: Adding parent/child or show data."""
     message = update.message
     global MEDIA_TYPE
+    global IS_IGTV
     if message.text == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
@@ -294,6 +295,7 @@ async def set_media_type_and_get_media(
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_IGTV_KEY:
         MEDIA_TYPE = IGTV
+        IS_IGTV = True
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=back_keyboard,
@@ -369,7 +371,7 @@ async def set_media_and_get_caption(update: Update,
             reply_markup=yes_or_no_keyboard,
         )
         return VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
-    if MEDIA_TYPE == IGTV:
+    if MEDIA_TYPE == IGTV and IS_IGTV:
         await update.effective_user.send_message(
             SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=back_keyboard,
@@ -387,6 +389,10 @@ async def set_title_of_igtv_and_get_caption(
         update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
+    if update.message.text == BACK_KEY:
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
+        return HOME_STATE
     global IGTV_TITLE
     IGTV_TITLE = update.message.text
     await update.effective_user.send_message(
