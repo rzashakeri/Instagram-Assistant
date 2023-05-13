@@ -176,7 +176,7 @@ async def login_attempt_and_get_media_type(
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
-        except ClientForbiddenError:
+        except (ClientForbiddenError, UnknownError):
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
                 reply_markup=base_keyboard,
@@ -223,7 +223,7 @@ async def login_attempt_and_get_media_type(
             reply_markup=base_keyboard,
         )
         return HOME_STATE
-    except ClientForbiddenError:
+    except (ClientForbiddenError, UnknownError):
         await update.effective_user.send_message(
             SOMETHING_WENT_WRONG,
             reply_markup=base_keyboard,
@@ -276,7 +276,12 @@ async def login_with_two_factor_authentication(
             reply_markup=base_keyboard,
         )
         return HOME_STATE
-
+    except (ClientForbiddenError, UnknownError):
+        await update.effective_user.send_message(
+            SOMETHING_WENT_WRONG,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
