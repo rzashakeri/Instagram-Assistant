@@ -97,6 +97,7 @@ IS_IGTV = False
 IS_REEL = False
 IS_VIDEO = False
 
+
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
