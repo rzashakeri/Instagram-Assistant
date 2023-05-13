@@ -12,7 +12,9 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "when you use your mobile device, you login to Instagram once and then you "
     "can use it for a long time without logging in again. This is because "
     "Instagram stores your session on your device and you can use it to "
-    "login to Instagram without entering your username and password again."
+    "login to Instagram without entering your username and password again.\n"
+    "\n"
+    "{instagram_assistant_id}"
 )
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
@@ -91,7 +93,7 @@ WELCOME_TO_THE_LOTTERY_SECTION: str = (
     "Welcome to the lottery section, Send the post link for lottery 👇")
 WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS: str = (
     "Well you want to do the lottery on what basis:")
-REMEMBER_ME: str = "Is your login information saved for the next login?"
+REMEMBER_ME: str = "Is your session saved for the next login?"
 USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN: str = (
     "User not found, check username and try again")
 PLEASE_SEND_PHOTO_OR_VIDEO: str = "file is not valid, please send a photo (Support JPG files) or video (Support MP4 files)"
