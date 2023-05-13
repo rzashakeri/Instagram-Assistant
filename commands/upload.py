@@ -95,7 +95,6 @@ async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
-    time.sleep(5)
     await update.message.reply_text(
         MESSAGE_FOR_GET_LOGIN_DATA,
         reply_markup=back_keyboard,
