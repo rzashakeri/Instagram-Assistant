@@ -445,7 +445,6 @@ async def verify_content_and_upload_on_instagram(
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
     if message != YES:
-        os.remove(FILE_PATH_ON_SERVER)
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
