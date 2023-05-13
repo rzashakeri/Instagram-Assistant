@@ -4,7 +4,7 @@ import time
 from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClientError, ChallengeRequired
 from instagrapi.exceptions import ClientForbiddenError
 from instagrapi.exceptions import ClipNotUpload
 from instagrapi.exceptions import IGTVNotUpload
@@ -37,7 +37,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, INSTAGRAM_ASSISTANT_ID
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, INSTAGRAM_ASSISTANT_ID, CHALLENGE_REQUIRED
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import LOGGED_IN_SUCCESSFULLY
@@ -230,24 +230,31 @@ async def login_with_two_factor_authentication(
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
     global SAVED_LOGIN_INFORMATION
-    if SAVED_LOGIN_INFORMATION:
+    try:
+        if SAVED_LOGIN_INFORMATION:
+            CLIENT.login(username=USERNAME,
+                         password=PASSWORD,
+                         verification_code=verification_code)
+            CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
+            await update.effective_user.send_message(
+                WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
+                reply_markup=media_type_keyboard,
+            )
+            return SET_MEDIA_TYPE_AND_GET_MEDIA
         CLIENT.login(username=USERNAME,
                      password=PASSWORD,
                      verification_code=verification_code)
-        CLIENT.dump_settings(f"{login_directory}/{USERNAME}_{user_id}.json")
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
         return SET_MEDIA_TYPE_AND_GET_MEDIA
-    CLIENT.login(username=USERNAME,
-                 password=PASSWORD,
-                 verification_code=verification_code)
-    await update.effective_user.send_message(
-        WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-        reply_markup=media_type_keyboard,
-    )
-    return SET_MEDIA_TYPE_AND_GET_MEDIA
+    except ChallengeRequired:
+        await update.effective_user.send_message(
+            CHALLENGE_REQUIRED,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
 
 
 @send_action(ChatAction.TYPING)
