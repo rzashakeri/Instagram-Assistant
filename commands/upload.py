@@ -177,13 +177,13 @@ async def login_attempt_and_get_media_type(
     global SAVED_LOGIN_INFORMATION
     try:
         if message == YES:
-            logger.info("Saved login information for %s", USERNAME)
+            logger.info("Saved login information")
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
                 f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
-            logger.info("not Save login information for %s", USERNAME)
+            logger.info("not Save login information")
             SAVED_LOGIN_INFORMATION = False
             CLIENT.login(USERNAME, PASSWORD)
         await update.effective_user.send_message(
