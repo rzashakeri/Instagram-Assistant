@@ -55,7 +55,10 @@ CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM: str = (
 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
     "Your content is successfully uploaded to Instagram and you can "
     "access it with the following link:\n"
-    "{media_url}")
+    "{media_url}\n"
+    "\n"
+    "{instagram_assistant_id}"
+)
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
