@@ -37,7 +37,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, INSTAGRAM_ASSISTANT_ID
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import LOGGED_IN_SUCCESSFULLY
@@ -96,7 +96,7 @@ async def get_login_information(update: Update,
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA,
+        MESSAGE_FOR_GET_LOGIN_DATA.format(instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
         reply_markup=back_keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
