@@ -164,6 +164,12 @@ async def login_attempt_and_get_media_type(
             CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
                 f"{login_directory}/{USERNAME}_{user_id}.json")
+        except ChallengeRequired:
+            await update.effective_user.send_message(
+                CHALLENGE_REQUIRED,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
         except ClientForbiddenError:
             await update.effective_user.send_message(
                 SOMETHING_WENT_WRONG,
@@ -205,6 +211,12 @@ async def login_attempt_and_get_media_type(
             "Please Send Two Factor Authentication Code",
             reply_markup=back_keyboard)
         return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
+    except ChallengeRequired:
+        await update.effective_user.send_message(
+            CHALLENGE_REQUIRED,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
     except ClientForbiddenError:
         await update.effective_user.send_message(
             SOMETHING_WENT_WRONG,
