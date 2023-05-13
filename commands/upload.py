@@ -90,13 +90,15 @@ PASSWORD = None
 IGTV_TITLE = None
 IS_IGTV = False
 
+
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA.format(instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
+        MESSAGE_FOR_GET_LOGIN_DATA.format(
+            instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
         reply_markup=back_keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
@@ -230,7 +232,8 @@ async def login_with_two_factor_authentication(
         CLIENT.login(username=USERNAME.lower().strip(),
                      password=PASSWORD.strip(),
                      verification_code=verification_code.strip())
-        CLIENT.dump_settings(f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
+        CLIENT.dump_settings(
+            f"{login_directory}/{USERNAME.lower().strip()}_{user_id}.json")
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
