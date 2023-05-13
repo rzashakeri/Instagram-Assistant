@@ -14,8 +14,7 @@ MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "Instagram stores your session on your device and you can use it to "
     "login to Instagram without entering your username and password again.\n"
     "\n"
-    "{instagram_assistant_id}"
-)
+    "{instagram_assistant_id}")
 WHAT_DO_YOU_WANT: str = "what do you want ?"
 YOU_WERE_ALREADY_LOGGED_IN: str = "You Were Already Logged In"
 LOGGED_IN_SUCCESSFULLY: str = "Logged In Successfully"
@@ -57,14 +56,12 @@ YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM: str = (
     "access it with the following link:\n"
     "{media_url}\n"
     "\n"
-    "{instagram_assistant_id}"
-)
+    "{instagram_assistant_id}")
 UPLOAD_WAS_CANCELED_BY_THE_USER: str = "Upload was canceled by the user"
 SOMETHING_WENT_WRONG: str = "Something Went Wrong"
 FILE_IS_NOT_VALID: str = "File is not valid, You must be uploaded image or video"
 OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD: str = "OK, send me the link you want to download from Instagram Such Profile, Post, Story and etc... or for Download Profile Picture Send Username With @ Such @Username"
-SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = (
-    "Send the post link you want to get the statistics or send instagram username such @username for getting user info")
+SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS: str = "Send the post link you want to get the statistics or send instagram username such @username for getting user info"
 PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN: str = (
     "Please wait a few minutes before you try again")
 UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO: str = (
@@ -75,8 +72,7 @@ INSIGHT_OF_MEDIA: str = ("Post statistics:\n"
                          "Save Count: {save_count}\n"
                          "Share Count: {share_count}\n"
                          "\n"
-                         "{instagram_assistant_id}"
-)
+                         "{instagram_assistant_id}")
 WELCOME_TO_ADMIN: str = "Welcome To Admin, What are you doing?"
 USER_COUNT: str = "User Count: {user_count}"
 WELCOME_TO_HOME: str = "Welcome To Home, What are you doing?"
@@ -131,16 +127,14 @@ INSTAGRAM_COM: str = "instagram.com"
 PLEASE_SEND_THE_INSTAGRAM_LINK: str = "Link is Invalid, Please Send The Instagram Link With Domain instagram.com and Try Again"
 FEEDBACK_MESSAGE: str = (
     "Welcome To Feedback Section\n"
-    "You can send us any comments or criticisms or suggestions"
-)
+    "You can send us any comments or criticisms or suggestions")
 NEW_MESSAGE: str = (
     "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
     "User Information:\n}"
     "User ID: {user_id}"
     "first name: {first_name}\n"
     "last name: {last_name}\n"
-    "username: @{username}\n"
-)
+    "username: @{username}\n")
 NEW_TEXT_MESSAGE: str = (
     "Have a new message From [{first_name}](tg://user?id={user_id}) \n"
     "Message: {message} \n"
@@ -148,8 +142,7 @@ NEW_TEXT_MESSAGE: str = (
     "User ID: {user_id}\n"
     "first name: {first_name}\n"
     "last name: {last_name}\n"
-    "username: @{username}\n"
-)
+    "username: @{username}\n")
 YOUR_MESSAGE_WAS_SENT: str = "your message was sent\nThank For Submit Feedback 🙏"
 MEDIA_CAPTION: str = "{caption}\n\n{instagram_assistant_id}"
 CHALLENGE_REQUIRED: str = "Challenge Required, Please Try Again A few Moment Later"
