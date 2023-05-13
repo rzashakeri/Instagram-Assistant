@@ -1,3 +1,4 @@
+INSTAGRAM_ASSISTANT_ID: str = "🆔 @InstagramAssistantRobot"
 MESSAGE_FOR_GET_LOGIN_DATA: str = (
     "Please send me login information in the following format and format: \n"
     "\n"
