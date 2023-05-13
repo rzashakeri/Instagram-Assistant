@@ -97,7 +97,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 comment_count=comment_count,
                 like_count=like_count,
                 save_count=save_count,
-                share_count=share_count
+                share_count=share_count,
+                instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
             ),
             reply_markup=base_keyboard,
         )
