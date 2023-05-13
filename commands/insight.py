@@ -16,7 +16,13 @@ from constants import BACK
 from constants import LOGIN
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.messages import GETTING_MEDIA_INFORMATION, USER_INFO, GETTING_PROFILE_INFORMATION, USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN, INSTAGRAM_ASSISTANT_ID
+from constants.messages import (
+    GETTING_MEDIA_INFORMATION,
+    USER_INFO,
+    GETTING_PROFILE_INFORMATION,
+    USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
+    INSTAGRAM_ASSISTANT_ID,
+)
 from constants.messages import INSIGHT_OF_MEDIA
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
@@ -36,8 +42,7 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_media_link(update: Update,
-                         context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -53,16 +58,17 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     await context.bot.send_chat_action(
-        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
+        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING
+    )
     bot_message = await context.bot.send_message(
-        chat_id=update.message.chat_id, text=PROCESSING)
+        chat_id=update.message.chat_id, text=PROCESSING
+    )
     logged_in_user = login_admin_user_to_instagram(client)
     if not logged_in_user:
         await context.bot.editMessageText(
@@ -84,7 +90,9 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
-        nodes = insight_of_media["inline_insights_node"]["metrics"]["share_count"]["tray"]["nodes"]
+        nodes = insight_of_media["inline_insights_node"]["metrics"]["share_count"][
+            "tray"
+        ]["nodes"]
         share_count = 0
         for node in nodes:
             share_count += node["value"]
@@ -98,7 +106,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 like_count=like_count,
                 save_count=save_count,
                 share_count=share_count,
-                instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                instagram_assistant_id=INSTAGRAM_ASSISTANT_ID,
             ),
             reply_markup=base_keyboard,
         )
@@ -123,25 +131,29 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 chat_id=update.message.chat_id,
             )
             await context.bot.send_chat_action(
-                chat_id=update.effective_message.chat_id,
-                action=ChatAction.UPLOAD_PHOTO)
+                chat_id=update.effective_message.chat_id, action=ChatAction.UPLOAD_PHOTO
+            )
             await update.effective_user.send_photo(
                 photo=user_profile_picture_url,
                 reply_markup=base_keyboard,
                 caption=USER_INFO.format(
-                    username=username, full_name=full_name,
-                    following=following, follower=follower,
-                    media_count=media_count, biography=biography,
-                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
-                ))
+                    username=username,
+                    full_name=full_name,
+                    following=following,
+                    follower=follower,
+                    media_count=media_count,
+                    biography=biography,
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID,
+                ),
+            )
             return HOME_STATE
         except UserNotFound:
-            await context.bot.deleteMessage(message_id=bot_message.message_id,
-                                            chat_id=update.message.chat_id)
+            await context.bot.deleteMessage(
+                message_id=bot_message.message_id, chat_id=update.message.chat_id
+            )
             await update.message.reply_text(
-                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
-                reply_markup=back_keyboard)
+                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN, reply_markup=back_keyboard
+            )
 
     else:
-        await update.message.reply_text(LINK_IS_INVALID,
-                                        reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
