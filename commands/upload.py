@@ -547,7 +547,6 @@ async def verify_content_and_upload_on_instagram(
             media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER,
                                               caption=CAPTION)
             media_url = f"https://instagram.com/reel/{media_object.code}"
-            os.remove(FILE_PATH_ON_SERVER)
 
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
