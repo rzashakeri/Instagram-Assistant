@@ -90,13 +90,15 @@ PASSWORD = None
 IGTV_TITLE = None
 IS_IGTV = False
 
+
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA.format(instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
+        MESSAGE_FOR_GET_LOGIN_DATA.format(
+            instagram_assistant_id=INSTAGRAM_ASSISTANT_ID),
         reply_markup=back_keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
