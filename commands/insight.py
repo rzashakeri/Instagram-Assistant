@@ -16,7 +16,7 @@ from constants import BACK
 from constants import LOGIN
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.messages import GETTING_MEDIA_INFORMATION, USER_INFO, GETTING_PROFILE_INFORMATION, USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
+from constants.messages import GETTING_MEDIA_INFORMATION, USER_INFO, GETTING_PROFILE_INFORMATION, USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN, INSTAGRAM_ASSISTANT_ID
 from constants.messages import INSIGHT_OF_MEDIA
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
@@ -130,7 +130,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 caption=USER_INFO.format(
                     username=username, full_name=full_name,
                     following=following, follower=follower,
-                    media_count=media_count, biography=biography
+                    media_count=media_count, biography=biography,
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
                 ))
             return HOME_STATE
         except UserNotFound:
