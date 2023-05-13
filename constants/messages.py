@@ -125,7 +125,6 @@ Biography:\n {biography}\n
 Following: {following}\n
 Follower: {follower}\n
 Media Count: {media_count}\n
-\n
 {instagram_assistant_id}
 """
 INSTAGRAM_COM: str = "instagram.com"
