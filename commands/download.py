@@ -181,7 +181,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 action=ChatAction.UPLOAD_VIDEO)
             await update.effective_user.send_video(
                 video=media_info["video_url"],
-                caption=media_info["caption_text"],
+                caption=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ),
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
@@ -206,7 +209,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     await update.effective_user.send_photo(
                         photo=media["thumbnail_url"])
             await update.effective_user.send_message(
-                text=media_info["caption_text"], reply_markup=base_keyboard)
+                text=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ), reply_markup=base_keyboard)
             return HOME_STATE
         elif media_type == STORY:
             try:
