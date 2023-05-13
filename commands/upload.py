@@ -93,7 +93,8 @@ USERNAME = None
 PASSWORD = None
 IGTV_TITLE = None
 IS_IGTV = False
-
+IS_REEL = False
+IS_VIDEO = False
 
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
@@ -284,6 +285,8 @@ async def set_media_type_and_get_media(
     message = update.message
     global MEDIA_TYPE
     global IS_IGTV
+    global IS_REEL
+    global IS_VIDEO
     if message.text == BACK_KEY:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
@@ -304,6 +307,7 @@ async def set_media_type_and_get_media(
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_VIDEO_KEY:
         MEDIA_TYPE = VIDEO
+        IS_VIDEO = True
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=back_keyboard,
@@ -318,6 +322,7 @@ async def set_media_type_and_get_media(
         return SET_MEDIA_AND_GET_CAPTION
     elif message.text == UPLOAD_REELS_KEY:
         MEDIA_TYPE = REEL
+        IS_REEL = True
         await update.effective_user.send_message(
             SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=back_keyboard,
@@ -547,7 +552,7 @@ async def verify_content_and_upload_on_instagram(
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
-        if MEDIA_TYPE == VIDEO:
+        if MEDIA_TYPE == VIDEO and IS_VIDEO:
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.video_upload(path=FILE_PATH_ON_SERVER,
                                                caption=CAPTION)
@@ -559,7 +564,7 @@ async def verify_content_and_upload_on_instagram(
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
-        if MEDIA_TYPE == IGTV:
+        if MEDIA_TYPE == IGTV and IS_IGTV:
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.igtv_upload(path=FILE_PATH_ON_SERVER,
                                               caption=CAPTION,
@@ -572,7 +577,7 @@ async def verify_content_and_upload_on_instagram(
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
-        if MEDIA_TYPE == REEL:
+        if MEDIA_TYPE == REEL and IS_REEL:
             await update.effective_user.send_message(PROCESSING)
             media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER,
                                               caption=CAPTION)
