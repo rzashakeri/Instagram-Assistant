@@ -25,6 +25,7 @@ from constants import DOCUMENT
 from constants import LOGIN
 from constants import PROCESSING
 from constants import YES
+from constants import NO
 from constants.keys import BACK_KEY
 from constants.keys import UPLOAD_ALBUM_KEY
 from constants.keys import UPLOAD_IGTV_KEY
@@ -479,7 +480,13 @@ async def verify_content_and_upload_on_instagram(
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     message = update.message.text
-    if message != YES:
+
+    if message == BACK_KEY:
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
+        return HOME_STATE
+
+    if message == NO:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         os.remove(FILE_PATH_ON_SERVER)
