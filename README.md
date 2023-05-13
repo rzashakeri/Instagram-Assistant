@@ -25,7 +25,7 @@ content into my [Instagram page](https://www.instagram.com/barnamenevisiinsta).
 So I also made this robot Open Source for those 
 friends who love to run this robot on their 
 personal server and can use it or do not trust 
-the robot for any reason.
+the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
 
 # Stack
