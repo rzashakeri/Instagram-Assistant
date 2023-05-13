@@ -24,7 +24,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION, INSTAGRAM_COM, PLEASE_SEND_THE_INSTAGRAM_LINK
+from constants.messages import GETTING_MEDIA_INFORMATION, INSTAGRAM_COM, PLEASE_SEND_THE_INSTAGRAM_LINK, MEDIA_CAPTION, INSTAGRAM_ASSISTANT_ID
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import LINK_IS_INVALID
@@ -162,7 +162,10 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 action=ChatAction.UPLOAD_PHOTO)
             await update.effective_user.send_photo(
                 photo=media_info["thumbnail_url"],
-                caption=media_info["caption_text"],
+                caption=MEDIA_CAPTION.format(
+                    caption=media_info["caption_text"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID
+                ),
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
