@@ -447,6 +447,7 @@ async def verify_content_and_upload_on_instagram(
     if message != YES:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
+        os.remove(FILE_PATH_ON_SERVER)
         return HOME_STATE
     try:
         if MEDIA_TYPE == STORY:
@@ -546,7 +547,7 @@ async def verify_content_and_upload_on_instagram(
             media_object = CLIENT.clip_upload(path=FILE_PATH_ON_SERVER,
                                               caption=CAPTION)
             media_url = f"https://instagram.com/reel/{media_object.code}"
-
+            os.remove(FILE_PATH_ON_SERVER)
             await update.effective_user.send_message(
                 YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM.format(
                     media_url=media_url,
@@ -562,3 +563,4 @@ async def verify_content_and_upload_on_instagram(
             f"{SOMETHING_WENT_WRONG}, {PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN}",
             reply_markup=base_keyboard,
         )
+        return HOME_STATE
