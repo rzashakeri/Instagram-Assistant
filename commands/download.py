@@ -53,7 +53,6 @@ async def get_media_link(update: Update,
                          context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
-    time.sleep(5)
     await update.message.reply_text(OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD,
                                     reply_markup=back_keyboard)
     return DOWNLOAD_STATE
