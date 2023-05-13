@@ -14,8 +14,7 @@ from instagrapi.exceptions import TwoFactorRequired
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import VideoNotUpload
 from telegram import Update
-from telegram.constants import ChatAction
-from telegram.constants import ParseMode
+from telegram.constants import ChatAction, ParseMode
 from telegram.ext import ContextTypes
 
 import constants
@@ -96,11 +95,9 @@ async def get_login_information(update: Update,
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(5)
-    await update.message.reply_text(
-        MESSAGE_FOR_GET_LOGIN_DATA,
-        reply_markup=back_keyboard,
-        parse_mode=ParseMode.MARKDOWN,
-    )
+    await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                    reply_markup=back_keyboard,
+                                    parse_mode=ParseMode.MARKDOWN)
     return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 
 
@@ -119,11 +116,9 @@ async def remember_me(update: Update,
         global PASSWORD
         USERNAME, PASSWORD = message.split("\n")
     except ValueError:
-        await update.message.reply_text(
-            MESSAGE_FOR_GET_LOGIN_DATA,
-            reply_markup=back_keyboard,
-            parse_mode=ParseMode.MARKDOWN,
-        )
+        await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
+                                        reply_markup=back_keyboard,
+                                        parse_mode=ParseMode.MARKDOWN)
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
     await update.message.reply_text(
         "⚠️ Attention: This robot saves a session for next Login if you want",
@@ -182,13 +177,13 @@ async def login_attempt_and_get_media_type(
     global SAVED_LOGIN_INFORMATION
     try:
         if message == YES:
-            logger.info("Saved login information for %s", USERNAME)
+            logger.info("Saved login information")
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
             CLIENT.dump_settings(
                 f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
-            logger.info("not Save login information for %s", USERNAME)
+            logger.info("not Save login information")
             SAVED_LOGIN_INFORMATION = False
             CLIENT.login(USERNAME, PASSWORD)
         await update.effective_user.send_message(
