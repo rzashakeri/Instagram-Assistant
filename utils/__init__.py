@@ -56,3 +56,7 @@ def create_requirement_folders():
     login_directory_is_exist = os.path.exists(login_directory)
     if not login_directory_is_exist:
         os.makedirs(login_directory)
+
+
+def remove_all_spaces(string):
+    return "".join(string.split())
