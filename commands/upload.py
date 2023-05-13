@@ -14,7 +14,8 @@ from instagrapi.exceptions import TwoFactorRequired
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import VideoNotUpload
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 import constants
@@ -95,9 +96,11 @@ async def get_login_information(update: Update,
     # pylint: disable=unused-argument
     """Select an action: Adding parent/child or show data."""
     time.sleep(5)
-    await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
-                                    reply_markup=back_keyboard,
-                                    parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text(
+        MESSAGE_FOR_GET_LOGIN_DATA,
+        reply_markup=back_keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
     return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 
 
@@ -116,9 +119,11 @@ async def remember_me(update: Update,
         global PASSWORD
         USERNAME, PASSWORD = message.split("\n")
     except ValueError:
-        await update.message.reply_text(MESSAGE_FOR_GET_LOGIN_DATA,
-                                        reply_markup=back_keyboard,
-                                        parse_mode=ParseMode.MARKDOWN)
+        await update.message.reply_text(
+            MESSAGE_FOR_GET_LOGIN_DATA,
+            reply_markup=back_keyboard,
+            parse_mode=ParseMode.MARKDOWN,
+        )
         return IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
     await update.message.reply_text(
         "⚠️ Attention: This robot saves a session for next Login if you want",
