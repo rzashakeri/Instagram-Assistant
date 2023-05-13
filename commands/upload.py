@@ -97,6 +97,7 @@ IS_IGTV = False
 IS_REEL = False
 IS_VIDEO = False
 
+
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
                                 context: ContextTypes.DEFAULT_TYPE) -> str:
@@ -282,6 +283,7 @@ async def login_with_two_factor_authentication(
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
