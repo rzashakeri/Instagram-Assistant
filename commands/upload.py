@@ -23,9 +23,9 @@ import constants
 from constants import BACK
 from constants import DOCUMENT
 from constants import LOGIN
+from constants import NO
 from constants import PROCESSING
 from constants import YES
-from constants import NO
 from constants.keys import BACK_KEY
 from constants.keys import UPLOAD_ALBUM_KEY
 from constants.keys import UPLOAD_IGTV_KEY
@@ -96,6 +96,7 @@ IGTV_TITLE = None
 IS_IGTV = False
 IS_REEL = False
 IS_VIDEO = False
+
 
 @send_action(ChatAction.TYPING)
 async def get_login_information(update: Update,
@@ -282,6 +283,7 @@ async def login_with_two_factor_authentication(
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+
 
 @send_action(ChatAction.TYPING)
 async def set_media_type_and_get_media(
@@ -538,6 +540,7 @@ async def verify_content_and_upload_on_instagram(
                     )
                     return HOME_STATE
             except UnknownError as error:
+                os.remove(FILE_PATH_ON_SERVER)
                 if error.message in UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO:
                     await update.effective_user.send_message(
                         f"{UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO}, Please try again",
@@ -558,6 +561,7 @@ async def verify_content_and_upload_on_instagram(
                 )
                 return HOME_STATE
             except UnknownError as error:
+                os.remove(FILE_PATH_ON_SERVER)
                 if error.message in UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO:
                     await update.effective_user.send_message(
                         f"{UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO}, Please try again",
