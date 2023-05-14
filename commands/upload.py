@@ -540,6 +540,7 @@ async def verify_content_and_upload_on_instagram(
                     )
                     return HOME_STATE
             except UnknownError as error:
+                os.remove(FILE_PATH_ON_SERVER)
                 if error.message in UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO:
                     await update.effective_user.send_message(
                         f"{UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO}, Please try again",
@@ -560,6 +561,7 @@ async def verify_content_and_upload_on_instagram(
                 )
                 return HOME_STATE
             except UnknownError as error:
+                os.remove(FILE_PATH_ON_SERVER)
                 if error.message in UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO:
                     await update.effective_user.send_message(
                         f"{UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO}, Please try again",
