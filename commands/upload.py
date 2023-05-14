@@ -201,12 +201,26 @@ async def login_attempt_and_get_media_type(
             logger.info("Saved session")
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
+            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
+            if is_challenge_required:
+                await update.effective_user.send_message(
+                    CHALLENGE_REQUIRED,
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
             CLIENT.dump_settings(
                 f"{login_directory}/{USERNAME}_{user_id}.json")
         else:
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
             CLIENT.login(USERNAME, PASSWORD)
+            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
+            if is_challenge_required:
+                await update.effective_user.send_message(
+                    CHALLENGE_REQUIRED,
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
@@ -256,6 +270,13 @@ async def login_with_two_factor_authentication(
                 password=PASSWORD,
                 verification_code=verification_code,
             )
+            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
+            if is_challenge_required:
+                await update.effective_user.send_message(
+                    CHALLENGE_REQUIRED,
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
             CLIENT.dump_settings(
                 f"{login_directory}/{USERNAME}_{user_id}.json")
             await update.effective_user.send_message(
@@ -266,6 +287,13 @@ async def login_with_two_factor_authentication(
         CLIENT.login(username=USERNAME,
                      password=PASSWORD,
                      verification_code=verification_code)
+        is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
+        if is_challenge_required:
+            await update.effective_user.send_message(
+                CHALLENGE_REQUIRED,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
