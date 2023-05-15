@@ -558,6 +558,7 @@ async def verify_content_and_upload_on_instagram(
     message = update.message.text
 
     if message == BACK_KEY:
+        os.remove(FILE_PATH_ON_SERVER)
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
@@ -679,6 +680,7 @@ async def verify_content_and_upload_on_instagram(
         if MEDIA_TYPE == ALBUM:
             return HOME_STATE
     except (PhotoNotUpload, IGTVNotUpload, ClipNotUpload, VideoNotUpload):
+        os.remove(FILE_PATH_ON_SERVER)
         await update.effective_user.send_message(
             f"{SOMETHING_WENT_WRONG}, {PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN}",
             reply_markup=base_keyboard,
