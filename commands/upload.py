@@ -39,7 +39,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA, YOU_NEED_TO_LOGIN_AGAIN
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import CHALLENGE_REQUIRED
 from constants.messages import FILE_IS_NOT_VALID
@@ -153,6 +153,7 @@ async def login_attempt_and_get_media_type(
     logger.info("login attempt")
     message = update.message.text
     if message == BACK_KEY:
+        logger.info("back to home")
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
@@ -162,9 +163,25 @@ async def login_attempt_and_get_media_type(
     user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
     user_instagram_session_is_exist = os.path.exists(user_instagram_session)
     if user_instagram_session_is_exist:
+        logger.info("login with session")
         CLIENT.load_settings(user_instagram_session)
         CLIENT.login(USERNAME, PASSWORD)
+        instagram_message = CLIENT.last_json["message"]
+        if instagram_message == "challenge_required":
+            await update.effective_user.send_message(
+                CHALLENGE_REQUIRED,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
+        elif instagram_message == "login_required":
+            os.remove(user_instagram_session)
+            await update.effective_user.send_message(
+                YOU_NEED_TO_LOGIN_AGAIN,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
         try:
+            logger.info("get timeline feed")
             CLIENT.get_timeline_feed()
         except LoginRequired:
             os.remove(user_instagram_session)
@@ -201,10 +218,17 @@ async def login_attempt_and_get_media_type(
             logger.info("Saved session")
             SAVED_LOGIN_INFORMATION = True
             CLIENT.login(USERNAME, PASSWORD)
-            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
-            if is_challenge_required:
+            instagram_message = CLIENT.last_json["message"]
+            if instagram_message == "challenge_required":
                 await update.effective_user.send_message(
                     CHALLENGE_REQUIRED,
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
+            elif instagram_message == "login_required":
+                os.remove(user_instagram_session)
+                await update.effective_user.send_message(
+                    YOU_NEED_TO_LOGIN_AGAIN,
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
@@ -214,10 +238,17 @@ async def login_attempt_and_get_media_type(
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
             CLIENT.login(USERNAME, PASSWORD)
-            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
-            if is_challenge_required:
+            instagram_message = CLIENT.last_json["message"]
+            if instagram_message == "challenge_required":
                 await update.effective_user.send_message(
                     CHALLENGE_REQUIRED,
+                    reply_markup=base_keyboard,
+                )
+                return HOME_STATE
+            elif instagram_message == "login_required":
+                os.remove(user_instagram_session)
+                await update.effective_user.send_message(
+                    YOU_NEED_TO_LOGIN_AGAIN,
                     reply_markup=base_keyboard,
                 )
                 return HOME_STATE
@@ -259,6 +290,9 @@ async def login_with_two_factor_authentication(
                                         reply_markup=base_keyboard)
         return HOME_STATE
     user_id = update.effective_user.id
+    current_directory = os.getcwd()
+    login_directory = f"{current_directory}/{LOGIN.lower()}"
+    user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
     verification_code = remove_all_spaces(message)
     current_directory = os.getcwd()
     login_directory = f"{current_directory}/{LOGIN.lower()}"
@@ -270,8 +304,8 @@ async def login_with_two_factor_authentication(
                 password=PASSWORD,
                 verification_code=verification_code,
             )
-            is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
-            if is_challenge_required:
+            instagram_message = CLIENT.last_json["message"]
+            if instagram_message == "challenge_required":
                 await update.effective_user.send_message(
                     CHALLENGE_REQUIRED,
                     reply_markup=base_keyboard,
@@ -287,10 +321,17 @@ async def login_with_two_factor_authentication(
         CLIENT.login(username=USERNAME,
                      password=PASSWORD,
                      verification_code=verification_code)
-        is_challenge_required = CLIENT.last_json["challenge_type_enum_str"]
-        if is_challenge_required:
+        instagram_message = CLIENT.last_json["message"]
+        if instagram_message == "challenge_required":
             await update.effective_user.send_message(
                 CHALLENGE_REQUIRED,
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
+        elif instagram_message == "login_required":
+            os.remove(user_instagram_session)
+            await update.effective_user.send_message(
+                YOU_NEED_TO_LOGIN_AGAIN,
                 reply_markup=base_keyboard,
             )
             return HOME_STATE
