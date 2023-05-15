@@ -39,6 +39,7 @@ media_type_reply_keyboard = [
     [UPLOAD_VIDEO_KEY],
     [UPLOAD_ALBUM_KEY],
     [UPLOAD_IGTV_KEY],
+    [BACK_KEY]
 ]
 media_type_keyboard = ReplyKeyboardMarkup(media_type_reply_keyboard,
                                           resize_keyboard=True)
