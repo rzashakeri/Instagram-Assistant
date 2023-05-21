@@ -41,11 +41,9 @@ class CustomClient:
         def handle_exception(client, error):
             last_json = client.last_json
             if last_json.get("challenge_type_enum_str", "") == "HACKED_LOCK":
-                raise LoginException(
-                    {"status": "fail", "message": "HACKED_LOCK"})
+                raise LoginException({"status": "fail", "message": "HACKED_LOCK"})
             elif last_json.get("challenge_type_enum_str", "") == "SCRAPING_WARNING":
-                raise LoginException(
-                    {"status": "fail", "message": "SCRAPING_WARNING"})
+                raise LoginException({"status": "fail", "message": "SCRAPING_WARNING"})
             elif last_json.get("message", "") == "user_has_logged_out":
                 raise LoginException(
                     {"status": "fail", "message": "user_has_logged_out"}
@@ -106,8 +104,7 @@ class CustomClient:
         client = Client()
         client.delay_range = [1, 3]
         client.handle_exception = handle_exception
-        user_instagram_session_is_exist = os.path.exists(
-            user_instagram_session)
+        user_instagram_session_is_exist = os.path.exists(user_instagram_session)
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session)
             client.login(username=self.username, password=self.password)
