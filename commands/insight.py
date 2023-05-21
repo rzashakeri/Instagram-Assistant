@@ -4,8 +4,9 @@ from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import ClientError, UserNotFound
+from instagrapi.exceptions import ClientError
 from instagrapi.exceptions import LoginRequired
+from instagrapi.exceptions import UserNotFound
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
@@ -16,18 +17,16 @@ from constants import BACK
 from constants import LOGIN
 from constants import PROCESSING
 from constants.keys import BACK_KEY
-from constants.messages import (
-    GETTING_MEDIA_INFORMATION,
-    USER_INFO,
-    GETTING_PROFILE_INFORMATION,
-    USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
-    INSTAGRAM_ASSISTANT_ID,
-)
+from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import INSIGHT_OF_MEDIA
+from constants.messages import INSTAGRAM_ASSISTANT_ID
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
 from constants.messages import SEND_THE_POST_LINK_YOU_WANT_TO_GET_THE_STATISTICS
 from constants.messages import SOMETHING_WENT_WRONG
+from constants.messages import USER_INFO
+from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
@@ -43,7 +42,8 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_media_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_media_link(update: Update,
+                         context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -59,17 +59,16 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     client = Client()
     client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     await context.bot.send_chat_action(
-        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING
-    )
+        chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     bot_message = await context.bot.send_message(
-        chat_id=update.message.chat_id, text=PROCESSING
-    )
+        chat_id=update.message.chat_id, text=PROCESSING)
     try:
         client = login_admin_user_to_instagram()
     except LoginException:
@@ -93,9 +92,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         comment_count = insight_of_media.get("comment_count")
         like_count = insight_of_media.get("like_count")
         save_count = insight_of_media.get("save_count")
-        nodes = insight_of_media["inline_insights_node"]["metrics"]["share_count"][
-            "tray"
-        ]["nodes"]
+        nodes = insight_of_media["inline_insights_node"]["metrics"][
+            "share_count"]["tray"]["nodes"]
         share_count = 0
         for node in nodes:
             share_count += node["value"]
@@ -134,8 +132,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 chat_id=update.message.chat_id,
             )
             await context.bot.send_chat_action(
-                chat_id=update.effective_message.chat_id, action=ChatAction.UPLOAD_PHOTO
-            )
+                chat_id=update.effective_message.chat_id,
+                action=ChatAction.UPLOAD_PHOTO)
             await update.effective_user.send_photo(
                 photo=user_profile_picture_url,
                 reply_markup=base_keyboard,
@@ -151,12 +149,12 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             )
             return HOME_STATE
         except UserNotFound:
-            await context.bot.deleteMessage(
-                message_id=bot_message.message_id, chat_id=update.message.chat_id
-            )
+            await context.bot.deleteMessage(message_id=bot_message.message_id,
+                                            chat_id=update.message.chat_id)
             await update.message.reply_text(
-                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN, reply_markup=back_keyboard
-            )
+                USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN,
+                reply_markup=back_keyboard)
 
     else:
-        await update.message.reply_text(LINK_IS_INVALID, reply_markup=back_keyboard)
+        await update.message.reply_text(LINK_IS_INVALID,
+                                        reply_markup=back_keyboard)

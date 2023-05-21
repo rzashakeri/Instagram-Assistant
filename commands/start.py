@@ -12,7 +12,8 @@ from telegram.ext import ContextTypes
 from telegram.ext import ConversationHandler
 
 from connectors.postgresql import create_user
-from constants import YES, NO
+from constants import NO
+from constants import YES
 from constants.keys import BACK_KEY
 from constants.messages import GOODBYE_WE_ARE_SORRY
 from constants.messages import PRIVACY_MESSAGE

@@ -13,20 +13,21 @@ from telegram.ext import ConversationHandler
 
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import create_user
-from constants import YES, NO
+from constants import NO
+from constants import YES
 from constants.keys import BACK_KEY
-from constants.messages import (
-    GOODBYE_WE_ARE_SORRY,
-    FEEDBACK_MESSAGE,
-    NEW_MESSAGE,
-    YOUR_MESSAGE_WAS_SENT,
-    NEW_TEXT_MESSAGE,
-    WHAT_DO_YOU_WANT,
-)
+from constants.messages import FEEDBACK_MESSAGE
+from constants.messages import GOODBYE_WE_ARE_SORRY
+from constants.messages import NEW_MESSAGE
+from constants.messages import NEW_TEXT_MESSAGE
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import WELCOME_MESSAGE
-from constants.states import HOME_STATE, FEEDBACK_STATE
-from core.keyboards import base_keyboard, back_keyboard
+from constants.messages import WHAT_DO_YOU_WANT
+from constants.messages import YOUR_MESSAGE_WAS_SENT
+from constants.states import FEEDBACK_STATE
+from constants.states import HOME_STATE
+from core.keyboards import back_keyboard
+from core.keyboards import base_keyboard
 from utils.decorators import send_action
 
 # Init logger
@@ -35,7 +36,8 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_feedback(update: Update,
+                       context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
@@ -47,7 +49,8 @@ async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> st
 
 
 @send_action(ChatAction.TYPING)
-async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_feedback(update: Update,
+                        context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     message = update.message.text
@@ -57,7 +60,8 @@ async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> s
     username = update.effective_user.username
 
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT,
+                                        reply_markup=base_keyboard)
         return HOME_STATE
     await context.bot.send_message(
         chat_id=ADMIN_TELEGRAM_USER_ID,
