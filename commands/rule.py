@@ -28,7 +28,8 @@ async def rule(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     await context.bot.send_message(chat_id=update.message.chat_id, text="⚠️")
     await context.bot.send_message(
         chat_id=update.message.chat_id,
-        text=RULE_MESSAGE.format(rule_message=PRIVACY_MESSAGE, first_name=first_name),
+        text=RULE_MESSAGE.format(rule_message=PRIVACY_MESSAGE,
+                                 first_name=first_name),
         reply_markup=yes_or_no_without_back_key,
     )
     return START_STATE
