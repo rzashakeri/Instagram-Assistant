@@ -25,6 +25,7 @@ from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
+from core.exceptions import LoginException
 from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
 from utils import create_requirement_folders
@@ -63,12 +64,14 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     bot_message = await context.bot.send_message(
         chat_id=update.message.chat_id, text=PROCESSING)
-    logged_in_user = login_admin_user_to_instagram(client)
-    if not logged_in_user:
+    try:
+        client = login_admin_user_to_instagram()
+    except LoginException:
         await context.bot.editMessageText(
-            chat_id=update.message.chat_id,
             message_id=bot_message.message_id,
+            chat_id=update.message.chat_id,
             text=SOMETHING_WENT_WRONG,
+            reply_markup=back_keyboard
         )
         return HOME_STATE
 

@@ -40,6 +40,7 @@ from constants.product_types import IS_FEED
 from constants.product_types import IS_IGTV
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
+from core.exceptions import LoginException
 from core.keyboards import back_keyboard
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
@@ -67,20 +68,22 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
         return HOME_STATE
-    client = Client()
-    client.delay_range = [1, 3]
     message_is_url = validators.url(message)
     await context.bot.send_chat_action(
         chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     bot_message = await context.bot.send_message(
         chat_id=update.message.chat_id, text=PROCESSING)
-    logged_in_user = login_admin_user_to_instagram(client)
-    if not logged_in_user:
-        await context.bot.editMessageText(
+    try:
+        client = login_admin_user_to_instagram()
+    except LoginException:
+        await context.bot.deleteMessage(
             message_id=bot_message.message_id,
             chat_id=update.message.chat_id,
+        )
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
             text=SOMETHING_WENT_WRONG,
-            reply_markup=back_keyboard
+            reply_markup=base_keyboard
         )
         return HOME_STATE
 
