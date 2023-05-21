@@ -93,7 +93,7 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=processing_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         # getting like the list from instagram ==>
         getting_likes_list_message = await context.bot.send_message(
             chat_id=update.message.chat_id, text="Grabbing Likes List ..."
@@ -103,7 +103,7 @@ async def lottery_with_likes_list(
             message_id=getting_likes_list_message.message_id,
             chat_id=update.message.chat_id,
         )
-        
+
         # find winner ==>
         find_winner_message = await context.bot.send_message(
             chat_id=update.message.chat_id, text="Finding Winner ... 🎖️"
@@ -112,7 +112,7 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=find_winner_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         countdown_message = await context.bot.send_message(
             chat_id=update.message.chat_id,
             text="Countdown to introduce the winner 🕐",
@@ -121,7 +121,7 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=countdown_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_three = await context.bot.send_message(
             chat_id=update.message.chat_id, text="3️⃣"
         )
@@ -129,7 +129,7 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=number_three.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_two = await context.bot.send_message(
             chat_id=update.message.chat_id, text="2️⃣"
         )
@@ -137,7 +137,7 @@ async def lottery_with_likes_list(
         await context.bot.deleteMessage(
             message_id=number_two.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_one = await context.bot.send_message(
             chat_id=update.message.chat_id, text="1️⃣"
         )
@@ -179,7 +179,7 @@ async def lottery_with_comments_list(
         return HOME_STATE
     try:
         login_admin_user_to_instagram(CLIENT)
-        
+
         # start getting post information ==>
         processing_message = await context.bot.send_message(
             chat_id=update.message.chat_id, text=PROCESSING
@@ -189,7 +189,7 @@ async def lottery_with_comments_list(
         await context.bot.deleteMessage(
             message_id=processing_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         # getting comment the list from instagram ==>
         getting_comments_list_message = await context.bot.send_message(
             chat_id=update.message.chat_id, text="Grabbing Comments List ..."
@@ -199,7 +199,7 @@ async def lottery_with_comments_list(
             message_id=getting_comments_list_message.message_id,
             chat_id=update.message.chat_id,
         )
-        
+
         # find winner ==>
         find_winner_message = await context.bot.send_message(
             chat_id=update.message.chat_id, text="Finding Winner ... 🎖️"
@@ -208,7 +208,7 @@ async def lottery_with_comments_list(
         await context.bot.deleteMessage(
             message_id=find_winner_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         countdown_message = await context.bot.send_message(
             chat_id=update.message.chat_id,
             text="Countdown to introduce the winner 🕐",
@@ -217,7 +217,7 @@ async def lottery_with_comments_list(
         await context.bot.deleteMessage(
             message_id=countdown_message.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_three = await context.bot.send_message(
             chat_id=update.message.chat_id, text="3️⃣"
         )
@@ -225,7 +225,7 @@ async def lottery_with_comments_list(
         await context.bot.deleteMessage(
             message_id=number_three.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_two = await context.bot.send_message(
             chat_id=update.message.chat_id, text="2️⃣"
         )
@@ -233,7 +233,7 @@ async def lottery_with_comments_list(
         await context.bot.deleteMessage(
             message_id=number_two.message_id, chat_id=update.message.chat_id
         )
-        
+
         number_one = await context.bot.send_message(
             chat_id=update.message.chat_id, text="1️⃣"
         )

@@ -41,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             text=GOODBYE_WE_ARE_SORRY.format(first_name=first_name),
         )
         return ConversationHandler.END
-    create_user(user_id, first_name, last_name, username)
+    # create_user(user_id, first_name, last_name, username)
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
