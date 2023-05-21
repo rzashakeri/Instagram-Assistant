@@ -6,9 +6,13 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_user
-from constants.messages import PRIVACY_MESSAGE, RULE_MESSAGE, WELCOME_MESSAGE
-from constants.states import HOME_STATE, START_STATE
-from core.keyboards import base_keyboard, yes_or_no_without_back_key
+from constants.messages import PRIVACY_MESSAGE
+from constants.messages import RULE_MESSAGE
+from constants.messages import WELCOME_MESSAGE
+from constants.states import HOME_STATE
+from constants.states import START_STATE
+from core.keyboards import base_keyboard
+from core.keyboards import yes_or_no_without_back_key
 from utils.decorators import send_action
 
 # Init logger
