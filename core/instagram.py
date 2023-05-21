@@ -32,7 +32,7 @@ class CustomClient:
         self,
         login_directory,
         telegram_user_id,
-        user_instagram_session=None,
+        user_instagram_session="",
         save_session=False,
     ):
         """We return the client class, in which we automatically handle exceptions
@@ -40,23 +40,23 @@ class CustomClient:
 
         def handle_exception(client, error):
             last_json = client.last_json
-            if last_json.get("challenge_type_enum_str", None) == "HACKED_LOCK":
+            if last_json.get("challenge_type_enum_str", "") == "HACKED_LOCK":
                 raise LoginException({"status": "fail", "message": "HACKED_LOCK"})
-            elif last_json.get("challenge_type_enum_str", None) == "SCRAPING_WARNING":
+            elif last_json.get("challenge_type_enum_str", "") == "SCRAPING_WARNING":
                 raise LoginException({"status": "fail", "message": "SCRAPING_WARNING"})
-            elif last_json.get("message", None) == "user_has_logged_out":
+            elif last_json.get("message", "") == "user_has_logged_out":
                 raise LoginException(
                     {"status": "fail", "message": "user_has_logged_out"}
                 )
             elif (
-                last_json.get("message", None)
+                last_json.get("message", "")
                 == "Please wait a few minutes before you try again."
             ):
                 raise LoginException(
                     {"status": "fail", "message": "please_wait_a_few_minutes"}
                 )
             elif (
-                last_json.get("payload", None).get("message", None)
+                last_json.get("payload", "").get("message", "")
                 == "We're sorry, but something went wrong. Please try again."
             ):
                 raise LoginException(
@@ -65,8 +65,8 @@ class CustomClient:
                         "message": "we_re_sorry_but_something_went_wrong_please_try_again",
                     }
                 )
-            elif last_json.get("challenge", None).get(
-                "api_path", None
+            elif last_json.get("challenge", "").get(
+                "api_path", ""
             ) == "/challenge/" or last_json.get("step_name", ""):
                 raise LoginException(
                     {"status": "fail", "message": "challenge_required"}
@@ -102,6 +102,7 @@ class CustomClient:
             raise error
 
         client = Client()
+        client.delay_range = [1, 3]
         client.handle_exception = handle_exception
         user_instagram_session_is_exist = os.path.exists(user_instagram_session)
         if user_instagram_session_is_exist:

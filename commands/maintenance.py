@@ -14,8 +14,7 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def maintenance(update: Update,
-                      context: ContextTypes.DEFAULT_TYPE) -> str:
+async def maintenance(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
