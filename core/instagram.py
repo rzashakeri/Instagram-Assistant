@@ -1,21 +1,14 @@
 import os
 
 from instagrapi import Client
-from instagrapi.exceptions import (
-    BadPassword,
-    ChallengeRequired,
-    FeedbackRequired,
-    LoginRequired,
-    PleaseWaitFewMinutes,
-    RecaptchaChallengeForm,
-    ReloginAttemptExceeded,
-    SelectContactPointRecoveryForm,
-    RateLimitError,
-    ClientForbiddenError,
-    ClientError,
-    PrivateError,
-    ChallengeError,
-)
+from instagrapi.exceptions import (BadPassword, ChallengeError,
+                                   ChallengeRequired, ClientError,
+                                   ClientForbiddenError, FeedbackRequired,
+                                   LoginRequired, PleaseWaitFewMinutes,
+                                   PrivateError, RateLimitError,
+                                   RecaptchaChallengeForm,
+                                   ReloginAttemptExceeded,
+                                   SelectContactPointRecoveryForm)
 
 from core.exceptions import LoginException
 
