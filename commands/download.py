@@ -91,6 +91,19 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
 
+    if client is None:
+        logger.info("client is None")
+        await context.bot.deleteMessage(
+            message_id=bot_message.message_id,
+            chat_id=update.message.chat_id,
+        )
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=SOMETHING_WENT_WRONG,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
+
     if message_is_url:
         if INSTAGRAM_COM not in message:
             await context.bot.editMessageText(
