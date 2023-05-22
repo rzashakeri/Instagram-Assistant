@@ -14,8 +14,10 @@ from instagrapi.exceptions import RateLimitError
 from instagrapi.exceptions import RecaptchaChallengeForm
 from instagrapi.exceptions import ReloginAttemptExceeded
 from instagrapi.exceptions import SelectContactPointRecoveryForm
-
+from logging import getLogger
 from core.exceptions import LoginException
+
+logger = getLogger(__name__)
 
 
 class CustomClient:
@@ -42,17 +44,23 @@ class CustomClient:
         def handle_exception(client, error):
             last_json = client.last_json
             if last_json.get("challenge_type_enum_str", "") == "HACKED_LOCK":
+                logger.info("raises 'HACKED_LOCK' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
                     "message": "HACKED_LOCK"
                 })
             elif last_json.get("challenge_type_enum_str",
                                "") == "SCRAPING_WARNING":
+                logger.info("raises 'SCRAPING_WARNING' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
                     "message": "SCRAPING_WARNING"
                 })
             elif last_json.get("message", "") == "user_has_logged_out":
+                logger.info("raises 'user_has_logged_out' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
                     "message": "user_has_logged_out"
@@ -60,12 +68,16 @@ class CustomClient:
             elif (last_json.get(
                     "message",
                     "") == "Please wait a few minutes before you try again."):
+                logger.info("raises 'Please wait a few minutes before you try again.' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
                     "message": "please_wait_a_few_minutes"
                 })
             elif (last_json.get("payload", "").get("message", "") ==
                   "We're sorry, but something went wrong. Please try again."):
+                logger.info("raises 'We're sorry, but something went wrong. Please try again.' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status":
                     "fail",
@@ -75,20 +87,32 @@ class CustomClient:
             elif last_json.get("challenge", "").get(
                     "api_path", "") == "/challenge/" or last_json.get(
                         "step_name", ""):
+                logger.info("raises 'challenge_required' error in last_json")
+                logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
                     "message": "challenge_required"
                 })
 
             if isinstance(error, BadPassword):
+                logger.info("raises 'BadPassword' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, RateLimitError):
+                logger.info("raises 'RateLimitError' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, LoginRequired):
+                logger.info("raises 'LoginRequired' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, ChallengeRequired):
+                logger.info("raises 'ChallengeRequired' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, FeedbackRequired):
+                logger.info("raises 'FeedbackRequired' error")
+                logger.info(error)
                 message = client.last_json["feedback_message"]
                 if ("This action was blocked. Please try again later"
                         in message or
@@ -98,14 +122,24 @@ class CustomClient:
                         in message):
                     raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, PleaseWaitFewMinutes):
+                logger.info("raises 'PleaseWaitFewMinutes' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, ClientForbiddenError):
+                logger.info("raises 'ClientForbiddenError' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, ClientError):
+                logger.info("raises 'ClientError' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, PrivateError):
+                logger.info("raises 'PrivateError' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, ChallengeError):
+                logger.info("raises 'ChallengeError' error")
+                logger.info(error)
                 raise LoginException({"status": "fail", "message": error})
             raise error
 
