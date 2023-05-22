@@ -21,9 +21,9 @@ if __name__ == "__main__":
             50).get_updates_read_timeout(50).persistence(persistence).build())
     if IS_MAINTENANCE:
         application.add_handler(CommandHandler("start", maintenance))
-        application.add_handler(admin_conversation_handler())
+        application.add_handler(admin_conversation_handler)
         application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, maintenance))
     else:
-        application.add_handler(base_conversation_handler())
+        application.add_handler(base_conversation_handler)
     application.run_polling()
