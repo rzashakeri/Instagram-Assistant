@@ -2,13 +2,12 @@ from logging import getLogger
 
 from telegram.ext import CommandHandler
 from telegram.ext import ConversationHandler
-from telegram.ext import filters
 from telegram.ext import MessageHandler
+from telegram.ext import filters
 
 from commands import admin, feedback
 from commands import download
 from commands import insight
-from commands import login
 from commands import lottery
 from commands import privacy
 from commands import rule
@@ -17,7 +16,6 @@ from commands import upload
 from constants.keys import BACK_TO_HOME_KEY, BACK_KEY, FEEDBACK_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
-from constants.keys import LOGIN_KEY
 from constants.keys import LOTTERY_KEY
 from constants.keys import LOTTERY_WITH_COMMENTS_LIST
 from constants.keys import LOTTERY_WITH_LIKES_LIST
@@ -29,11 +27,8 @@ from constants.states import ADMIN_STATE, FEEDBACK_STATE
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
-from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
-from constants.states import LOGIN_STATE
-from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import LOTTERY
 from constants.states import SEND_MESSAGE_TO_ALL_USER
@@ -59,8 +54,6 @@ def base_conversation_handler():
             START_STATE: [MessageHandler(filters.TEXT, start.start)],
             # home ==>
             HOME_STATE: [
-                MessageHandler(filters.Regex(f"^{LOGIN_KEY}$"),
-                               login.get_login_data),
                 MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"),
                                download.get_media_link),
                 MessageHandler(filters.Regex(f"^{UPLOAD_KEY}$"),
@@ -79,14 +72,6 @@ def base_conversation_handler():
                 CommandHandler("start", start.start),
                 CommandHandler("privacy", privacy.privacy),
             ],
-            # login ==>
-            LOGIN_STATE: [MessageHandler(filters.TEXT, login.login)],
-            LOGIN_WITH_TWO_FACTOR_AUTHENTICATION: [
-                MessageHandler(filters.TEXT,
-                               login.login_with_two_factor_authentication)
-            ],
-            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN:
-            [MessageHandler(filters.TEXT, login.remember_me)],
             # download ==>
             DOWNLOAD_STATE: [MessageHandler(filters.TEXT, download.download)],
             # insight ==>
