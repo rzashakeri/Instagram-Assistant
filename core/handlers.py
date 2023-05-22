@@ -53,7 +53,8 @@ def admin_conversation_handler():
         entry_points=[CommandHandler("admin", admin.admin)],
         states={
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(
+                    f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
                 ),
@@ -83,12 +84,14 @@ def base_conversation_handler():
                     filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
                 ),
                 MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
+                    filters.Regex(
+                        f"^{UPLOAD_KEY}$"), upload.get_login_information
                 ),
                 MessageHandler(
                     filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
                 ),
-                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy),
+                MessageHandler(filters.Regex(
+                    f"^{PRIVACY_KEY}$"), privacy.privacy),
                 MessageHandler(
                     filters.Regex(f"^{FEEDBACK_KEY}$"), feedback.get_feedback
                 ),
@@ -114,10 +117,12 @@ def base_conversation_handler():
                 )
             ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(
+                    filters.TEXT, upload.login_attempt_and_get_media_type)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(
+                    filters.TEXT, upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -135,7 +140,8 @@ def base_conversation_handler():
                 )
             ],
             SET_TITLE_OF_IGTV_AND_GET_CAPTION: [
-                MessageHandler(filters.TEXT, upload.set_title_of_igtv_and_get_caption)
+                MessageHandler(
+                    filters.TEXT, upload.set_title_of_igtv_and_get_caption)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
                 MessageHandler(
@@ -171,7 +177,8 @@ def base_conversation_handler():
             ],
             # end of the lottery section <==
             # start feedback section
-            FEEDBACK_STATE: [MessageHandler(filters.TEXT, feedback.send_feedback)]
+            FEEDBACK_STATE: [MessageHandler(
+                filters.TEXT, feedback.send_feedback)]
             # end of feedback section
         },
         fallbacks=[],
