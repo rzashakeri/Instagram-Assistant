@@ -2,19 +2,22 @@ from logging import getLogger
 
 from telegram.ext import CommandHandler
 from telegram.ext import ConversationHandler
-from telegram.ext import MessageHandler
 from telegram.ext import filters
+from telegram.ext import MessageHandler
 
-from commands import admin, feedback
+from commands import admin
 from commands import download
+from commands import feedback
 from commands import insight
 from commands import lottery
 from commands import privacy
 from commands import rule
 from commands import start
 from commands import upload
-from constants.keys import BACK_TO_HOME_KEY, BACK_KEY, FEEDBACK_KEY
+from constants.keys import BACK_KEY
+from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
+from constants.keys import FEEDBACK_KEY
 from constants.keys import INSIGHT_KEY
 from constants.keys import LOTTERY_KEY
 from constants.keys import LOTTERY_WITH_COMMENTS_LIST
@@ -23,13 +26,12 @@ from constants.keys import PRIVACY_KEY
 from constants.keys import SEND_MESSAGE_TO_ALL_USER_KEY
 from constants.keys import UPLOAD_KEY
 from constants.keys import USER_COUNT_KEY
-from constants.states import ADMIN_STATE, FEEDBACK_STATE
+from constants.states import ADMIN_STATE
 from constants.states import DOWNLOAD_STATE
+from constants.states import FEEDBACK_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
-from constants.states import (
-    IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD,
-)
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import LOTTERY
@@ -53,10 +55,10 @@ def admin_conversation_handler():
         entry_points=[CommandHandler("admin", admin.admin)],
         states={
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
-                MessageHandler(
-                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
-                ),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
+                               admin.user_count),
+                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                               admin.back_to_home),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
@@ -79,19 +81,16 @@ def base_conversation_handler():
             START_STATE: [MessageHandler(filters.TEXT, start.start)],
             # home ==>
             HOME_STATE: [
-                MessageHandler(
-                    filters.Regex(f"^{DOWNLOAD_KEY}$"), download.get_media_link
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{UPLOAD_KEY}$"), upload.get_login_information
-                ),
-                MessageHandler(
-                    filters.Regex(f"^{INSIGHT_KEY}$"), insight.get_media_link
-                ),
-                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy),
-                MessageHandler(
-                    filters.Regex(f"^{FEEDBACK_KEY}$"), feedback.get_feedback
-                ),
+                MessageHandler(filters.Regex(f"^{DOWNLOAD_KEY}$"),
+                               download.get_media_link),
+                MessageHandler(filters.Regex(f"^{UPLOAD_KEY}$"),
+                               upload.get_login_information),
+                MessageHandler(filters.Regex(f"^{INSIGHT_KEY}$"),
+                               insight.get_media_link),
+                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"),
+                               privacy.privacy),
+                MessageHandler(filters.Regex(f"^{FEEDBACK_KEY}$"),
+                               feedback.get_feedback),
                 MessageHandler(
                     filters.Regex(f"^{LOTTERY_KEY}$"),
                     lottery.entry_point_and_get_post_link,
@@ -105,19 +104,19 @@ def base_conversation_handler():
             # insight ==>
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
-            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD: [
-                MessageHandler(filters.TEXT, upload.remember_me)
-            ],
+            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD:
+            [MessageHandler(filters.TEXT, upload.remember_me)],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
-                MessageHandler(
-                    filters.TEXT, upload.login_with_two_factor_authentication
-                )
+                MessageHandler(filters.TEXT,
+                               upload.login_with_two_factor_authentication)
             ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT, upload.login_attempt_and_get_media_type)
+                MessageHandler(filters.TEXT,
+                               upload.login_attempt_and_get_media_type)
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT, upload.set_media_type_and_get_media)
+                MessageHandler(filters.TEXT,
+                               upload.set_media_type_and_get_media)
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -131,29 +130,27 @@ def base_conversation_handler():
             ],
             SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT: [
                 MessageHandler(
-                    filters.TEXT, upload.set_caption_and_asking_to_confirm_the_content
-                )
+                    filters.TEXT,
+                    upload.set_caption_and_asking_to_confirm_the_content)
             ],
             SET_TITLE_OF_IGTV_AND_GET_CAPTION: [
-                MessageHandler(filters.TEXT, upload.set_title_of_igtv_and_get_caption)
+                MessageHandler(filters.TEXT,
+                               upload.set_title_of_igtv_and_get_caption)
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
-                MessageHandler(
-                    filters.TEXT, upload.verify_content_and_upload_on_instagram
-                )
+                MessageHandler(filters.TEXT,
+                               upload.verify_content_and_upload_on_instagram)
             ],
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [admin_conversation_handler()],
-            SEND_MESSAGE_TO_ALL_USER: [
-                MessageHandler(filters.TEXT, admin.send_message_to_all_user)
-            ],
+            SEND_MESSAGE_TO_ALL_USER:
+            [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of the admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
-                MessageHandler(
-                    filters.TEXT, lottery.set_post_link_and_get_type_of_lottery
-                ),
+                MessageHandler(filters.TEXT,
+                               lottery.set_post_link_and_get_type_of_lottery),
             ],
             LOTTERY: [
                 MessageHandler(
@@ -171,7 +168,8 @@ def base_conversation_handler():
             ],
             # end of the lottery section <==
             # start feedback section
-            FEEDBACK_STATE: [MessageHandler(filters.TEXT, feedback.send_feedback)]
+            FEEDBACK_STATE:
+            [MessageHandler(filters.TEXT, feedback.send_feedback)]
             # end of feedback section
         },
         fallbacks=[],
