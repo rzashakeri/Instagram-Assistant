@@ -78,7 +78,7 @@ def base_conversation_handler():
             INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight)],
             # start the upload operation section ==>
             IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD:
-            [MessageHandler(filters.TEXT, upload.remember_me)],
+                [MessageHandler(filters.TEXT, upload.remember_me)],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
                 MessageHandler(filters.TEXT,
                                upload.login_with_two_factor_authentication)
@@ -116,18 +116,9 @@ def base_conversation_handler():
             ],
             # end the upload operation section <==
             # start admin section ==>
-            ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
-                               admin.user_count),
-                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
-                               admin.back_to_home),
-                MessageHandler(
-                    filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
-                    admin.get_message_for_send_to_all_user,
-                ),
-            ],
+            ADMIN_STATE: admin_conversation_handler,
             SEND_MESSAGE_TO_ALL_USER:
-            [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
+                [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of the admin section <==
             # start lottery section ==>
             SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY: [
@@ -158,5 +149,24 @@ def base_conversation_handler():
         fallbacks=[],
         name="base_conversation_handler",
         persistent=True,
+    )
+    return conversation_handler
+
+
+def admin_conversation_handler():
+    """admin conversation handler"""
+    conversation_handler = ConversationHandler(
+        entry_points=[CommandHandler("admin", admin.admin)],
+        states={
+            MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
+                           admin.user_count),
+            MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                           admin.back_to_home),
+            MessageHandler(
+                filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
+                admin.get_message_for_send_to_all_user,
+            ),
+        },
+        fallbacks=[],
     )
     return conversation_handler
