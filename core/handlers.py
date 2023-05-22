@@ -49,7 +49,7 @@ logger = getLogger(__name__)
 
 def admin_conversation_handler():
     """admin conversation handler"""
-    conversation_handler = ConversationHandler(
+    admin_user_conversation_handler = ConversationHandler(
         entry_points=[CommandHandler("admin", admin.admin)],
         states={
             ADMIN_STATE: [
@@ -67,7 +67,7 @@ def admin_conversation_handler():
         name="admin_conversation_handler",
         persistent=True,
     )
-    return conversation_handler
+    return admin_user_conversation_handler
 
 
 def base_conversation_handler():
