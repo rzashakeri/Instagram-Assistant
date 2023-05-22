@@ -5,6 +5,7 @@ from telegram.ext import MessageHandler
 from telegram.ext import PicklePersistence
 
 from commands.maintenance import maintenance
+from commands.admin import admin
 from configurations import settings
 from configurations.settings import IS_MAINTENANCE
 from core.handlers import base_conversation_handler
@@ -20,6 +21,7 @@ if __name__ == "__main__":
             50).get_updates_read_timeout(50).persistence(persistence).build())
     if IS_MAINTENANCE:
         application.add_handler(CommandHandler("start", maintenance))
+        application.add_handler(CommandHandler("admin", admin))
         application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, maintenance))
     else:
