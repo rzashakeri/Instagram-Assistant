@@ -1,20 +1,16 @@
 import os
+from logging import getLogger
 
 from instagrapi import Client
-from instagrapi.exceptions import BadPassword
-from instagrapi.exceptions import ChallengeError
-from instagrapi.exceptions import ChallengeRequired
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import ClientForbiddenError
-from instagrapi.exceptions import FeedbackRequired
-from instagrapi.exceptions import LoginRequired
-from instagrapi.exceptions import PleaseWaitFewMinutes
-from instagrapi.exceptions import PrivateError
-from instagrapi.exceptions import RateLimitError
-from instagrapi.exceptions import RecaptchaChallengeForm
-from instagrapi.exceptions import ReloginAttemptExceeded
-from instagrapi.exceptions import SelectContactPointRecoveryForm
-from logging import getLogger
+from instagrapi.exceptions import (BadPassword, ChallengeError,
+                                   ChallengeRequired, ClientError,
+                                   ClientForbiddenError, FeedbackRequired,
+                                   LoginRequired, PleaseWaitFewMinutes,
+                                   PrivateError, RateLimitError,
+                                   RecaptchaChallengeForm,
+                                   ReloginAttemptExceeded,
+                                   SelectContactPointRecoveryForm)
+
 from core.exceptions import LoginException
 
 logger = getLogger(__name__)
