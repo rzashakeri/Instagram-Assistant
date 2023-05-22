@@ -68,7 +68,8 @@ class CustomClient:
             elif (last_json.get(
                     "message",
                     "") == "Please wait a few minutes before you try again."):
-                logger.info("raises 'Please wait a few minutes before you try again.' error in last_json")
+                logger.info(
+                    "raises 'Please wait a few minutes before you try again.' error in last_json")
                 logger.info(last_json)
                 raise LoginException({
                     "status": "fail",
@@ -76,7 +77,8 @@ class CustomClient:
                 })
             elif (last_json.get("payload", "").get("message", "") ==
                   "We're sorry, but something went wrong. Please try again."):
-                logger.info("raises 'We're sorry, but something went wrong. Please try again.' error in last_json")
+                logger.info(
+                    "raises 'We're sorry, but something went wrong. Please try again.' error in last_json")
                 logger.info(last_json)
                 raise LoginException({
                     "status":
