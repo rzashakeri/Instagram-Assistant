@@ -168,5 +168,7 @@ def admin_conversation_handler():
             ),
         },
         fallbacks=[],
+        name="admin_conversation_handler",
+        persistent=True,
     )
     return conversation_handler
