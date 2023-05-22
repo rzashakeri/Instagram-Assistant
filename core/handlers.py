@@ -116,7 +116,7 @@ def base_conversation_handler():
             ],
             # end the upload operation section <==
             # start admin section ==>
-            ADMIN_STATE: admin_conversation_handler,
+            ADMIN_STATE: admin_conversation_handler(),
             SEND_MESSAGE_TO_ALL_USER:
                 [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of the admin section <==
