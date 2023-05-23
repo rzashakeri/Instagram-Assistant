@@ -143,7 +143,16 @@ def base_conversation_handler():
             ],
             # end the upload operation section <==
             # start admin section ==>
-            ADMIN_STATE: [admin_conversation_handler()],
+            ADMIN_STATE: [
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
+                               admin.user_count),
+                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                               admin.back_to_home),
+                MessageHandler(
+                    filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
+                    admin.get_message_for_send_to_all_user,
+                ),
+            ],
             SEND_MESSAGE_TO_ALL_USER:
             [MessageHandler(filters.TEXT, admin.send_message_to_all_user)],
             # end of the admin section <==
