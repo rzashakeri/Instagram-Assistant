@@ -1,4 +1,5 @@
 import os
+import random
 import time
 from abc import abstractmethod
 from collections import defaultdict
@@ -7,7 +8,7 @@ from telegram.ext import BaseRateLimiter
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-from constants import LOGIN
+from constants import LOGIN, PROXY_LIST
 
 
 class CustomRateLimiter(BaseRateLimiter):
@@ -60,3 +61,10 @@ def create_requirement_folders():
 
 def remove_all_spaces(string):
     return "".join(string.split())
+
+
+def next_proxy():
+    if PROXY_LIST is not None:
+        choice = random.choices(PROXY_LIST)
+        return choice[0]
+    return ""
