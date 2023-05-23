@@ -11,11 +11,6 @@ from core.instagram import CustomClient
 # Init logger
 logger = getLogger(__name__)
 
-CLIENT = None
-USERNAME = None
-PASSWORD = None
-SAVED_LOGIN_INFORMATION = None
-
 
 def login_admin_user_to_instagram():
     """login user"""
@@ -29,7 +24,7 @@ def login_admin_user_to_instagram():
             f"{user['username']}_{settings.ADMIN_TELEGRAM_USER_ID}.json")
         user_instagram_session_path = f"{login_directory}/{user_instagram_session_name}"
         try:
-            client = CustomClient(username=USERNAME, password=USERNAME).get_client(
+            client = CustomClient(username=user['username'], password=user['password']).get_client(
                 login_directory=login_directory,
                 telegram_user_id=settings.ADMIN_TELEGRAM_USER_ID,
                 user_instagram_session=user_instagram_session_path,
