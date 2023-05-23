@@ -49,15 +49,18 @@ class CustomClient:
                     if last_json.get("challenge_type_enum_str", "") == "HACKED_LOCK":
                         logger.info("raises 'HACKED_LOCK' error in last_json")
                         logger.info(last_json)
-                        raise LoginException({"status": "fail", "message": "HACKED_LOCK"})
+                        raise LoginException(
+                            {"status": "fail", "message": "HACKED_LOCK"})
                     elif last_json.get("challenge_type_enum_str", "") == "SCRAPING_WARNING":
-                        logger.info("raises 'SCRAPING_WARNING' error in last_json")
+                        logger.info(
+                            "raises 'SCRAPING_WARNING' error in last_json")
                         logger.info(last_json)
                         raise LoginException(
                             {"status": "fail", "message": "SCRAPING_WARNING"}
                         )
                     elif last_json.get("message", "") == "user_has_logged_out":
-                        logger.info("raises 'user_has_logged_out' error in last_json")
+                        logger.info(
+                            "raises 'user_has_logged_out' error in last_json")
                         logger.info(last_json)
                         raise LoginException(
                             {"status": "fail", "message": "user_has_logged_out"}
@@ -90,7 +93,8 @@ class CustomClient:
                     elif last_json.get("challenge", "").get(
                         "api_path", ""
                     ) == "/challenge/" or last_json.get("step_name", ""):
-                        logger.info("raises 'challenge_required' error in last_json")
+                        logger.info(
+                            "raises 'challenge_required' error in last_json")
                         logger.info(last_json)
                         raise LoginException(
                             {"status": "fail", "message": "challenge_required"}
@@ -104,7 +108,8 @@ class CustomClient:
                         )
                         logger.info(error)
                         client.set_proxy(next_proxy())
-                        raise LoginException({"status": "fail", "message": error})
+                        raise LoginException(
+                            {"status": "fail", "message": error})
                 except AttributeError:
                     pass
 
@@ -169,7 +174,8 @@ class CustomClient:
         logger.info(client.proxy)
         client.delay_range = [1, 3]
         client.handle_exception = handle_exception
-        user_instagram_session_is_exist = os.path.exists(user_instagram_session)
+        user_instagram_session_is_exist = os.path.exists(
+            user_instagram_session)
         if user_instagram_session_is_exist:
             client.load_settings(user_instagram_session)
             client.login(username=self.username, password=self.password)
