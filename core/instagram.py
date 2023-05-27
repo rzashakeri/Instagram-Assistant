@@ -165,8 +165,8 @@ class CustomClient:
                 raise LoginException({"status": "fail", "message": error})
             raise error
 
-        client = Client(proxy=next_proxy())
-        logger.info(client.proxy)
+        client = Client(proxy=next_proxy(), request_timeout=7)
+        logger.info("proxy is %s", client.proxy)
         client.delay_range = [1, 3]
         client.handle_exception = handle_exception
         user_instagram_session_is_exist = os.path.exists(user_instagram_session)
@@ -174,7 +174,7 @@ class CustomClient:
             client.load_settings(user_instagram_session)
             client.login(username=self.username, password=self.password)
             client.get_timeline_feed()
-        elif self.verification_code != "":
+        elif self.verification_code != "" and save_session:
             if save_session:
                 client.login(
                     username=self.username,
