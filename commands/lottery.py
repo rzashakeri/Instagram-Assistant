@@ -14,7 +14,7 @@ from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
 from constants import PROCESSING, STORIES_SEGMENT
 from constants.keys import BACK_KEY
-from constants.messages import LINK_IS_INVALID
+from constants.messages import LINK_IS_INVALID, INSTAGRAM_COM
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import WELCOME_MESSAGE
@@ -62,7 +62,7 @@ async def set_post_link_and_get_type_of_lottery(
         return HOME_STATE
     message_is_url = validators.url(message)
     if message_is_url:
-        if STORIES_SEGMENT in message:
+        if INSTAGRAM_COM not in message or STORIES_SEGMENT not in message:
             await update.message.reply_text(LINK_IS_INVALID,
                                             reply_markup=back_keyboard)
             return SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
