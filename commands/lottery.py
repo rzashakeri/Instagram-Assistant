@@ -62,7 +62,7 @@ async def set_post_link_and_get_type_of_lottery(
         return HOME_STATE
     message_is_url = validators.url(message)
     if message_is_url:
-        if INSTAGRAM_COM not in message or STORIES_SEGMENT not in message:
+        if INSTAGRAM_COM not in message or STORIES_SEGMENT in message:
             await update.message.reply_text(LINK_IS_INVALID,
                                             reply_markup=back_keyboard)
             return SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
