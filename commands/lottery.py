@@ -229,8 +229,7 @@ async def lottery_with_comments_list(
         await context.bot.send_photo(
             chat_id=update.message.chat_id,
             photo=winner.user.profile_pic_url,
-            caption=
-            f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
+            caption=f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
             reply_markup=base_keyboard,
         )
         return HOME_STATE
