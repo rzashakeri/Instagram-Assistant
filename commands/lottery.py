@@ -12,9 +12,11 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
-from constants import PROCESSING, STORIES_SEGMENT
+from constants import PROCESSING
+from constants import STORIES_SEGMENT
 from constants.keys import BACK_KEY
-from constants.messages import LINK_IS_INVALID, INSTAGRAM_COM
+from constants.messages import INSTAGRAM_COM
+from constants.messages import LINK_IS_INVALID
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import WELCOME_MESSAGE
