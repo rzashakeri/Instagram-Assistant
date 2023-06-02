@@ -12,7 +12,7 @@ from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
 from connectors.postgresql import create_user
-from constants import PROCESSING
+from constants import PROCESSING, STORIES_SEGMENT
 from constants.keys import BACK_KEY
 from constants.messages import LINK_IS_INVALID
 from constants.messages import PRIVACY_MESSAGE
@@ -62,6 +62,9 @@ async def set_post_link_and_get_type_of_lottery(
         return HOME_STATE
     message_is_url = validators.url(message)
     if message_is_url:
+        if STORIES_SEGMENT in message:
+            await update.message.reply_text(LINK_IS_INVALID,
+                                            reply_markup=back_keyboard)
         global POST_LINK
         POST_LINK = message
         await update.message.reply_text(
@@ -153,7 +156,7 @@ async def lottery_with_likes_list(update: Update,
         await context.bot.send_message(
             chat_id=update.message.chat_id,
             text=SOMETHING_WENT_WRONG,
-            reply_markup=back_keyboard,
+            reply_markup=base_keyboard,
         )
         return HOME_STATE
 
