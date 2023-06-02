@@ -65,6 +65,7 @@ async def set_post_link_and_get_type_of_lottery(
         if STORIES_SEGMENT in message:
             await update.message.reply_text(LINK_IS_INVALID,
                                             reply_markup=back_keyboard)
+            return SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
         global POST_LINK
         POST_LINK = message
         await update.message.reply_text(
