@@ -472,7 +472,7 @@ async def verify_content_and_upload_on_instagram(
     if message == NO:
         await update.message.reply_text(WHAT_DO_YOU_WANT,
                                         reply_markup=base_keyboard)
-        os.remove(FILE_PATH_ON_SERVER)
+        # os.remove(FILE_PATH_ON_SERVER)
         return HOME_STATE
     try:
         if MEDIA_TYPE == STORY:
