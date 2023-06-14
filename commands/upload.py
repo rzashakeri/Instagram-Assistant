@@ -165,7 +165,7 @@ async def login_attempt_and_get_media_type(
     user_instagram_session = f"{login_directory}/{USERNAME}_{user_id}.json"
     global CLIENT
     try:
-        CLIENT = CustomClient(username=USERNAME, password=USERNAME).get_client(
+        CLIENT = CustomClient(username=USERNAME, password=PASSWORD).get_client(
             login_directory=login_directory,
             telegram_user_id=user_id,
             user_instagram_session=user_instagram_session,
@@ -175,7 +175,7 @@ async def login_attempt_and_get_media_type(
             logger.info("Saved session")
             SAVED_LOGIN_INFORMATION = True
             CLIENT = CustomClient(
-                username=USERNAME, password=USERNAME).get_client(
+                username=USERNAME, password=PASSWORD).get_client(
                     login_directory=login_directory,
                     telegram_user_id=user_id,
                     user_instagram_session=user_instagram_session,
@@ -185,7 +185,7 @@ async def login_attempt_and_get_media_type(
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
             CLIENT = CustomClient(
-                username=USERNAME, password=USERNAME).get_client(
+                username=USERNAME, password=PASSWORD).get_client(
                     login_directory=login_directory,
                     telegram_user_id=user_id,
                     user_instagram_session=user_instagram_session,
@@ -233,7 +233,7 @@ async def login_with_two_factor_authentication(
         if SAVED_LOGIN_INFORMATION:
             CLIENT = CustomClient(
                 username=USERNAME,
-                password=USERNAME,
+                password=PASSWORD,
                 verification_code=verification_code,
             ).get_client(
                 login_directory=login_directory,
@@ -241,7 +241,7 @@ async def login_with_two_factor_authentication(
                 save_session=True,
             )
         CLIENT = CustomClient(username=USERNAME,
-                              password=USERNAME,
+                              password=PASSWORD,
                               verification_code=verification_code).get_client(
                                   login_directory=login_directory,
                                   telegram_user_id=user_id,
