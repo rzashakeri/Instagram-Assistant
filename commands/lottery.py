@@ -4,22 +4,18 @@ import time
 from logging import getLogger
 
 import validators
-from instagrapi import Client
 from instagrapi.exceptions import MediaNotFound
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
-from connectors.postgresql import create_user
 from constants import PROCESSING
 from constants import STORIES_SEGMENT
 from constants.keys import BACK_KEY
 from constants.messages import INSTAGRAM_COM
 from constants.messages import LINK_IS_INVALID
-from constants.messages import PRIVACY_MESSAGE
 from constants.messages import SOMETHING_WENT_WRONG
-from constants.messages import WELCOME_MESSAGE
 from constants.messages import WELCOME_TO_THE_LOTTERY_SECTION
 from constants.messages import WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS
 from constants.messages import WHAT_DO_YOU_WANT
