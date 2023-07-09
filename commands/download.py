@@ -3,7 +3,7 @@ import re
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound, InvalidMediaId
+from instagrapi.exceptions import MediaNotFound, InvalidMediaId, ClientError, PrivateError
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import UserNotFound
 from telegram import Update
@@ -77,7 +77,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         chat_id=update.message.chat_id, text=PROCESSING)
     try:
         client = login_admin_user_to_instagram()
-    except LoginException:
+    except (LoginException, ClientError, PrivateError):
         await context.bot.deleteMessage(
             message_id=bot_message.message_id,
             chat_id=update.message.chat_id,

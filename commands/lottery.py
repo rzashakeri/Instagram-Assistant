@@ -4,7 +4,7 @@ import time
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound
+from instagrapi.exceptions import MediaNotFound, ClientError, PrivateError
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
@@ -151,7 +151,7 @@ async def lottery_with_likes_list(update: Update,
         await update.message.reply_text(
             "media not found, check your link and try again",
             reply_markup=base_keyboard)
-    except LoginException:
+    except (LoginException, ClientError, PrivateError):
         await context.bot.send_message(
             chat_id=update.message.chat_id,
             text=SOMETHING_WENT_WRONG,
@@ -237,3 +237,10 @@ async def lottery_with_comments_list(
         await update.message.reply_text(
             "media not found, check your link and try again",
             reply_markup=base_keyboard)
+    except (LoginException, ClientError, PrivateError):
+        await context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text=SOMETHING_WENT_WRONG,
+            reply_markup=base_keyboard,
+        )
+        return HOME_STATE
