@@ -42,8 +42,7 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def user_count(update: Update,
-                     context: ContextTypes.DEFAULT_TYPE) -> str:
+async def user_count(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     user_count = get_user_count()
@@ -56,8 +55,7 @@ async def user_count(update: Update,
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def back_to_home(update: Update,
-                       context: ContextTypes.DEFAULT_TYPE) -> str:
+async def back_to_home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -70,7 +68,8 @@ async def back_to_home(update: Update,
 @restricted
 @send_action(ChatAction.TYPING)
 async def get_message_for_send_to_all_user(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -82,14 +81,16 @@ async def get_message_for_send_to_all_user(
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def send_message_to_all_user(update: Update,
-                                   context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_message_to_all_user(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text("what do you want ?",
-                                        reply_markup=admin_keyboard)
+        await update.message.reply_text(
+            "what do you want ?", reply_markup=admin_keyboard
+        )
         return ADMIN_STATE
     columns = get_user_id()
     for row in columns:
