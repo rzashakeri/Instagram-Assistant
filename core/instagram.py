@@ -90,7 +90,7 @@ class CustomClient:
                     elif (last_json.get("payload", "").get(
                             "message", ""
                     ) == "We're sorry, but something went wrong. Please try again."
-                          ):
+                    ):
                         logger.info(
                             "raises 'We're sorry, but something went wrong. Please try again.' error in last_json"
                         )
@@ -114,7 +114,7 @@ class CustomClient:
                     elif (last_json.get(
                             "message", ""
                     ) == "Instagram has blocked your IP address, use a quality proxy provider (not free, not shared)"
-                          ):
+                    ):
                         logger.info(
                             "raises 'Instagram has blocked your IP address, use a quality proxy provider (not free, not shared)' error from last_json"
                         )
