@@ -3,7 +3,7 @@ import re
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound
+from instagrapi.exceptions import MediaNotFound, InvalidMediaId
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import UserNotFound
 from telegram import Update
@@ -129,7 +129,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                 media_info = client.media_info(media_pk_from_url).dict()
                 media_type = media_info["media_type"]
                 product_type = media_info["product_type"]
-            except (MediaNotFound, UnknownError, ValueError):
+            except (MediaNotFound, UnknownError, InvalidMediaId, ValueError):
                 if is_link_for_post or is_link_for_reel:
                     await context.bot.deleteMessage(
                         message_id=bot_message.message_id,
