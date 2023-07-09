@@ -3,13 +3,8 @@ import os
 import time
 from logging import getLogger
 
-from instagrapi import Client
-from instagrapi.exceptions import ChallengeRequired
-from instagrapi.exceptions import ClientError
-from instagrapi.exceptions import ClientForbiddenError
 from instagrapi.exceptions import ClipNotUpload
 from instagrapi.exceptions import IGTVNotUpload
-from instagrapi.exceptions import LoginRequired
 from instagrapi.exceptions import PhotoNotUpload
 from instagrapi.exceptions import TwoFactorRequired
 from instagrapi.exceptions import UnknownError
@@ -20,8 +15,6 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 import constants
-from constants import BACK
-from constants import DOCUMENT
 from constants import LOGIN
 from constants import NO
 from constants import PROCESSING
@@ -41,10 +34,8 @@ from constants.media_types import STORY
 from constants.media_types import VIDEO
 from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
 from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
-from constants.messages import CHALLENGE_REQUIRED
 from constants.messages import FILE_IS_NOT_VALID
 from constants.messages import INSTAGRAM_ASSISTANT_ID
-from constants.messages import LOGGED_IN_SUCCESSFULLY
 from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
 from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
 from constants.messages import PLEASE_SEND_PHOTO_OR_VIDEO
@@ -58,15 +49,11 @@ from constants.messages import TITLE_OF_YOUR_IGTV
 from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
-from constants.messages import YOU_NEED_TO_LOGIN_AGAIN
-from constants.messages import YOU_WERE_ALREADY_LOGGED_IN
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
 from constants.states import HOME_STATE
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
-from constants.states import LOGIN_STATE
-from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
 from constants.states import SET_MEDIA_AND_GET_CAPTION

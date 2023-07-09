@@ -8,9 +8,7 @@ from telegram.ext import ContextTypes
 
 from connectors.postgresql import get_user_count
 from connectors.postgresql import get_user_id
-from constants import BACK
 from constants.keys import BACK_KEY
-from constants.keys import BACK_TO_HOME_KEY
 from constants.messages import SEND_YOUR_MESSAGE
 from constants.messages import USER_COUNT
 from constants.messages import WELCOME_TO_ADMIN

@@ -1,27 +1,15 @@
 # encoding: utf-8
-import time
-from datetime import datetime
-from datetime import timezone
 from logging import getLogger
 
-import psycopg2
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
-from telegram.ext import ConversationHandler
 
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
-from connectors.postgresql import create_user
-from constants import NO
-from constants import YES
 from constants.keys import BACK_KEY
 from constants.messages import FEEDBACK_MESSAGE
-from constants.messages import GOODBYE_WE_ARE_SORRY
-from constants.messages import NEW_MESSAGE
 from constants.messages import NEW_TEXT_MESSAGE
-from constants.messages import PRIVACY_MESSAGE
-from constants.messages import WELCOME_MESSAGE
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOUR_MESSAGE_WAS_SENT
 from constants.states import FEEDBACK_STATE
