@@ -5,8 +5,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
-from constants.messages import PRIVACY_MESSAGE
-from constants.messages import RULE_MESSAGE
+from constants.messages import PRIVACY_MESSAGE, RULE_MESSAGE
 from constants.states import START_STATE
 from core.keyboards import yes_or_no_without_back_key
 from utils.decorators import send_action
