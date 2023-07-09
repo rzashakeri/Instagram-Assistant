@@ -3,7 +3,9 @@ from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import UserNotFound, ClientError, PrivateError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import PrivateError
+from instagrapi.exceptions import UserNotFound
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes

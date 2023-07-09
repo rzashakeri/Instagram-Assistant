@@ -3,9 +3,11 @@ import os
 import time
 from logging import getLogger
 
-from instagrapi.exceptions import ClipNotUpload, ClientError, PrivateError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClipNotUpload
 from instagrapi.exceptions import IGTVNotUpload
 from instagrapi.exceptions import PhotoNotUpload
+from instagrapi.exceptions import PrivateError
 from instagrapi.exceptions import TwoFactorRequired
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import VideoNotUpload

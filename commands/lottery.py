@@ -4,7 +4,9 @@ import time
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound, ClientError, PrivateError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import MediaNotFound
+from instagrapi.exceptions import PrivateError
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
