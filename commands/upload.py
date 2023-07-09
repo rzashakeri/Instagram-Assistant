@@ -3,7 +3,7 @@ import os
 import time
 from logging import getLogger
 
-from instagrapi.exceptions import ClipNotUpload
+from instagrapi.exceptions import ClipNotUpload, ClientError, PrivateError
 from instagrapi.exceptions import IGTVNotUpload
 from instagrapi.exceptions import PhotoNotUpload
 from instagrapi.exceptions import TwoFactorRequired
@@ -189,7 +189,7 @@ async def login_attempt_and_get_media_type(
             "Please Send Two Factor Authentication Code",
             reply_markup=back_keyboard)
         return LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
-    except LoginException:
+    except (LoginException, ClientError, PrivateError):
         await update.effective_user.send_message(
             SOMETHING_WENT_WRONG,
             reply_markup=base_keyboard,
@@ -239,7 +239,7 @@ async def login_with_two_factor_authentication(
             reply_markup=media_type_keyboard,
         )
         return SET_MEDIA_TYPE_AND_GET_MEDIA
-    except LoginException:
+    except (LoginException, ClientError, PrivateError):
         await update.effective_user.send_message(
             SOMETHING_WENT_WRONG,
             reply_markup=base_keyboard,

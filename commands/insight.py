@@ -3,7 +3,7 @@ from logging import getLogger
 
 import validators
 from instagrapi import Client
-from instagrapi.exceptions import UserNotFound
+from instagrapi.exceptions import UserNotFound, ClientError, PrivateError
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
@@ -63,7 +63,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         chat_id=update.message.chat_id, text=PROCESSING)
     try:
         client = login_admin_user_to_instagram()
-    except LoginException:
+    except (LoginException, ClientError, PrivateError):
         await context.bot.editMessageText(
             message_id=bot_message.message_id,
             chat_id=update.message.chat_id,
