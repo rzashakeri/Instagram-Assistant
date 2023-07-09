@@ -165,14 +165,6 @@ class CustomClient:
                 logger.info(error)
                 client.set_proxy(next_proxy())
                 raise LoginException({"status": "fail", "message": error})
-            elif isinstance(error, ClientError):
-                logger.info("raises 'ClientError' error")
-                logger.info(error)
-                raise LoginException({"status": "fail", "message": error})
-            elif isinstance(error, PrivateError):
-                logger.info("raises 'PrivateError' error")
-                logger.info(error)
-                raise LoginException({"status": "fail", "message": error})
             elif isinstance(error, ChallengeError):
                 logger.info("raises 'ChallengeError' error")
                 logger.info(error)
