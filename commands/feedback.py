@@ -64,7 +64,8 @@ async def send_feedback(update: Update,
         ),
         parse_mode=ParseMode.MARKDOWN_V2,
     )
-    create_request(user_id=update.effective_user.id, request_type=FEEDBACK_REQUEST)
+    create_request(user_id=update.effective_user.id,
+                   request_type=FEEDBACK_REQUEST)
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,

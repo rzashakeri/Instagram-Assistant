@@ -70,7 +70,7 @@ async def back_to_home(update: Update,
 @restricted
 @send_action(ChatAction.TYPING)
 async def get_message_for_send_to_all_user(
-    update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(

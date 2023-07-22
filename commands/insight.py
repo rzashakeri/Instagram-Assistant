@@ -75,7 +75,8 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=back_keyboard,
         )
         return HOME_STATE
-    create_request(user_id=update.effective_user.id, request_type=INSIGHT_REQUEST)
+    create_request(user_id=update.effective_user.id,
+                   request_type=INSIGHT_REQUEST)
     if message_is_url:
         await context.bot.editMessageText(
             chat_id=update.message.chat_id,

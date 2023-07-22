@@ -107,7 +107,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
     try:
-        create_request(user_id=update.effective_user.id, request_type=DOWNLOAD_REQUEST)
+        create_request(user_id=update.effective_user.id,
+                       request_type=DOWNLOAD_REQUEST)
     except Exception as error:
         logger.info(error)
         logger.info("create download request failed")
@@ -253,7 +254,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     text=GETTING_STORY_INFORMATION,
                 )
                 story_info = client.story_info(story_pk_from_url)
-                
+
                 if story_info.video_url is None:
                     await context.bot.editMessageText(
                         chat_id=update.message.chat_id,
