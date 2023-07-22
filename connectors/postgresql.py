@@ -19,7 +19,7 @@ def create_user(user_id, first_name, last_name, username):
     )
     cursor = connection.cursor()
     query = """
-        INSERT INTO users (user_id, first_name, last_name, username) 
+        INSERT INTO users (user_id, first_name, last_name, username)
         VALUES (%s, %s, %s, %s)
         """
     try:
@@ -42,9 +42,9 @@ def get_user_count():
         port=POSTGRESQL_PORT,
     )
     query = """
-    SELECT 
-    COUNT(*) 
-    FROM 
+    SELECT
+    COUNT(*)
+    FROM
     users
     """
     cursor = connection.cursor()
