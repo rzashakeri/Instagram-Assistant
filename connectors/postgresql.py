@@ -1,5 +1,11 @@
 import psycopg2
-from configurations.settings import POSTGRESQL_HOST, POSTGRESQL_NAME, POSTGRESQL_USERNAME, POSTGRESQL_PASSWORD, POSTGRESQL_PORT
+from configurations.settings import (
+    POSTGRESQL_HOST,
+    POSTGRESQL_NAME,
+    POSTGRESQL_USERNAME,
+    POSTGRESQL_PASSWORD,
+    POSTGRESQL_PORT,
+)
 from constants import DUPLICATE_KEY
 
 
@@ -10,13 +16,13 @@ def create_user(user_id, first_name, last_name, username):
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     cursor = connection.cursor()
-    query = ("""
+    query = """
         INSERT INTO users (user_id, first_name, last_name, username) 
         VALUES (%s, %s, %s, %s)
-        """)
+        """
     try:
         cursor.execute(query, (user_id, first_name, last_name, username))
     except psycopg2.Error as error:
@@ -34,7 +40,7 @@ def get_user_count():
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     query = """
     SELECT 
@@ -58,7 +64,7 @@ def get_user_id():
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     query = """
     SELECT user_id

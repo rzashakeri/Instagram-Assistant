@@ -26,8 +26,7 @@ logger = getLogger(__name__)
 
 
 @send_action(ChatAction.TYPING)
-async def get_feedback(update: Update,
-                       context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     await context.bot.send_message(
@@ -39,8 +38,7 @@ async def get_feedback(update: Update,
 
 
 @send_action(ChatAction.TYPING)
-async def send_feedback(update: Update,
-                        context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_feedback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
     # pylint: disable=unused-argument
     message = update.message.text
@@ -50,8 +48,7 @@ async def send_feedback(update: Update,
     username = update.effective_user.username
 
     if message == BACK_KEY:
-        await update.message.reply_text(WHAT_DO_YOU_WANT,
-                                        reply_markup=base_keyboard)
+        await update.message.reply_text(WHAT_DO_YOU_WANT, reply_markup=base_keyboard)
         return HOME_STATE
     await context.bot.send_message(
         chat_id=ADMIN_TELEGRAM_USER_ID,
@@ -64,8 +61,7 @@ async def send_feedback(update: Update,
         ),
         parse_mode=ParseMode.MARKDOWN_V2,
     )
-    create_request(user_id=update.effective_user.id,
-                   request_type=FEEDBACK_REQUEST)
+    create_request(user_id=update.effective_user.id, request_type=FEEDBACK_REQUEST)
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,
