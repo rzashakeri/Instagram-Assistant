@@ -27,7 +27,8 @@ async def privacy(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         reply_markup=base_keyboard,
     )
     try:
-        create_request(user_id=update.effective_user.id, request_type=PRIVACY_REQUEST)
+        create_request(user_id=update.effective_user.id,
+                       request_type=PRIVACY_REQUEST)
         logger.info("create privacy request successfully")
     except Exception as error:
         logger.info(error)
