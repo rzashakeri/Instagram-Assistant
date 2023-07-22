@@ -188,6 +188,7 @@ async def login_attempt_and_get_media_type(
         )
         try:
             create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+            logger.info("create upload request successfully")
         except Exception as error:
             logger.info(error)
             logger.info("create upload request failed")
@@ -249,6 +250,7 @@ async def login_with_two_factor_authentication(
         )
         try:
             create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+            logger.info("create upload request successfully")
         except Exception as error:
             logger.info(error)
             logger.info("create upload request failed")
