@@ -85,8 +85,8 @@ def create_request(user_id, request_type):
     )
     cursor = connection.cursor()
     query = """
-            INSERT INTO requests (request_id, user_id, request_type)
-            VALUES (DEFAULT, %s, %s)
+            INSERT INTO requests (request_id, request_user_id, request_type, request_created_at)
+            VALUES (DEFAULT, %s, %s, DEFAULT)
         """
     cursor.execute(query, (user_id, request_type))
     connection.commit()
