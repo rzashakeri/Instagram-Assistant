@@ -2,17 +2,22 @@
 from logging import getLogger
 
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import create_request
 from constants.keys import BACK_KEY
-from constants.messages import (FEEDBACK_MESSAGE, NEW_TEXT_MESSAGE,
-                                WHAT_DO_YOU_WANT, YOUR_MESSAGE_WAS_SENT)
+from constants.messages import FEEDBACK_MESSAGE
+from constants.messages import NEW_TEXT_MESSAGE
+from constants.messages import WHAT_DO_YOU_WANT
+from constants.messages import YOUR_MESSAGE_WAS_SENT
 from constants.request_types import FEEDBACK_REQUEST
-from constants.states import FEEDBACK_STATE, HOME_STATE
-from core.keyboards import back_keyboard, base_keyboard
+from constants.states import FEEDBACK_STATE
+from constants.states import HOME_STATE
+from core.keyboards import back_keyboard
+from core.keyboards import base_keyboard
 from utils.decorators import send_action
 
 # Init logger
