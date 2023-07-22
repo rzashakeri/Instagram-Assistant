@@ -5,7 +5,9 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from connectors.postgresql import create_request
 from constants.messages import PRIVACY_MESSAGE
+from constants.request_types import LOTTERY_REQUEST, PRIVACY_REQUEST
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
@@ -23,4 +25,9 @@ async def privacy(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         PRIVACY_MESSAGE,
         reply_markup=base_keyboard,
     )
+    try:
+        create_request(user_id=update.effective_user.id, request_type=PRIVACY_REQUEST)
+    except Exception as error:
+        logger.info(error)
+        logger.info("create privacy request failed")
     return HOME_STATE

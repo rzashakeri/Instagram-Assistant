@@ -4,12 +4,15 @@ import time
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound, ClientError, PrivateError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import MediaNotFound
+from instagrapi.exceptions import PrivateError
 from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
+from connectors.postgresql import create_request
 from constants import PROCESSING
 from constants import STORIES_SEGMENT
 from constants.keys import BACK_KEY
@@ -19,6 +22,7 @@ from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import WELCOME_TO_THE_LOTTERY_SECTION
 from constants.messages import WELL_YOU_WANT_TO_DO_THE_LOTTERY_ON_WHAT_BASIS
 from constants.messages import WHAT_DO_YOU_WANT
+from constants.request_types import LOTTERY_REQUEST
 from constants.states import HOME_STATE
 from constants.states import LOTTERY
 from constants.states import SET_POST_LINK_AND_GET_TYPE_OF_LOTTERY
@@ -232,6 +236,12 @@ async def lottery_with_comments_list(
             f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
             reply_markup=base_keyboard,
         )
+        try:
+            create_request(user_id=update.effective_user.id, request_type=LOTTERY_REQUEST)
+        except Exception as error:
+            logger.info(error)
+            logger.info("create lottery request failed")
+
         return HOME_STATE
     except MediaNotFound:
         await update.message.reply_text(

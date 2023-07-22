@@ -5,8 +5,10 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from connectors.postgresql import create_request
 from constants.messages import PRIVACY_MESSAGE
 from constants.messages import RULE_MESSAGE
+from constants.request_types import RULE_REQUEST
 from constants.states import START_STATE
 from core.keyboards import yes_or_no_without_back_key
 from utils.decorators import send_action
@@ -28,4 +30,9 @@ async def rule(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                                  first_name=first_name),
         reply_markup=yes_or_no_without_back_key,
     )
+    try:
+        create_request(user_id=update.effective_user.id, request_type=RULE_REQUEST)
+    except Exception as error:
+        logger.info(error)
+        logger.info("create rule request failed")
     return START_STATE

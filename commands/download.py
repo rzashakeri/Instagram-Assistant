@@ -3,7 +3,10 @@ import re
 from logging import getLogger
 
 import validators
-from instagrapi.exceptions import MediaNotFound, InvalidMediaId, ClientError, PrivateError
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import InvalidMediaId
+from instagrapi.exceptions import MediaNotFound
+from instagrapi.exceptions import PrivateError
 from instagrapi.exceptions import UnknownError
 from instagrapi.exceptions import UserNotFound
 from telegram import Update
@@ -11,8 +14,10 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
-from constants import PROCESSING
+from configurations.settings import ADMIN_TELEGRAM_USER_ID
+from connectors.postgresql import create_request
 from constants import P_SEGMENT
+from constants import PROCESSING
 from constants import REEL_SEGMENT
 from constants import STORIES_SEGMENT
 from constants.keys import BACK_KEY
@@ -40,6 +45,7 @@ from constants.messages import WHAT_DO_YOU_WANT
 from constants.product_types import IS_CLIPS
 from constants.product_types import IS_FEED
 from constants.product_types import IS_IGTV
+from constants.request_types import DOWNLOAD_REQUEST
 from constants.states import DOWNLOAD_STATE
 from constants.states import HOME_STATE
 from core.exceptions import LoginException
@@ -88,7 +94,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=base_keyboard,
         )
         return HOME_STATE
-
     if client is None:
         logger.info("client is None")
         await context.bot.deleteMessage(
@@ -101,6 +106,11 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=base_keyboard,
         )
         return HOME_STATE
+    try:
+        create_request(user_id=update.effective_user.id, request_type=DOWNLOAD_REQUEST)
+    except Exception as error:
+        logger.info(error)
+        logger.info("create download request failed")
 
     if message_is_url:
         if INSTAGRAM_COM not in message:
@@ -243,7 +253,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     text=GETTING_STORY_INFORMATION,
                 )
                 story_info = client.story_info(story_pk_from_url)
-
+                
                 if story_info.video_url is None:
                     await context.bot.editMessageText(
                         chat_id=update.message.chat_id,

@@ -7,10 +7,11 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 from telegram.ext import ConversationHandler
 
-from connectors.postgresql import create_user
+from connectors.postgresql import create_user, create_request
 from constants import NO
 from constants.messages import GOODBYE_WE_ARE_SORRY
 from constants.messages import WELCOME_MESSAGE
+from constants.request_types import START_REQUEST, FEEDBACK_REQUEST
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action
@@ -36,6 +37,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return ConversationHandler.END
     create_user(user_id, first_name, last_name, username)
+    create_request(user_id=user_id, request_type=FEEDBACK_REQUEST)
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
