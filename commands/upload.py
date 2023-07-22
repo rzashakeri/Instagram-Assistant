@@ -171,7 +171,7 @@ async def login_attempt_and_get_media_type(
                     telegram_user_id=user_id,
                     user_instagram_session=user_instagram_session,
                     save_session=True,
-                )
+            )
         else:
             logger.info("not Save session")
             SAVED_LOGIN_INFORMATION = False
@@ -181,13 +181,14 @@ async def login_attempt_and_get_media_type(
                     telegram_user_id=user_id,
                     user_instagram_session=user_instagram_session,
                     save_session=True,
-                )
+            )
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
         try:
-            create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+            create_request(user_id=update.effective_user.id,
+                           request_type=UPLOAD_REQUEST)
             logger.info("create upload request successfully")
         except Exception as error:
             logger.info(error)
@@ -243,13 +244,14 @@ async def login_with_two_factor_authentication(
                                   login_directory=login_directory,
                                   telegram_user_id=user_id,
                                   save_session=False,
-                              )
+        )
         await update.effective_user.send_message(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
         try:
-            create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+            create_request(user_id=update.effective_user.id,
+                           request_type=UPLOAD_REQUEST)
             logger.info("create upload request successfully")
         except Exception as error:
             logger.info(error)

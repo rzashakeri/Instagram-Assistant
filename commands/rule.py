@@ -31,7 +31,8 @@ async def rule(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         reply_markup=yes_or_no_without_back_key,
     )
     try:
-        create_request(user_id=update.effective_user.id, request_type=RULE_REQUEST)
+        create_request(user_id=update.effective_user.id,
+                       request_type=RULE_REQUEST)
         logger.info("create rule request successfully")
     except Exception as error:
         logger.info(error)

@@ -151,7 +151,8 @@ async def lottery_with_likes_list(update: Update,
             reply_markup=base_keyboard,
         )
         try:
-            create_request(user_id=update.effective_user.id, request_type=LOTTERY_REQUEST)
+            create_request(user_id=update.effective_user.id,
+                           request_type=LOTTERY_REQUEST)
             logger.info("create lottery request successfully")
         except Exception as error:
             logger.info(error)
@@ -238,12 +239,12 @@ async def lottery_with_comments_list(
         await context.bot.send_photo(
             chat_id=update.message.chat_id,
             photo=winner.user.profile_pic_url,
-            caption=
-            f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
+            caption=f"winner username: https://instagram.com/{winner.user.username}\nwinner comment: {winner.text}",
             reply_markup=base_keyboard,
         )
         try:
-            create_request(user_id=update.effective_user.id, request_type=LOTTERY_REQUEST)
+            create_request(user_id=update.effective_user.id,
+                           request_type=LOTTERY_REQUEST)
             logger.info("create lottery request successfully")
         except Exception as error:
             logger.info(error)
