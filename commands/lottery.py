@@ -150,6 +150,12 @@ async def lottery_with_likes_list(update: Update,
             text=f"https://instagram.com/{winner.username}",
             reply_markup=base_keyboard,
         )
+        try:
+            create_request(user_id=update.effective_user.id, request_type=LOTTERY_REQUEST)
+            logger.info("create lottery request successfully")
+        except Exception as error:
+            logger.info(error)
+            logger.info("create lottery request failed")
         return HOME_STATE
     except MediaNotFound:
         await update.message.reply_text(
@@ -238,6 +244,7 @@ async def lottery_with_comments_list(
         )
         try:
             create_request(user_id=update.effective_user.id, request_type=LOTTERY_REQUEST)
+            logger.info("create lottery request successfully")
         except Exception as error:
             logger.info(error)
             logger.info("create lottery request failed")
