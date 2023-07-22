@@ -71,3 +71,23 @@ def get_user_id():
     cursor.close()
     connection.close()
     return result
+
+
+def create_request(user_id, request_type):
+    """create request in database This function says what the user has been requesting from the robot"""
+    connection = psycopg2.connect(
+        database=POSTGRESQL_NAME,
+        host=POSTGRESQL_HOST,
+        user=POSTGRESQL_USERNAME,
+        password=POSTGRESQL_PASSWORD,
+        port=POSTGRESQL_PORT,
+    )
+    cursor = connection.cursor()
+    query = """
+            INSERT INTO requests (request_id, user_id, request_type)
+            VALUES (DEFAULT, %s, %s)
+        """
+    cursor.execute(query, (user_id, request_type))
+    connection.commit()
+    cursor.close()
+    connection.close()
