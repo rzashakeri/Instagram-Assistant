@@ -11,6 +11,7 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from commands.login import login_admin_user_to_instagram
+from connectors.postgresql import create_request
 from constants import PROCESSING
 from constants.keys import BACK_KEY
 from constants.messages import GETTING_MEDIA_INFORMATION
@@ -23,6 +24,7 @@ from constants.messages import SOMETHING_WENT_WRONG
 from constants.messages import USER_INFO
 from constants.messages import USER_NOT_FOUND_CHECK_USERNAME_AND_TRY_AGAIN
 from constants.messages import WHAT_DO_YOU_WANT
+from constants.request_types import INSIGHT_REQUEST
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
 from core.exceptions import LoginException
@@ -73,7 +75,7 @@ async def insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             reply_markup=back_keyboard,
         )
         return HOME_STATE
-
+    create_request(user_id=update.effective_user.id, request_type=INSIGHT_REQUEST)
     if message_is_url:
         await context.bot.editMessageText(
             chat_id=update.message.chat_id,

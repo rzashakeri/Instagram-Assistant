@@ -74,7 +74,8 @@ def get_user_id():
 
 
 def create_request(user_id, request_type):
-    """create request in database This function says what the user has been requesting from the robot"""
+    """create request in database This function says what
+    the user has been requesting from the robot"""
     connection = psycopg2.connect(
         database=POSTGRESQL_NAME,
         host=POSTGRESQL_HOST,

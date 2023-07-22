@@ -7,11 +7,13 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
+from connectors.postgresql import create_request
 from constants.keys import BACK_KEY
 from constants.messages import FEEDBACK_MESSAGE
 from constants.messages import NEW_TEXT_MESSAGE
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import YOUR_MESSAGE_WAS_SENT
+from constants.request_types import FEEDBACK_REQUEST
 from constants.states import FEEDBACK_STATE
 from constants.states import HOME_STATE
 from core.keyboards import back_keyboard
@@ -62,6 +64,7 @@ async def send_feedback(update: Update,
         ),
         parse_mode=ParseMode.MARKDOWN_V2,
     )
+    create_request(user_id=update.effective_user.id, request_type=FEEDBACK_REQUEST)
     await context.bot.send_message(
         chat_id=update.message.chat_id,
         text=YOUR_MESSAGE_WAS_SENT,

@@ -17,6 +17,7 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 import constants
+from connectors.postgresql import create_request
 from constants import LOGIN
 from constants import NO
 from constants import PROCESSING
@@ -52,6 +53,7 @@ from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
 from constants.messages import WHAT_DO_YOU_WANT
 from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
 from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
+from constants.request_types import RULE_REQUEST, UPLOAD_REQUEST
 from constants.states import HOME_STATE
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
 from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
@@ -184,6 +186,11 @@ async def login_attempt_and_get_media_type(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
+        try:
+            create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+        except Exception as error:
+            logger.info(error)
+            logger.info("create upload request failed")
         return SET_MEDIA_TYPE_AND_GET_MEDIA
     except TwoFactorRequired:
         logger.info("Get Two Factor Authentication Code")
@@ -240,6 +247,11 @@ async def login_with_two_factor_authentication(
             WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
             reply_markup=media_type_keyboard,
         )
+        try:
+            create_request(user_id=update.effective_user.id, request_type=UPLOAD_REQUEST)
+        except Exception as error:
+            logger.info(error)
+            logger.info("create upload request failed")
         return SET_MEDIA_TYPE_AND_GET_MEDIA
     except (LoginException, ClientError, PrivateError):
         await update.effective_user.send_message(
