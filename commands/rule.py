@@ -6,7 +6,8 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_request
-from constants.messages import PRIVACY_MESSAGE, RULE_MESSAGE
+from constants.messages import PRIVACY_MESSAGE
+from constants.messages import RULE_MESSAGE
 from constants.request_types import RULE_REQUEST
 from constants.states import START_STATE
 from core.keyboards import yes_or_no_without_back_key

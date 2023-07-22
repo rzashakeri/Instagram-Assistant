@@ -7,7 +7,8 @@ from telegram.ext import ContextTypes
 
 from connectors.postgresql import create_request
 from constants.messages import PRIVACY_MESSAGE
-from constants.request_types import LOTTERY_REQUEST, PRIVACY_REQUEST
+from constants.request_types import LOTTERY_REQUEST
+from constants.request_types import PRIVACY_REQUEST
 from constants.states import HOME_STATE
 from core.keyboards import base_keyboard
 from utils.decorators import send_action

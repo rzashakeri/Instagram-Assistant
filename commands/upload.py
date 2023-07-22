@@ -3,47 +3,74 @@ import os
 import time
 from logging import getLogger
 
-from instagrapi.exceptions import (ClientError, ClipNotUpload, IGTVNotUpload,
-                                   PhotoNotUpload, PrivateError,
-                                   TwoFactorRequired, UnknownError,
-                                   VideoNotUpload)
+from instagrapi.exceptions import ClientError
+from instagrapi.exceptions import ClipNotUpload
+from instagrapi.exceptions import IGTVNotUpload
+from instagrapi.exceptions import PhotoNotUpload
+from instagrapi.exceptions import PrivateError
+from instagrapi.exceptions import TwoFactorRequired
+from instagrapi.exceptions import UnknownError
+from instagrapi.exceptions import VideoNotUpload
 from telegram import Update
-from telegram.constants import ChatAction, ParseMode
+from telegram.constants import ChatAction
+from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 import constants
 from connectors.postgresql import create_request
-from constants import LOGIN, NO, PROCESSING, YES
-from constants.keys import (BACK_KEY, UPLOAD_ALBUM_KEY, UPLOAD_IGTV_KEY,
-                            UPLOAD_PHOTO_KEY, UPLOAD_REELS_KEY,
-                            UPLOAD_STORY_KEY, UPLOAD_VIDEO_KEY)
-from constants.media_types import ALBUM, IGTV, PHOTO, REEL, STORY, VIDEO
-from constants.messages import (
-    ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA,
-    CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM, FILE_IS_NOT_VALID,
-    INSTAGRAM_ASSISTANT_ID, MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM,
-    MESSAGE_FOR_GET_LOGIN_DATA, PLEASE_SEND_PHOTO_OR_VIDEO,
-    PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN, REMEMBER_ME,
-    SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    SOMETHING_WENT_WRONG, TITLE_OF_YOUR_IGTV,
-    UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO, WHAT_DO_YOU_WANT,
-    WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM,
-    YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM)
-from constants.request_types import RULE_REQUEST, UPLOAD_REQUEST
-from constants.states import (
-    HOME_STATE, IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN,
-    IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD,
-    LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE,
-    LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD,
-    SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT, SET_MEDIA_AND_GET_CAPTION,
-    SET_MEDIA_TYPE_AND_GET_MEDIA, SET_TITLE_OF_IGTV_AND_GET_CAPTION,
-    VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM)
+from constants import LOGIN
+from constants import NO
+from constants import PROCESSING
+from constants import YES
+from constants.keys import BACK_KEY
+from constants.keys import UPLOAD_ALBUM_KEY
+from constants.keys import UPLOAD_IGTV_KEY
+from constants.keys import UPLOAD_PHOTO_KEY
+from constants.keys import UPLOAD_REELS_KEY
+from constants.keys import UPLOAD_STORY_KEY
+from constants.keys import UPLOAD_VIDEO_KEY
+from constants.media_types import ALBUM
+from constants.media_types import IGTV
+from constants.media_types import PHOTO
+from constants.media_types import REEL
+from constants.media_types import STORY
+from constants.media_types import VIDEO
+from constants.messages import ARE_YOU_SURE_OF_UPLOADING_THIS_MEDIA
+from constants.messages import CAPTION_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
+from constants.messages import FILE_IS_NOT_VALID
+from constants.messages import INSTAGRAM_ASSISTANT_ID
+from constants.messages import MEDIA_THAT_IS_GOING_TO_BE_UPLOADED_TO_INSTAGRAM
+from constants.messages import MESSAGE_FOR_GET_LOGIN_DATA
+from constants.messages import PLEASE_SEND_PHOTO_OR_VIDEO
+from constants.messages import PLEASE_WAIT_A_FEW_MINUTES_BEFORE_YOU_TRY_AGAIN
+from constants.messages import REMEMBER_ME
+from constants.messages import SEND_ME_THE_CAPTION_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import SEND_ME_THE_MEDIA_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import SEND_ME_THE_TITLE_OF_POST_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import SOMETHING_WENT_WRONG
+from constants.messages import TITLE_OF_YOUR_IGTV
+from constants.messages import UPLOADED_IMAGE_ISNT_IN_AN_ALLOWED_ASPECT_RATIO
+from constants.messages import WHAT_DO_YOU_WANT
+from constants.messages import WHAT_TYPE_OF_CONTENT_DO_YOU_WANT_TO_UPLOAD_ON_INSTAGRAM
+from constants.messages import YOUR_CONTENT_IS_SUCCESSFULLY_UPLOADED_TO_INSTAGRAM
+from constants.request_types import RULE_REQUEST
+from constants.request_types import UPLOAD_REQUEST
+from constants.states import HOME_STATE
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN
+from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
+from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
+from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
+from constants.states import SET_CAPTION_AND_ASKING_TO_CONFIRM_THE_CONTENT
+from constants.states import SET_MEDIA_AND_GET_CAPTION
+from constants.states import SET_MEDIA_TYPE_AND_GET_MEDIA
+from constants.states import SET_TITLE_OF_IGTV_AND_GET_CAPTION
+from constants.states import VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM
 from core.exceptions import LoginException
 from core.instagram import CustomClient
-from core.keyboards import (back_keyboard, base_keyboard, media_type_keyboard,
-                            yes_or_no_keyboard)
+from core.keyboards import back_keyboard
+from core.keyboards import base_keyboard
+from core.keyboards import media_type_keyboard
+from core.keyboards import yes_or_no_keyboard
 from utils import remove_all_spaces
 from utils.decorators import send_action
 
