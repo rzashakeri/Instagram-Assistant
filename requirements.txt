@@ -6,3 +6,4 @@ validators==0.20.0
 file-validator==0.3.4
 moviepy==1.0.3
 psycopg2-binary==2.9.5
+pytz==2023.3
