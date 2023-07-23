@@ -14,7 +14,7 @@ from commands import privacy
 from commands import rule
 from commands import start
 from commands import upload
-from constants.keys import BACK_KEY
+from constants.keys import BACK_KEY, INSIGHT_OF_ROBOT_KEY
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import FEEDBACK_KEY
@@ -148,6 +148,8 @@ def base_conversation_handler():
                                admin.user_count),
                 MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
                                admin.back_to_home),
+                MessageHandler(filters.Regex(f"^{INSIGHT_OF_ROBOT_KEY}$"),
+                               admin.get_insight),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
