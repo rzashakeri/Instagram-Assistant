@@ -226,3 +226,15 @@ def get_user_signup_insight():
     last_year_count = execute_query(last_year_query)
     
     return last_day_count, last_month_count, last_year_count
+
+
+def get_request_count():
+    """Get Request Count"""
+    query = """
+    SELECT
+    COUNT(*)
+    FROM
+    requests
+    """
+    result = execute_query(query)
+    return result
