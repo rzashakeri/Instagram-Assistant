@@ -92,3 +92,30 @@ def create_request(user_id, request_type):
     connection.commit()
     cursor.close()
     connection.close()
+
+
+def get_daily_user_signup_count():
+    """get daily user signup count"""
+    connection = psycopg2.connect(
+        database=POSTGRESQL_NAME,
+        host=POSTGRESQL_HOST,
+        user=POSTGRESQL_USERNAME,
+        password=POSTGRESQL_PASSWORD,
+        port=POSTGRESQL_PORT
+    )
+    query = """
+        SELECT
+            COUNT(*) AS count
+        FROM
+            users
+        WHERE
+            created_at >= CURRENT_DATE - INTERVAL '1 day'
+            AND created_at < CURRENT_DATE;
+    """
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchone()
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return result[0]
