@@ -119,3 +119,54 @@ def get_daily_user_signup_count():
     cursor.close()
     connection.close()
     return result[0]
+
+
+def get_user_signup_insight():
+    """get user signup insight"""
+    connection = psycopg2.connect(
+        database=POSTGRESQL_NAME,
+        host=POSTGRESQL_HOST,
+        user=POSTGRESQL_USERNAME,
+        password=POSTGRESQL_PASSWORD,
+        port=POSTGRESQL_PORT
+    )
+    query = """
+    SELECT
+        'Last Day' AS interval,
+        COUNT(*) AS insight_count
+    FROM
+        users
+    WHERE
+        created_at >= CURRENT_DATE - INTERVAL '1 day'
+        AND created_at < CURRENT_DATE
+
+    UNION ALL
+
+    SELECT
+        'Last Month' AS interval,
+        COUNT(*) AS insight_count
+    FROM
+        users
+    WHERE
+        created_at >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
+        AND created_at < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+
+    UNION ALL
+
+    SELECT
+        'Last Year' AS interval,
+        COUNT(*) AS insight_count
+    FROM
+        users
+    WHERE
+        created_at >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year'
+        AND created_at < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year';
+
+    """
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchall()
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return result
