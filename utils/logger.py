@@ -26,7 +26,7 @@ def init_logger(logfile: str):
     root_logger.addHandler(console_handler)
 
 
-def clear_logs_file_daily():
+def clear_logs_file_daily(bot, update):
     """Clears the .logs file daily."""
     current_directory = os.getcwd()
     logs_file_name = f"{settings.NAME}.log"
