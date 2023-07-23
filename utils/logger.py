@@ -10,8 +10,7 @@ from configurations import settings
 def init_logger(logfile: str):
     """Initialize the root logger and standard log handlers."""
     log_formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    )
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
     rotate = TimedRotatingFileHandler(
