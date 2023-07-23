@@ -23,3 +23,4 @@ WEBHOOK_OPTIONS = {
     # making fake updates to your bot
     "webhook_url": f"https://example.com/{TOKEN}",
 }
+SENTRY_DSN = os.environ["SENTRY_DSN"]
