@@ -185,3 +185,44 @@ def get_user_request_insight():
     
     return last_day_count, last_month_count, last_year_count
 
+
+def get_user_signup_insight():
+    """get user signup insight"""
+    last_day_query = """
+        SELECT
+            'Last Day' AS interval,
+            COUNT(*) AS insight_count
+        FROM
+            users
+        WHERE
+            created_at >= CURRENT_DATE - INTERVAL '1 day'
+            AND created_at < CURRENT_DATE
+    """
+    
+    last_month_query = """
+        SELECT
+            'Last Month' AS interval,
+            COUNT(*) AS insight_count
+        FROM
+            users
+        WHERE
+            created_at >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
+            AND created_at < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+    """
+    
+    last_year_query = """
+        SELECT
+            'Last Year' AS interval,
+            COUNT(*) AS insight_count
+        FROM
+            users
+        WHERE
+            created_at >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year'
+            AND created_at < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
+    """
+    
+    last_day_count = execute_query(last_day_query)
+    last_month_count = execute_query(last_month_query)
+    last_year_count = execute_query(last_year_query)
+    
+    return last_day_count, last_month_count, last_year_count
