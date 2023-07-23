@@ -22,7 +22,6 @@ USER_COUNT_KEY: str = "User Count 📈"
 SEND_MESSAGE_KEY: str = "Send Message "
 INSIGHT_OF_ROBOT_KEY: str = "Insight 📉"
 
-
 # lottery keys
 LOTTERY_WITH_LIKES_LIST: str = "Lottery with Likes ❤️🎲"
 LOTTERY_WITH_COMMENTS_LIST: str = "Lottery with Comments 💭🎲"

@@ -16,9 +16,11 @@ db_port = POSTGRESQL_PORT
 
 def execute_query(query):
     """function for execute query"""
-    connection = psycopg2.connect(
-        database=db_name, user=db_user, password=db_password, host=db_host, port=db_port
-    )
+    connection = psycopg2.connect(database=db_name,
+                                  user=db_user,
+                                  password=db_password,
+                                  host=db_host,
+                                  port=db_port)
     cursor = connection.cursor()
     cursor.execute(query)
     result = cursor.fetchall()
