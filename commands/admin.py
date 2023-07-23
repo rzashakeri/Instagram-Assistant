@@ -130,7 +130,7 @@ async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
             yearly_user_count=last_year_user_count[0][1],
             monthly_user_count=last_month_user_count[0][1],
             daily_user_count=last_day_user_count[0][1],
-            all_request_count=all_request_count,
+            all_request_count=all_request_count[0],
             yearly_request_count=last_year_request_count[0][1],
             monthly_request_count=last_month_request_count[0][1],
             daily_request_count=last_day_request_count[0][1]
