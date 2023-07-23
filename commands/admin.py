@@ -9,7 +9,8 @@ from telegram.ext import ContextTypes
 from connectors.postgresql import (
     get_user_count,
     get_user_signup_insight,
-    get_user_request_insight, get_request_count,
+    get_user_request_insight,
+    get_request_count,
 )
 from connectors.postgresql import get_user_id
 from constants.keys import BACK_KEY
@@ -133,7 +134,7 @@ async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
             all_request_count=all_request_count[0],
             yearly_request_count=last_year_request_count[0][1],
             monthly_request_count=last_month_request_count[0][1],
-            daily_request_count=last_day_request_count[0][1]
+            daily_request_count=last_day_request_count[0][1],
         ),
         reply_markup=admin_keyboard,
     )
