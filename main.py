@@ -26,11 +26,5 @@ if __name__ == "__main__":
         application.add_handler(
             MessageHandler(filters.TEXT & ~filters.COMMAND, maintenance))
     else:
-        application.run_daily(
-            callback=get_insight,
-            time=datetime.time(hour=4, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
-            days=(0, 1, 2, 3, 4, 5, 6),
-            chat_id=ADMIN_TELEGRAM_USER_ID
-        )
         application.add_handler(base_conversation_handler())
     application.run_polling()
