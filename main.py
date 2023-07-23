@@ -33,4 +33,10 @@ if __name__ == "__main__":
             time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
             days=(0, 1, 2, 3, 4, 5, 6)
         )
+        application.job_queue.run_daily(
+            callback=get_insight,
+            time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
+            days=(0, 1, 2, 3, 4, 5, 6),
+            chat_id=ADMIN_TELEGRAM_USER_ID
+        )
     application.run_polling()
