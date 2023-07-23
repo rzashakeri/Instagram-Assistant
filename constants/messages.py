@@ -148,16 +148,15 @@ MEDIA_CAPTION: str = "{caption}\n\n{instagram_assistant_id}"
 CHALLENGE_REQUIRED: str = "Challenge Required, Please Try Again A few Moment Later"
 YOU_NEED_TO_LOGIN_AGAIN: str = "You need to login again!"
 INSIGHT_OF_ROBOT: str = """ insight of robot 👇\n
-\n
-User Signup Insight: 👇
-All User: {all_user_count}\n
-User Per/Year: {yearly_user_count}\n
-User per/Month: {monthly_user_count}\n
-User per/Day: {daily_user_count}\n
+User Signup Insight: 👇\n
+All User: {all_user_count}
+User Per/Year: {yearly_user_count}
+User per/Month: {monthly_user_count}
+User per/Day: {daily_user_count}
 \n
 User Request Insight: 👇\n
-All Request: {all_request_count}\n
-Request Per/Year: {yearly_request_count}\n
-Request per/Month: {monthly_request_count}\n
-Request per/Day: {daily_request_count}\n
+All Request: {all_request_count}
+Request Per/Year: {yearly_request_count}
+Request per/Month: {monthly_request_count}
+Request per/Day: {daily_request_count}
 """
