@@ -1,4 +1,5 @@
-import datetime, pytz
+import datetime
+import pytz
 from telegram.ext import Application
 from telegram.ext import CommandHandler
 from telegram.ext import filters
@@ -28,7 +29,8 @@ if __name__ == "__main__":
     else:
         application.run_daily(
             callback=get_insight,
-            time=datetime.time(hour=4, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
+            time=datetime.time(
+                hour=4, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
             days=(0, 1, 2, 3, 4, 5, 6),
             chat_id=ADMIN_TELEGRAM_USER_ID
         )
