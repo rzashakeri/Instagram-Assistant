@@ -21,6 +21,17 @@ if __name__ == "__main__":
     application = (Application.builder().token(
         settings.TOKEN).read_timeout(50).write_timeout(
         50).get_updates_read_timeout(50).persistence(persistence).build())
+    application.job_queue.run_daily(
+        callback=clear_logs_file_daily,
+        time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
+        days=(0, 1, 2, 3, 4, 5, 6)
+    )
+    application.job_queue.run_daily(
+        callback=get_insight,
+        time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
+        days=(0, 1, 2, 3, 4, 5, 6),
+        chat_id=ADMIN_TELEGRAM_USER_ID
+    )
     if IS_MAINTENANCE:
         application.add_handler(CommandHandler("start", maintenance))
         application.add_handler(admin_conversation_handler())
@@ -28,15 +39,4 @@ if __name__ == "__main__":
             MessageHandler(filters.TEXT & ~filters.COMMAND, maintenance))
     else:
         application.add_handler(base_conversation_handler())
-        application.job_queue.run_daily(
-            callback=clear_logs_file_daily,
-            time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
-            days=(0, 1, 2, 3, 4, 5, 6)
-        )
-        application.job_queue.run_daily(
-            callback=get_insight,
-            time=datetime.time(hour=0, minute=0, tzinfo=pytz.timezone('Asia/Tehran')),
-            days=(0, 1, 2, 3, 4, 5, 6),
-            chat_id=ADMIN_TELEGRAM_USER_ID
-        )
     application.run_polling()
