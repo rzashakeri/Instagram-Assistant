@@ -16,7 +16,8 @@ from telegram.ext import ContextTypes
 from commands.login import login_admin_user_to_instagram
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import create_request
-from constants import P_SEGMENT, AUDIO_SEGMENT
+from constants import AUDIO_SEGMENT
+from constants import P_SEGMENT
 from constants import PROCESSING
 from constants import REEL_SEGMENT
 from constants import STORIES_SEGMENT
@@ -27,7 +28,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION, MUSIC_DETAILS
+from constants.messages import GETTING_MEDIA_INFORMATION
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import INSTAGRAM_ASSISTANT_ID
@@ -35,6 +36,7 @@ from constants.messages import INSTAGRAM_COM
 from constants.messages import LINK_IS_INVALID
 from constants.messages import MEDIA_CAPTION
 from constants.messages import MEDIA_NOT_FOUND
+from constants.messages import MUSIC_DETAILS
 from constants.messages import OK_SEND_ME_THE_LINK_YOU_WANT_TO_DOWNLOAD
 from constants.messages import PLEASE_SEND_THE_INSTAGRAM_LINK
 from constants.messages import SENDING_THUMBNAIL
@@ -107,7 +109,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
     try:
-        create_request(user_id=update.effective_user.id, request_type=DOWNLOAD_REQUEST)
+        create_request(user_id=update.effective_user.id,
+                       request_type=DOWNLOAD_REQUEST)
         logger.info("create download request successfully")
     except Exception as error:
         logger.info(error)
@@ -169,8 +172,9 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                             title=music_data["title"],
                             artist=music_data["display_artist"],
                         ),
-                        reply_markup=base_keyboard
+                        reply_markup=base_keyboard,
                     )
+                    return HOME_STATE
                 else:
                     regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                     username = re.findall(regex, message)[0]
