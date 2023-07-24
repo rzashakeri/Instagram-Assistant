@@ -134,7 +134,18 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         if STORIES_SEGMENT in message:
             media_type = STORY
         if AUDIO_SEGMENT in message:
-            is_link_for_music = True
+            regex = r"\/reels\/audio\/(\d+)\/"
+            music_id = re.findall(regex, message)[0]
+            music_data = client.track_info_by_canonical_id(music_id)
+            await update.effective_user.send_audio(
+                audio=music_data["uri"],
+                caption=MUSIC_DETAILS.format(
+                    title=music_data["title"],
+                    artist=music_data["display_artist"],
+                ),
+                reply_markup=base_keyboard,
+            )
+            return HOME_STATE
         else:
             try:
                 media_pk_from_url = client.media_pk_from_url(message)
@@ -159,19 +170,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     await context.bot.send_message(
                         chat_id=update.effective_message.chat_id,
                         text=MEDIA_NOT_FOUND,
-                        reply_markup=base_keyboard,
-                    )
-                    return HOME_STATE
-                elif is_link_for_music:
-                    regex = r"\/reels\/audio\/(\d+)\/"
-                    music_id = re.findall(regex, message)[0]
-                    music_data = client.track_info_by_canonical_id(music_id)
-                    await update.effective_user.send_audio(
-                        audio=music_data["uri"],
-                        caption=MUSIC_DETAILS.format(
-                            title=music_data["title"],
-                            artist=music_data["display_artist"],
-                        ),
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
