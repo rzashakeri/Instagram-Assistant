@@ -174,6 +174,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                         ),
                         reply_markup=base_keyboard,
                     )
+                    return HOME_STATE
                 else:
                     regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                     username = re.findall(regex, message)[0]
