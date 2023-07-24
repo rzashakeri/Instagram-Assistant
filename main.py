@@ -9,7 +9,7 @@ from telegram.ext import MessageHandler
 from telegram.ext import PicklePersistence
 
 from commands.admin import admin
-from commands.admin import get_insight
+from commands.admin import daily_insight
 from commands.maintenance import maintenance
 from configurations import settings
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
@@ -43,12 +43,11 @@ if __name__ == "__main__":
         days=(0, 1, 2, 3, 4, 5, 6),
     )
     application.job_queue.run_daily(
-        callback=get_insight,
+        callback=daily_insight,
         time=datetime.time(hour=0,
                            minute=0,
                            tzinfo=pytz.timezone("Asia/Tehran")),
         days=(0, 1, 2, 3, 4, 5, 6),
-        chat_id=ADMIN_TELEGRAM_USER_ID,
     )
     if IS_MAINTENANCE:
         application.add_handler(CommandHandler("start", maintenance))
