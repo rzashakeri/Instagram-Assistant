@@ -136,7 +136,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         if AUDIO_SEGMENT in message:
             regex = r"\/reels\/audio\/(\d+)\/"
             music_id = re.findall(regex, message)[0]
-            music_data = client.track_info_by_canonical_id(music_id)
+            music_data = client.track_info_by_canonical_id(music_id).dict()
             await update.effective_user.send_audio(
                 audio=music_data["uri"],
                 caption=MUSIC_DETAILS.format(
