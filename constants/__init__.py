@@ -15,4 +15,5 @@ JPEG_MIME: str = "image/jpeg"
 STORIES_SEGMENT: str = "/stories/"
 P_SEGMENT: str = "/p/"
 REEL_SEGMENT: str = "/reel/"
+AUDIO_SEGMENT: str = "/audio/"
 PROXY_LIST = None

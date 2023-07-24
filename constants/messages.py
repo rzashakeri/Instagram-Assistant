@@ -160,3 +160,7 @@ Request Per/Year: {yearly_request_count}
 Request per/Month: {monthly_request_count}
 Request per/Day: {daily_request_count}
 """
+MUSIC_DETAILS = """
+title: {title}
+artist: {artist}
+"""
