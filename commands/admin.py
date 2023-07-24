@@ -6,6 +6,7 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
+from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import get_request_count
 from connectors.postgresql import get_user_count
 from connectors.postgresql import get_user_id
@@ -46,8 +47,7 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def user_count(update: Update,
-                     context: ContextTypes.DEFAULT_TYPE) -> str:
+async def user_count(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     user_count = get_user_count()
@@ -60,8 +60,7 @@ async def user_count(update: Update,
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def back_to_home(update: Update,
-                       context: ContextTypes.DEFAULT_TYPE) -> str:
+async def back_to_home(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -74,7 +73,8 @@ async def back_to_home(update: Update,
 @restricted
 @send_action(ChatAction.TYPING)
 async def get_message_for_send_to_all_user(
-        update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     await update.message.reply_text(
@@ -86,14 +86,16 @@ async def get_message_for_send_to_all_user(
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def send_message_to_all_user(update: Update,
-                                   context: ContextTypes.DEFAULT_TYPE) -> str:
+async def send_message_to_all_user(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     message = update.message.text
     if message == BACK_KEY:
-        await update.message.reply_text("what do you want ?",
-                                        reply_markup=admin_keyboard)
+        await update.message.reply_text(
+            "what do you want ?", reply_markup=admin_keyboard
+        )
         return ADMIN_STATE
     columns = get_user_id()
     for row in columns:
@@ -108,8 +110,7 @@ async def send_message_to_all_user(update: Update,
 
 @restricted
 @send_action(ChatAction.TYPING)
-async def get_insight(update: Update,
-                      context: ContextTypes.DEFAULT_TYPE) -> str:
+async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """get user count"""
     # pylint: disable=unused-argument
     all_user_count = get_user_count()
@@ -138,3 +139,33 @@ async def get_insight(update: Update,
         reply_markup=admin_keyboard,
     )
     return ADMIN_STATE
+
+
+def daily_insight(bot, job):
+    """Send Daily Insight To Admin"""
+    # pylint: disable=unused-argument
+    all_user_count = get_user_count()
+    all_request_count = get_request_count()
+    (
+        last_day_user_count,
+        last_month_user_count,
+        last_year_user_count,
+    ) = get_user_signup_insight()
+    (
+        last_day_request_count,
+        last_month_request_count,
+        last_year_request_count,
+    ) = get_user_request_insight()
+    bot.send_message(
+        chat_id=ADMIN_TELEGRAM_USER_ID,
+        text=INSIGHT_OF_ROBOT.format(
+            all_user_count=all_user_count,
+            yearly_user_count=last_year_user_count[0][1],
+            monthly_user_count=last_month_user_count[0][1],
+            daily_user_count=last_day_user_count[0][1],
+            all_request_count=all_request_count[0][0],
+            yearly_request_count=last_year_request_count[0][1],
+            monthly_request_count=last_month_request_count[0][1],
+            daily_request_count=last_day_request_count[0][1],
+        ),
+    )
