@@ -107,7 +107,8 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return HOME_STATE
     try:
-        create_request(user_id=update.effective_user.id, request_type=DOWNLOAD_REQUEST)
+        create_request(user_id=update.effective_user.id,
+                       request_type=DOWNLOAD_REQUEST)
         logger.info("create download request successfully")
     except Exception as error:
         logger.info(error)
