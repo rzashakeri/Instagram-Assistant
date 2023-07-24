@@ -16,7 +16,7 @@ from telegram.ext import ContextTypes
 from commands.login import login_admin_user_to_instagram
 from configurations.settings import ADMIN_TELEGRAM_USER_ID
 from connectors.postgresql import create_request
-from constants import P_SEGMENT
+from constants import P_SEGMENT, AUDIO_SEGMENT
 from constants import PROCESSING
 from constants import REEL_SEGMENT
 from constants import STORIES_SEGMENT
@@ -27,7 +27,7 @@ from constants.media_types import PHOTO
 from constants.media_types import REEL
 from constants.media_types import STORY
 from constants.media_types import VIDEO
-from constants.messages import GETTING_MEDIA_INFORMATION
+from constants.messages import GETTING_MEDIA_INFORMATION, MUSIC_DETAILS
 from constants.messages import GETTING_PROFILE_INFORMATION
 from constants.messages import GETTING_STORY_INFORMATION
 from constants.messages import INSTAGRAM_ASSISTANT_ID
@@ -123,12 +123,15 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             return DOWNLOAD_STATE
         is_link_for_post = False
         is_link_for_reel = False
+        is_link_for_music = False
         if P_SEGMENT in message:
             is_link_for_post = True
         if REEL_SEGMENT in message:
             is_link_for_reel = True
         if STORIES_SEGMENT in message:
             media_type = STORY
+        if AUDIO_SEGMENT in message:
+            is_link_for_music = True
         else:
             try:
                 media_pk_from_url = client.media_pk_from_url(message)
@@ -156,6 +159,18 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                         reply_markup=base_keyboard,
                     )
                     return HOME_STATE
+                elif is_link_for_music:
+                    regex = r"\/reels\/audio\/(\d+)\/"
+                    music_id = re.findall(regex, message)[0]
+                    music_data = client.track_info_by_canonical_id(music_id)
+                    await update.effective_user.send_audio(
+                        audio=music_data["uri"],
+                        caption=MUSIC_DETAILS.format(
+                            title=music_data["title"],
+                            artist=music_data["display_artist"],
+                        ),
+                        reply_markup=base_keyboard
+                    )
                 else:
                     regex = r"(?<=instagram.com\/)[A-Za-z0-9_.]+"
                     username = re.findall(regex, message)[0]
@@ -254,7 +269,6 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
                     text=GETTING_STORY_INFORMATION,
                 )
                 story_info = client.story_info(story_pk_from_url)
-                
                 if story_info.video_url is None:
                     await context.bot.editMessageText(
                         chat_id=update.message.chat_id,
