@@ -141,7 +141,7 @@ async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
     return ADMIN_STATE
 
 
-def daily_insight(bot, job):
+def daily_insight(context):
     """Send Daily Insight To Admin"""
     # pylint: disable=unused-argument
     all_user_count = get_user_count()
@@ -156,7 +156,7 @@ def daily_insight(bot, job):
         last_month_request_count,
         last_year_request_count,
     ) = get_user_request_insight()
-    bot.send_message(
+    context.bot.send_message(
         chat_id=ADMIN_TELEGRAM_USER_ID,
         text=INSIGHT_OF_ROBOT.format(
             all_user_count=all_user_count,
