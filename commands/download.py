@@ -137,14 +137,16 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             regex = r"\/reels\/audio\/(\d+)\/"
             music_id = re.findall(regex, message)[0]
             music_data = client.track_info_by_id(music_id)
+            await context.bot.deleteMessage(
+                message_id=bot_message.message_id,
+                chat_id=update.message.chat_id,
+            )
             await update.effective_user.send_audio(
-                audio=music_data["metadata"]["original_sound_info"]
-                ["progressive_download_url"],
+                audio=music_data["metadata"]["original_sound_info"]["progressive_download_url"],
                 caption=MUSIC_DETAILS.format(
-                    title=music_data["metadata"]["original_sound_info"]
-                    ["ig_artist"]["full_name"],
-                    artist=music_data["metadata"]["original_sound_info"]
-                    ["ig_artist"]["username"],
+                    title=music_data["metadata"]["original_sound_info"]["ig_artist"]["full_name"],
+                    artist=music_data["metadata"]["original_sound_info"]["ig_artist"]["username"],
+                    instagram_assistant_id=INSTAGRAM_ASSISTANT_ID,
                 ),
                 reply_markup=base_keyboard,
             )
