@@ -1,4 +1,4 @@
-instagrapi==1.17.1
+instagrapi==1.18.3
 python-dotenv==0.21.1
 python-telegram-bot==20.1
 python-telegram-bot[job-queue]==20.1
