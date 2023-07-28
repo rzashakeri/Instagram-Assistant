@@ -138,7 +138,7 @@ async def download(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
             music_id = re.findall(regex, message)[0]
             music_data = client.track_info_by_id(music_id)
             await update.effective_user.send_audio(
-                audio=music_data["uri"],
+                audio=music_data["metadata"]["original_sound_info"]["progressive_download_url"],
                 caption=MUSIC_DETAILS.format(
                     title=music_data["title"],
                     artist=music_data["display_artist"],
