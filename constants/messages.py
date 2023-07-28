@@ -163,4 +163,5 @@ Request per/Day: {daily_request_count}
 MUSIC_DETAILS = """
 title: {title}
 artist: {artist}
+{instagram_assistant_id}
 """
