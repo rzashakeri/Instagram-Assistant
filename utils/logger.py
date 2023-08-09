@@ -8,7 +8,11 @@ from configurations import settings
 
 
 def init_logger(logfile: str):
-    """Initialize the root logger and standard log handlers."""
+    """Initialize the root logger and standard log handlers.
+
+    :param logfile: str: 
+
+    """
     log_formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
