@@ -1,7 +1,7 @@
 # encoding: utf-8
 import logging
 import os
-from datetime import date
+import glob
 from logging.handlers import TimedRotatingFileHandler
 
 from configurations import settings
@@ -29,7 +29,6 @@ def init_logger(logfile: str):
 async def clear_logs_file_daily(context):
     """Clears the .logs file daily."""
     current_directory = os.getcwd()
-    logs_file_name = f"{settings.NAME}.log"
-    logs_file_path = os.path.join(current_directory, "logs", logs_file_name)
-    if os.path.exists(logs_file_path):
-        os.remove(logs_file_path)
+    logs_files = glob.glob(f"{current_directory}/**/*.log*", recursive=True)
+    for file in logs_files:
+        os.remove(file)
