@@ -10,7 +10,7 @@ from configurations import settings
 def init_logger(logfile: str):
     """Initialize the root logger and standard log handlers.
 
-    :param logfile: str: 
+    :param logfile: str:
 
     """
     log_formatter = logging.Formatter(
