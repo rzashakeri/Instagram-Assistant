@@ -37,7 +37,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
         return ConversationHandler.END
     create_user(user_id, first_name, last_name, username)
-    create_request(user_id=user_id, request_type=FEEDBACK_REQUEST)
+    create_request(user_id=user_id, request_type=START_REQUEST)
     await update.message.reply_text(
         WELCOME_MESSAGE.format(first_name=first_name),
         reply_markup=base_keyboard,
