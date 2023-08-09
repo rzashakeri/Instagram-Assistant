@@ -1,7 +1,7 @@
 # encoding: utf-8
+import glob
 import logging
 import os
-import glob
 from logging.handlers import TimedRotatingFileHandler
 
 from configurations import settings
