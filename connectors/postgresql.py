@@ -1,5 +1,11 @@
 import psycopg2
-from configurations.settings import POSTGRESQL_HOST, POSTGRESQL_NAME, POSTGRESQL_USERNAME, POSTGRESQL_PASSWORD, POSTGRESQL_PORT
+from configurations.settings import (
+    POSTGRESQL_HOST,
+    POSTGRESQL_NAME,
+    POSTGRESQL_USERNAME,
+    POSTGRESQL_PASSWORD,
+    POSTGRESQL_PORT,
+)
 from constants import DUPLICATE_KEY
 
 db_name = POSTGRESQL_NAME
@@ -12,11 +18,7 @@ db_port = POSTGRESQL_PORT
 def execute_query(query):
     """function for execute query"""
     connection = psycopg2.connect(
-        database=db_name,
-        user=db_user,
-        password=db_password,
-        host=db_host,
-        port=db_port
+        database=db_name, user=db_user, password=db_password, host=db_host, port=db_port
     )
     cursor = connection.cursor()
     cursor.execute(query)
@@ -33,13 +35,13 @@ def create_user(user_id, first_name, last_name, username):
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     cursor = connection.cursor()
-    query = ("""
+    query = """
         INSERT INTO users (user_id, first_name, last_name, username) 
         VALUES (%s, %s, %s, %s)
-        """)
+        """
     try:
         cursor.execute(query, (user_id, first_name, last_name, username))
     except psycopg2.Error as error:
@@ -57,7 +59,7 @@ def get_user_count():
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     query = """
     SELECT 
@@ -81,7 +83,7 @@ def get_user_id():
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     query = """
     SELECT user_id
@@ -124,7 +126,7 @@ def get_daily_user_signup_count():
         host=POSTGRESQL_HOST,
         user=POSTGRESQL_USERNAME,
         password=POSTGRESQL_PASSWORD,
-        port=POSTGRESQL_PORT
+        port=POSTGRESQL_PORT,
     )
     query = """
         SELECT
@@ -156,7 +158,7 @@ def get_user_request_insight():
             request_created_at >= CURRENT_DATE - INTERVAL '1 day'
             AND request_created_at < CURRENT_DATE
     """
-    
+
     last_month_query = """
         SELECT
             'Last Month' AS interval,
@@ -167,7 +169,7 @@ def get_user_request_insight():
             request_created_at >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
             AND request_created_at < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
     """
-    
+
     last_year_query = """
         SELECT
             'Last Year' AS interval,
@@ -178,11 +180,11 @@ def get_user_request_insight():
             request_created_at >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year'
             AND request_created_at < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
     """
-    
+
     last_day_count = execute_query(last_day_query)
     last_month_count = execute_query(last_month_query)
     last_year_count = execute_query(last_year_query)
-    
+
     return last_day_count, last_month_count, last_year_count
 
 
@@ -198,7 +200,7 @@ def get_user_signup_insight():
             created_at >= CURRENT_DATE - INTERVAL '1 day'
             AND created_at < CURRENT_DATE
     """
-    
+
     last_month_query = """
         SELECT
             'Last Month' AS interval,
@@ -209,7 +211,7 @@ def get_user_signup_insight():
             created_at >= DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month'
             AND created_at < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
     """
-    
+
     last_year_query = """
         SELECT
             'Last Year' AS interval,
@@ -220,11 +222,11 @@ def get_user_signup_insight():
             created_at >= DATE_TRUNC('year', CURRENT_DATE) - INTERVAL '1 year'
             AND created_at < DATE_TRUNC('year', CURRENT_DATE) + INTERVAL '1 year'
     """
-    
+
     last_day_count = execute_query(last_day_query)
     last_month_count = execute_query(last_month_query)
     last_year_count = execute_query(last_year_query)
-    
+
     return last_day_count, last_month_count, last_year_count
 
 
