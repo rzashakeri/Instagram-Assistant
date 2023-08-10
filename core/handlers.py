@@ -14,7 +14,7 @@ from commands import privacy
 from commands import rule
 from commands import start
 from commands import upload
-from constants.keys import BACK_KEY
+from constants.keys import BACK_KEY, RESTART_KEY, SHUT_DOWN_KEY
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import FEEDBACK_KEY
@@ -32,7 +32,9 @@ from constants.states import DOWNLOAD_STATE
 from constants.states import FEEDBACK_STATE
 from constants.states import HOME_STATE
 from constants.states import INSIGHT_STATE
-from constants.states import IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD
+from constants.states import (
+    IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD,
+)
 from constants.states import LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE
 from constants.states import LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD
 from constants.states import LOTTERY
@@ -56,13 +58,35 @@ def admin_conversation_handler():
         entry_points=[CommandHandler("admin", admin.admin)],
         states={
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
-                               admin.user_count),
-                MessageHandler(filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
-                               admin.back_to_home),
+                MessageHandler(
+                    filters.Regex(f"^{USER_COUNT_KEY}$"),
+                    admin.user_count,
+                    block=False,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                    admin.back_to_home,
+                    block=False,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{INSIGHT_OF_ROBOT_KEY}$"),
+                    admin.get_insight,
+                    block=False,
+                ),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
+                    block=False,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{SHUT_DOWN_KEY}$"),
+                    admin.shutdown_bot,
+                    block=False,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{RESTART_KEY}$"),
+                    admin.restart_bot,
+                    block=False,
                 ),
             ]
         },
@@ -79,8 +103,7 @@ def base_conversation_handler():
         entry_points=[CommandHandler("start", rule.rule, block=False)],
         states={
             # start ==>
-            START_STATE:
-            [MessageHandler(filters.TEXT, start.start, block=False)],
+            START_STATE: [MessageHandler(filters.TEXT, start.start, block=False)],
             # home ==>
             HOME_STATE: [
                 MessageHandler(
@@ -98,9 +121,9 @@ def base_conversation_handler():
                     insight.get_media_link,
                     block=False,
                 ),
-                MessageHandler(filters.Regex(f"^{PRIVACY_KEY}$"),
-                               privacy.privacy,
-                               block=False),
+                MessageHandler(
+                    filters.Regex(f"^{PRIVACY_KEY}$"), privacy.privacy, block=False
+                ),
                 MessageHandler(
                     filters.Regex(f"^{FEEDBACK_KEY}$"),
                     feedback.get_feedback,
@@ -116,14 +139,15 @@ def base_conversation_handler():
                 CommandHandler("privacy", privacy.privacy, block=False),
             ],
             # download ==>
-            DOWNLOAD_STATE:
-            [MessageHandler(filters.TEXT, download.download, block=False)],
+            DOWNLOAD_STATE: [
+                MessageHandler(filters.TEXT, download.download, block=False)
+            ],
             # insight ==>
-            INSIGHT_STATE:
-            [MessageHandler(filters.TEXT, insight.insight, block=False)],
+            INSIGHT_STATE: [MessageHandler(filters.TEXT, insight.insight, block=False)],
             # start the upload operation section ==>
-            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD:
-            [MessageHandler(filters.TEXT, upload.remember_me, block=False)],
+            IS_YOUR_LOGIN_INFORMATION_SAVED_FOR_THE_NEXT_LOGIN_IN_UPLOAD: [
+                MessageHandler(filters.TEXT, upload.remember_me, block=False)
+            ],
             LOGIN_WITH_TWO_FACTOR_AUTHENTICATION_FOR_UPLOAD: [
                 MessageHandler(
                     filters.TEXT,
@@ -132,14 +156,14 @@ def base_conversation_handler():
                 )
             ],
             LOGIN_ATTEMPT_AND_GET_MEDIA_TYPE: [
-                MessageHandler(filters.TEXT,
-                               upload.login_attempt_and_get_media_type,
-                               block=False)
+                MessageHandler(
+                    filters.TEXT, upload.login_attempt_and_get_media_type, block=False
+                )
             ],
             SET_MEDIA_TYPE_AND_GET_MEDIA: [
-                MessageHandler(filters.TEXT,
-                               upload.set_media_type_and_get_media,
-                               block=False)
+                MessageHandler(
+                    filters.TEXT, upload.set_media_type_and_get_media, block=False
+                )
             ],
             SET_MEDIA_AND_GET_CAPTION: [
                 MessageHandler(
@@ -160,9 +184,9 @@ def base_conversation_handler():
                 )
             ],
             SET_TITLE_OF_IGTV_AND_GET_CAPTION: [
-                MessageHandler(filters.TEXT,
-                               upload.set_title_of_igtv_and_get_caption,
-                               block=False)
+                MessageHandler(
+                    filters.TEXT, upload.set_title_of_igtv_and_get_caption, block=False
+                )
             ],
             VERIFY_CONTENT_AND_UPLOAD_ON_INSTAGRAM: [
                 MessageHandler(
@@ -174,8 +198,11 @@ def base_conversation_handler():
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"),
-                               admin.user_count),
+                MessageHandler(
+                    filters.Regex(f"^{USER_COUNT_KEY}$"),
+                    admin.user_count,
+                    block=False,
+                ),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
                     admin.back_to_home,
@@ -191,11 +218,21 @@ def base_conversation_handler():
                     admin.get_message_for_send_to_all_user,
                     block=False,
                 ),
+                MessageHandler(
+                    filters.Regex(f"^{SHUT_DOWN_KEY}$"),
+                    admin.shutdown_bot,
+                    block=False,
+                ),
+                MessageHandler(
+                    filters.Regex(f"^{RESTART_KEY}$"),
+                    admin.restart_bot,
+                    block=False,
+                ),
             ],
             SEND_MESSAGE_TO_ALL_USER: [
-                MessageHandler(filters.TEXT,
-                               admin.send_message_to_all_user,
-                               block=False)
+                MessageHandler(
+                    filters.TEXT, admin.send_message_to_all_user, block=False
+                )
             ],
             # end of the admin section <==
             # start lottery section ==>
@@ -217,16 +254,14 @@ def base_conversation_handler():
                     lottery.lottery_with_comments_list,
                     block=False,
                 ),
-                MessageHandler(filters.Regex(f"^{BACK_KEY}$"),
-                               start.start,
-                               block=False),
+                MessageHandler(
+                    filters.Regex(f"^{BACK_KEY}$"), start.start, block=False
+                ),
             ],
             # end of the lottery section <==
             # start feedback section
             FEEDBACK_STATE: [
-                MessageHandler(filters.TEXT,
-                               feedback.send_feedback,
-                               block=False)
+                MessageHandler(filters.TEXT, feedback.send_feedback, block=False)
             ]
             # end of feedback section
         },

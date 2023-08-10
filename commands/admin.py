@@ -1,5 +1,7 @@
 # encoding: utf-8
 import time
+import os
+import sys
 from logging import getLogger
 
 from telegram import Update
@@ -139,6 +141,28 @@ async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
         reply_markup=admin_keyboard,
     )
     return ADMIN_STATE
+
+
+@restricted
+@send_action(ChatAction.TYPING)
+async def shutdown_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """shutdown bot"""
+    # pylint: disable=unused-argument
+    await update.message.reply_text("Shutting down")
+    args = sys.argv[:]
+    args.insert(0, sys.executable)
+    os.chdir(os.getcwd())
+    os.execv(sys.executable, args)
+    return ADMIN_STATE
+
+
+@restricted
+@send_action(ChatAction.TYPING)
+async def restart_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """restart bot"""
+    # pylint: disable=unused-argument
+    await update.message.reply_text('Restarting ...')
+    raise SystemExit()
 
 
 def daily_insight(context):

@@ -4,7 +4,7 @@ from constants import EMAIL
 from constants import NO
 from constants import PHONE
 from constants import YES
-from constants.keys import BACK_KEY, FEEDBACK_KEY, INSIGHT_OF_ROBOT_KEY
+from constants.keys import BACK_KEY, FEEDBACK_KEY, INSIGHT_OF_ROBOT_KEY, RESTART_KEY, SHUT_DOWN_KEY
 from constants.keys import BACK_TO_HOME_KEY
 from constants.keys import DOWNLOAD_KEY
 from constants.keys import INSIGHT_KEY
@@ -60,7 +60,9 @@ email_or_phone_keyboard = ReplyKeyboardMarkup(email_or_phone_reply_keyboard,
 
 admin_reply_keyboard = [
     [SEND_MESSAGE_TO_ALL_USER_KEY, USER_COUNT_KEY],
-    [BACK_TO_HOME_KEY, INSIGHT_OF_ROBOT_KEY],
+    [INSIGHT_OF_ROBOT_KEY],
+    [RESTART_KEY, SHUT_DOWN_KEY],
+    [BACK_TO_HOME_KEY]
 ]
 admin_keyboard = ReplyKeyboardMarkup(admin_reply_keyboard,
                                      resize_keyboard=True)

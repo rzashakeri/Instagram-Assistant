@@ -7,6 +7,7 @@ from telegram.ext import CommandHandler
 from telegram.ext import filters
 from telegram.ext import MessageHandler
 from telegram.ext import PicklePersistence
+from telegram.ext import AIORateLimiter
 
 from commands.admin import admin
 from commands.admin import daily_insight
@@ -40,6 +41,7 @@ if __name__ == "__main__":
         .write_timeout(50)
         .get_updates_read_timeout(50)
         .persistence(persistence)
+        .rate_limiter(AIORateLimiter())
         .build()
     )
     application.job_queue.run_daily(
