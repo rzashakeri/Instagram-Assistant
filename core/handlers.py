@@ -57,8 +57,7 @@ def admin_conversation_handler():
         entry_points=[CommandHandler("admin", admin.admin)],
         states={
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(
-                    f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
                 ),
@@ -176,8 +175,7 @@ def base_conversation_handler():
             # end the upload operation section <==
             # start admin section ==>
             ADMIN_STATE: [
-                MessageHandler(filters.Regex(
-                    f"^{USER_COUNT_KEY}$"), admin.user_count),
+                MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
                     filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
                     admin.back_to_home,
@@ -226,8 +224,7 @@ def base_conversation_handler():
             # end of the lottery section <==
             # start feedback section
             FEEDBACK_STATE: [
-                MessageHandler(
-                    filters.TEXT, feedback.send_feedback, block=False)
+                MessageHandler(filters.TEXT, feedback.send_feedback, block=False)
             ]
             # end of feedback section
         },
