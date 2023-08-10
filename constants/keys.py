@@ -21,6 +21,8 @@ SEND_MESSAGE_TO_ALL_USER_KEY: str = "Send Message To All Users"
 USER_COUNT_KEY: str = "User Count 📈"
 SEND_MESSAGE_KEY: str = "Send Message "
 INSIGHT_OF_ROBOT_KEY: str = "Insight 📉"
+RESTART_KEY: str = "Restart 🔄️"
+SHUT_DOWN_KEY: str = "Shut Down ⛔"
 
 
 # lottery keys
