@@ -19,11 +19,15 @@ from configurations.settings import SENTRY_DSN
 from core.handlers import admin_conversation_handler
 from core.handlers import base_conversation_handler
 from utils import create_requirement_folders
-from utils import logger
+from utils.logger import init_logger
 from utils.logger import clear_logs_file_daily
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 if __name__ == "__main__":
-    logger.init_logger(f"logs/{settings.NAME}.log")
+    init_logger(f"logs/{settings.NAME}.log")
+    logger.info("Instagram Assistant has been started")
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
@@ -35,14 +39,14 @@ if __name__ == "__main__":
     persistence = PicklePersistence(filepath="conversation states")
     application = (
         Application.builder()
-        .token(settings.TOKEN)
-        .concurrent_updates(True)
-        .read_timeout(50)
-        .write_timeout(50)
-        .get_updates_read_timeout(50)
-        .persistence(persistence)
-        .rate_limiter(AIORateLimiter())
-        .build()
+            .token(settings.TOKEN)
+            .concurrent_updates(True)
+            .read_timeout(50)
+            .write_timeout(50)
+            .get_updates_read_timeout(50)
+            .persistence(persistence)
+            .rate_limiter(AIORateLimiter())
+            .build()
     )
     application.job_queue.run_daily(
         callback=clear_logs_file_daily,
