@@ -109,10 +109,11 @@ def base_conversation_handler():
                 MessageHandler(
                     filters.Regex(f"^{LOTTERY_KEY}$"),
                     lottery.entry_point_and_get_post_link,
+                    block=False,
                 ),
-                CommandHandler("admin", admin.admin),
-                CommandHandler("start", start.start),
-                CommandHandler("privacy", privacy.privacy),
+                CommandHandler("admin", admin.admin, block=False),
+                CommandHandler("start", start.start, block=False),
+                CommandHandler("privacy", privacy.privacy, block=False),
             ],
             # download ==>
             DOWNLOAD_STATE: [
@@ -176,14 +177,19 @@ def base_conversation_handler():
             ADMIN_STATE: [
                 MessageHandler(filters.Regex(f"^{USER_COUNT_KEY}$"), admin.user_count),
                 MessageHandler(
-                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"), admin.back_to_home
+                    filters.Regex(f"^{BACK_TO_HOME_KEY}$"),
+                    admin.back_to_home,
+                    block=False,
                 ),
                 MessageHandler(
-                    filters.Regex(f"^{INSIGHT_OF_ROBOT_KEY}$"), admin.get_insight
+                    filters.Regex(f"^{INSIGHT_OF_ROBOT_KEY}$"),
+                    admin.get_insight,
+                    block=False,
                 ),
                 MessageHandler(
                     filters.Regex(f"^{SEND_MESSAGE_TO_ALL_USER_KEY}$"),
                     admin.get_message_for_send_to_all_user,
+                    block=False,
                 ),
             ],
             SEND_MESSAGE_TO_ALL_USER: [
