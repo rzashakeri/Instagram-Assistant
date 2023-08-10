@@ -148,12 +148,7 @@ async def get_insight(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str
 async def shutdown_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """shutdown bot"""
     # pylint: disable=unused-argument
-    await update.message.reply_text("Shutting down")
-    args = sys.argv[:]
-    args.insert(0, sys.executable)
-    os.chdir(os.getcwd())
-    os.execv(sys.executable, args)
-    return ADMIN_STATE
+    raise KeyboardInterrupt("Shut Down")
 
 
 @restricted

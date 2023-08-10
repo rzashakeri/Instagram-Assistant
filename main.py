@@ -39,14 +39,14 @@ if __name__ == "__main__":
     persistence = PicklePersistence(filepath="conversation states")
     application = (
         Application.builder()
-            .token(settings.TOKEN)
-            .concurrent_updates(True)
-            .read_timeout(50)
-            .write_timeout(50)
-            .get_updates_read_timeout(50)
-            .persistence(persistence)
-            .rate_limiter(AIORateLimiter())
-            .build()
+        .token(settings.TOKEN)
+        .concurrent_updates(True)
+        .read_timeout(50)
+        .write_timeout(50)
+        .get_updates_read_timeout(50)
+        .persistence(persistence)
+        .rate_limiter(AIORateLimiter())
+        .build()
     )
     application.job_queue.run_daily(
         callback=clear_logs_file_daily,
