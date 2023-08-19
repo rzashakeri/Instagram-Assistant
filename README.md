@@ -44,7 +44,7 @@ the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
 `python -m venv venv`
 
-4 . activated the virtual environment :
+4 . activate the virtual environment :
 
 `source venv/bin/activate`
 
@@ -52,11 +52,11 @@ the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
 `pip install -r requirements.txt`
 
-6 . create .env file and set environment variables :
+6 . create `.env` file and set environment variables :
 
 `vim .env` or `nano .env`
 
-7 . set your environment variables such `.env.example`
+7 . set your environment variables such [`.env.example`](https://github.com/rzashakeri/Instagram-Assistant/blob/master/.env.example)
 
 | key                      | description                                         |
 | ------------------------ | --------------------------------------------------- |
