@@ -30,8 +30,8 @@ friends who love to run this robot on their
 personal server and can use it or do not trust
 the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
-
 ## How Deploy?
+
 1 . first clone this repository :
 
 `git clone https://github.com/rzashakeri/Instagram-Assistant.git`
@@ -41,7 +41,7 @@ the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 `cd Instagram-Assistant`
 
 3 . Create a Virtual Environment :
- 
+
 `python -m venv venv`
 
 4 . activate the virtual environment :
@@ -54,12 +54,12 @@ the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
 6 . create `.env` file and set environment variables :
 
-`vim .env`  or `nano .env`
+`vim .env` or `nano .env`
 
 7 . set your environment variables such [`.env.example`](https://github.com/rzashakeri/Instagram-Assistant/blob/master/.env.example)
 
 | key                      | description                                         |
-|--------------------------|-----------------------------------------------------|
+| ------------------------ | --------------------------------------------------- |
 | `TOKEN`                  | Your Bot Token                                      |
 | `NAME`                   | Your Bot Name                                       |
 | `ADMIN_TELEGRAM_USER_ID` | Your User Id                                        |
@@ -71,14 +71,13 @@ the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 | `IS_MAINTENANCE`         | This shows that your robot is in maintenance or not |
 | `SENTRY_DSN`             | Your sentry dsn                                     |
 
-
 8 . create a file with name `admin_users.json` :
 
 `vim admin_users.json`
 
-9 . Here you need to enter the username and passwords 
-of the accounts you already created and the robot can 
-be used them and perform various operations such 
+9 . Here you need to enter the username and passwords
+of the accounts you already created and the robot can
+be used them and perform various operations such
 as download and lottery.
 
 The contents of the file (`admin_users.json`) should be as follows:
@@ -109,8 +108,6 @@ python supervisor.py
 ```
 
 **DONE ✅**
-
-
 
 ## Stack
 
