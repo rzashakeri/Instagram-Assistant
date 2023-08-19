@@ -10,3 +10,4 @@ moviepy==1.0.3
 psycopg2-binary==2.9.5
 pytz==2023.3
 sentry-sdk==1.28.1
+aiocryptopay==0.2.8
