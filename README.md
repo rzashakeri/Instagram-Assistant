@@ -30,7 +30,89 @@ friends who love to run this robot on their
 personal server and can use it or do not trust
 the [robot](https://t.me/InstagramAssistantRobot) for any reason.
 
-# Stack
+
+## How Deploy?
+1 . first clone this repository :
+
+`git clone https://github.com/rzashakeri/Instagram-Assistant.git`
+
+2 . go to `Instagram-Assistant` directory :
+
+`cd Instagram-Assistant`
+
+3 . Create a Virtual Environment :
+ 
+`python -m venv venv`
+
+4 . activated the virtual environment :
+
+`source venv/bin/activate`
+
+5 . now install dependencies:
+
+`pip install -r requirements.txt`
+
+6 . create .env file and set environment variables :
+
+`vim .env`  or `nano .env`
+
+7 . set your environment variables such `.env.example`
+
+| key                      | description                                         |
+|--------------------------|-----------------------------------------------------|
+| `TOKEN`                  | Your Bot Token                                      |
+| `NAME`                   | Your Bot Name                                       |
+| `ADMIN_TELEGRAM_USER_ID` | Your User Id                                        |
+| `POSTGRESQL_HOST`        | Your postgresql database host such `123.456.678.9`  |
+| `POSTGRESQL_PORT`        | Your postgresql database port such `1234`           |
+| `POSTGRESQL_NAME`        | Your postgresql database name such `my_bot_db`      |
+| `POSTGRESQL_USERNAME`    | Your postgresql database user name such `root`      |
+| `POSTGRESQL_PASSWORD`    | Your postgresql database password such `xxxxx`      |
+| `IS_MAINTENANCE`         | This shows that your robot is in maintenance or not |
+| `SENTRY_DSN`             | Your sentry dsn                                     |
+
+
+8 . create a file with name `admin_users.json` :
+
+`vim admin_users.json`
+
+9 . Here you need to enter the username and passwords 
+of the accounts you already created and the robot can 
+be used them and perform various operations such 
+as download and lottery.
+
+The contents of the file (`admin_users.json`) should be as follows:
+
+```json
+{
+  "users": [
+    {
+      "username": "testuser1",
+      "password": "password"
+    },
+    {
+      "username": "testuser2",
+      "password": "password"
+    },
+    {
+      "username": "testuser3",
+      "password": "password"
+    }
+  ]
+}
+```
+
+10 . run bot with this command :
+
+```
+python supervisor.py
+```
+
+**DONE ✅**
+
+
+
+## Stack
 
 1. python
 2. [python-telegram-bot](https://python-telegram-bot.org/)
