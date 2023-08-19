@@ -12,7 +12,7 @@
 4. Lottery with comments and likes
 5. Getting User Info
 
-### when you run as admin
+## when you run as admin
 
 6. Admin Panel
 7. Get User Count From Admin Panel
